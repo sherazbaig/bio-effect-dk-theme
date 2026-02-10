@@ -1,0 +1,70 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet / Format: Product
+  - Returns product Liquid object formatted as Vue prop data.
+  - Use as a replacement to storefront API queries.
+  - Can be used in a forloop.
+
+  @param {Object} [collection] - Collection Liquid object.
+  @param {Boolean} [full_data] - Render all product data, defaults to true.
+  @param {Object} [forloop] - Forloop Liquid object.
+  @param {Boolean} [media] - Format media array.
+  @param {Object} product - Product Liquid object to format.
+  @returns {Object}
+-----------------------------------------------------------------------------
+{% endcomment %}
+
+{% unless product %}
+  false
+{% else %}
+  {%- capture data -%}
+    available: {{ product.available | json | escape }},
+    badge: {% render 'format-image' with image: product.metafields.product.badge.value, width: 120 %},
+    badge_text: {{ product.metafields.product.badge_text.value | json | escape }},
+    badge_color: {{ product.metafields.product.badge_color.value | json | escape }},
+    compareAtPrice: {% render 'format-price' with price: 'compare_at_price', object: product %},
+    featuredImage: {% render 'format-image' with image: product.featured_image %},
+    handle: {{ product.handle | json | escape }},
+    liquid: {{ true | json | escape }},
+    price: {% render 'format-price' with price: 'price', object: product %},
+    {%- if product.images.size > 1 -%}
+      secondaryImage: {% render 'format-image' with image: product.images[1] %},
+    {%- endif -%}
+    tags: {{ product.tags | json | escape }},
+    title: {{ product.title | json | escape }},
+    type: {{ product.type | json | escape }},
+    url: {{ product.url | within: collection | json | escape }},
+    upsellType: {{ product.metafields.product.upsell_type.value | json | escape }},
+    upsellTitle: {{ product.metafields.product.upsell_title.value | json | escape }},
+    upsellDescription: {{ product.metafields.product.upsell_description | metafield_tag | json | escape }},
+    upsellProduct: {{ product.metafields.product.upsell_product.value | json | escape }},
+    vendor: {{ product.vendor | json | escape }},
+    awards: [
+      {%- for award in product.metafields.product.awards.value limit: 5 -%}
+        {% render 'format-image' with image: award, width: 120 %}
+        {% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+    {%- unless full_data == false -%},
+      collection: {
+        title: {{ collection.title | json | escape }},
+        url: {{ collection.url | json | escape }}
+      },
+      description: {{ product.description | json | escape }},
+      giftCard: {{ product.gift_card? | json | escape }},
+      hasOnlyDefaultVariant: {{ product.has_only_default_variant | json | escape }},
+      id: {{ product.id | json | escape }},
+      {%- if media -%}
+        media: [{% render 'format-media' for product.media as media %}],
+      {%- else -%}
+        images: [{% render 'format-image' for product.images as image %}],
+      {%- endif -%}
+      media: [{% render 'format-media' for product.media as media %}],
+      options: [{% render 'format-option' for product.options_with_values as product_option %}],
+      selectedOrFirstAvailableVariant: {% render 'format-variant' with variant: product.selected_or_first_available_variant, product: product%},
+      variants: [{% render 'format-variant' for product.variants as variant, with product: product %}]
+    {%- endunless -%}
+  {%- endcapture -%}
+
+  { {{ data | strip | strip_newlines }} }{%- if forloop and forloop.last == false -%},{%- endif -%}
+{% endunless %}

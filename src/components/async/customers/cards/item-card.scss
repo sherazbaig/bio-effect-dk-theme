@@ -1,0 +1,41 @@
+/**
+ * Styles: Item card (cards)
+ * -----------------------------------------------------------------------------
+ * Base styles for item card component.
+ *
+ */
+.item-card {
+  background-color: var(--color-clouds);
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 110px 1fr;
+  margin-block-end: var(--spacing-m);
+  padding: var(--spacing-m);
+
+  &__details {
+    display: grid;
+    height: fit-content;
+  }
+
+  &__field-quantity {
+    color: var(--color-gray-text);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .text-mobile-p {
+    color: var(--color-stone);
+  }
+
+  @include mq($from: l) {
+    grid-template-columns: 140px 1fr;
+
+    &__details {
+      grid-template-columns: 60% 1fr;
+    }
+
+    &__field-total {
+      text-align: right;
+    }
+  }
+}

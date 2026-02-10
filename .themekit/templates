@@ -1,0 +1,9 @@
+# Files to ignore when running `yarn templates`
+assets/*
+config/*
+layout/*
+locales/*
+sections/*.liquid
+snippets/*
+templates/customers/*.liquid
+templates/*.liquid

@@ -1,0 +1,38 @@
+/**
+ * Styles: Customers login (customers-login)
+ * -----------------------------------------------------------------------------
+ * Base styles for customers login component.
+ *
+ */
+.customers-login {
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__toggle-form,
+  &__reset-success {
+    &.is-hidden {
+      display: none;
+    }
+  }
+
+  &__reset-success {
+    margin-block-end: var(--layout-page-spacing);
+  }
+
+  &__guest {
+    margin-block-start: var(--layout-page-spacing);
+  }
+
+  &__guest-form {
+    margin-block-start: var(--spacing-m);
+  }
+
+  &__forgot-password-errors {
+    margin-block-end: var(--spacing-s);
+  }
+}

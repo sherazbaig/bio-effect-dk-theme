@@ -1,0 +1,128 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Customer orders (customer-orders)
+  @param {Object} order - Order object.
+  - Snippet section.
+------------------------------------------------------------------------------
+{% endcomment %}
+
+<div class="col xs-span customers-account__accordion-wrapper">
+  <div
+    class="customers-account__accordion"
+    role="button"
+    tabindex="0"
+    aria-label="{{ 'customers.order_card.labels.order_number' | t }}"
+    js-accordion="wrapper"
+  >
+    <div class="customers-account__order-number text-p-desktop text-mobile-p">
+      {{ 'customers.order_card.order_number' | t: order_number: order.order_number }}
+    </div>
+
+    {% render 'icon-directional-navigation' with icon: 'outlined-plus' %}
+    {% render 'icon-directional-navigation' with icon: 'outlined-minus' %}
+  </div>
+
+  <div class="customers-account__accordion-answer">
+    {% for line_item in order.line_items %}
+      {% render 'item-card' with
+        class: 'customers-order__item-card',
+        line_item: line_item,
+        line_quantity: line_item.quantity
+      %}
+    {% endfor %}
+
+    <div class="customers-account__order-overview-wrapper mb-s">
+      <div class="customers-account__order-overview">
+        <p class="text-p-bold-desktop text-mobile-p">{{ 'customers.account.title' | t }}</p>
+
+        <div class="customers-account__table">
+          <p class="text-mobile-p-desktop text-p-xs-bold">{{ 'customers.order_card.labels.date_of_order' | t }}</p>
+          <p class="text-mobile-p-desktop text-p-xs-bold">{{ order.created_at | date: format: 'day_month_year' }}</p>
+        </div>
+
+        {% if order.cancelled_at != blank %}
+          <div class="customers-account__table">
+            <p class="text-mobile-p-desktop text-p-xs-bold">{{ 'customers.order_card.labels.date_of_cancel' | t }}</p>
+            <p class="text-mobile-p-desktop text-p-xs-bold">{{ order.cancelled_at | date: format: 'day_month_year' }}</p>
+          </div>
+        {% endif %}
+
+        <div class="customers-account__table">
+          <p class="text-mobile-p-desktop text-p-xs-bold">{{ 'customers.order_card.labels.payment_status' | t }}</p>
+          <p class="text-mobile-p-desktop text-p-xs-bold">{{ order.financial_status_label }}</p>
+        </div>
+
+        <div class="customers-account__table">
+          <p class="text-mobile-p-desktop text-p-xs-bold">{{ 'customers.order_card.labels.order_status' | t }}</p>
+          <p class="text-mobile-p-desktop text-p-xs-bold">{{ order.fulfillment_status_label }}</p>
+        </div>
+
+        <div class="customers-account__table">
+          <p class="text-mobile-p-desktop text-p-xs-bold">{{ 'customers.order_card.labels.total_before_discount' | t }}</p>
+          <p class="text-mobile-p-desktop text-p-xs-bold">{{ order.total_price | money_without_trailing_zeros }}</p>
+        </div>
+
+        <div class="customers-account__table">
+          <p class="text-mobile-p-desktop text-p-xs-bold">{{ 'customers.order_card.labels.discount' | t }}</p>
+          <p class="text-mobile-p-desktop text-p-xs-bold">{{ order.total_discounts | money_without_trailing_zeros }}</p>
+        </div>
+
+        <div class="customers-account__table">
+          <p class="text-mobile-p-desktop text-p-xs-bold">{{ 'customers.order_card.labels.shipping' | t }}</p>
+          <p class="text-mobile-p-desktop text-p-xs-bold">{{ order.shipping_price | money_without_trailing_zeros }}</p>
+        </div>
+
+        <div class="customers-account__table">
+          <p class="text-mobile-p-desktop text-p-xs-bold">{{ 'customers.order_card.labels.tax' | t }}</p>
+          <p class="text-mobile-p-desktop text-p-xs-bold">{{ order.tax_price | money_without_trailing_zeros }}</p>
+        </div>
+
+        <div class="customers-account__table">
+          {% assign total_fees = order.tax_price | plus: order.shipping_price %}
+
+          <p class="text-mobile-p-desktop text-p-xs-bold">{{ 'customers.order_card.labels.total' | t }}</p>
+          <p class="text-mobile-p-desktop text-p-xs-bold">{{ total_fees | money_without_trailing_zeros }}</p>
+        </div>
+      </div>
+
+      <div class="customers-account__shipping-address">
+        <p class="text-p-bold-desktop text-mobile-p">{{ 'customers.order.shipping.shipping_address' | t }}</p>
+
+        <p class="text-mobile-p-desktop text-p-xs-bold">
+          {% assign first_last_name = order.shipping_address.first_name | append: ' ' | append: order.shipping_address.last_name %}
+          {{ first_last_name }}
+        </p>
+        {% if order.shipping_address.street != blank %}
+          <p class="text-mobile-p-desktop text-p-xs-bold">
+            {{ order.shipping_address.street }}
+          </p>
+        {% endif %}
+        {% if order.shipping_address.phone != blank %}
+          <p class="text-mobile-p-desktop text-p-xs-bold">
+            {{ order.shipping_address.phone }}
+          </p>
+        {% endif %}
+        {% if order.shipping_address.province != blank %}
+          <p class="text-mobile-p-desktop text-p-xs-bold">
+            {{ order.shipping_address.province }}
+          </p>
+        {% endif %}
+        {% if order.shipping_address.zip != blank %}
+          <p class="text-mobile-p-desktop text-p-xs-bold">
+            {{ order.shipping_address.zip }}
+          </p>
+        {% endif %}
+        {% if order.shipping_address.city != blank %}
+          <p class="text-mobile-p-desktop text-p-xs-bold">
+            {{ order.shipping_address.city }}
+          </p>
+        {% endif %}
+        {% if order.shipping_address.country != blank %}
+          <p class="text-mobile-p-desktop text-p-xs-bold">
+            {{ order.shipping_address.country }}
+          </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

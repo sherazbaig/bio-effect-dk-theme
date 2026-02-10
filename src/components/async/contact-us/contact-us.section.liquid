@@ -1,0 +1,179 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Contact us (contact-us)
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.contact-us.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign contact_us_submit_string = 'contact.submit' | t
+  assign email_placeholder = 'contact.email_placeholder' | t
+  assign name_placeholder = 'contact.name' | t
+  assign message_placeholder = 'contact.message' | t
+-%}
+
+<section
+  aria-labelledby="section-title-{{ section.id }}"
+  data-component-handle="contact-us"
+>
+  <div class="contact-us critical-component-clear liquid">
+    <div class="contact-us__container grid container mb-7xl">
+      <div class="contact-us__image-block col xs-span l3-8">
+        {% if section.settings.image %}
+          <div class="contact-us__image">
+            {% render 'art-direction' with
+              image: section.settings.image,
+              ratio: '3:2',
+              ratio_desktop: '3:3',
+            %}
+          </div>
+        {% endif %}
+      </div>
+      <div class="contact-us__content-block col xs-span l5">
+        <h2
+          id="section-title-{{ section.id }}"
+          class="contact-us__title text-h6 text-h5-desktop mb-2xs"
+        >
+          {{ page.title }}
+        </h2>
+
+        <p
+          class="
+            contact-us__text
+            text-mobile-p
+            text-p-desktop
+            mb-3xl
+            mb-l-desktop
+          "
+        >
+          {{ 'contact.content' | t }}
+        </p>
+
+        {% form 'contact' %}
+          <div class="contact-us__form form-group">
+            {% if form.posted_successfully? %}
+              <div class="contact__post-success">
+                <p class="note note--success title">
+                  {{ 'contact.success_title' | t }}
+                </p>
+              </div>
+
+            {% else %}
+              {{ form.errors | default_errors }}
+
+              <div class="form-group__field">
+                <input
+                  id="contactEmail"
+                  autocapitalize="off"
+                  autocomplete="email"
+                  autocorrect="off"
+                  name="contact[email]"
+                  placeholder="{{ email_placeholder | append: ' *' }}"
+                  required
+                  spellcheck="false"
+                  type="email"
+                >
+
+                <label
+                  class="form-group__label text-body-m-regular"
+                  for="contactEmail"
+                >
+                  {{ email_placeholder }}
+
+                  <abbr title="{{ 'customers.fields.required.label' | t }}">
+                    {{ 'customers.fields.required.symbol' | t }}
+                  </abbr>
+                </label>
+              </div>
+
+              <div class="form-group__field">
+                <select name="contact[inquiry]" id="inquiry" required>
+                  <option
+                    value="{{ 'contact.inquiry.inquiry_option' | t | downcase }}"
+                    selected
+                  >
+                    {{ 'contact.inquiry.inquiry_option' | t }}
+                  </option>
+                  <option value="{{ 'contact.inquiry.customer_service' | t | downcase | camelcase }}">
+                    {{ 'contact.inquiry.customer_service' | t }}
+                  </option>
+                  <option value="{{ 'contact.inquiry.press_and_collaborations' | t | downcase | camelcase }}">
+                    {{ 'contact.inquiry.press_and_collaborations' | t }}
+                  </option>
+                  <option value="{{ 'contact.inquiry.business_inquiries' | t | downcase | camelcase }}">
+                    {{ 'contact.inquiry.business_inquiries' | t }}
+                  </option>
+                </select>
+
+                <label class="form-group__label" for="inquiry">
+                  {{ 'contact.inquiry.inquiry_option' | t }}
+
+                  <abbr title="{{ 'customers.fields.required.label' | t }}">
+                    {{ 'customers.fields.required.symbol' | t }}
+                  </abbr>
+                </label>
+              </div>
+
+              <div class="form-group__field">
+                <input
+                  id="contact-name"
+                  autocapitalize="words"
+                  autocomplete="given-name"
+                  autocorrect="off"
+                  name="contact[name]"
+                  placeholder="{{ name_placeholder | append: ' *' }}"
+                  required
+                  type="text"
+                >
+
+                <label
+                  class="form-group__label text-body-m-regular"
+                  for="contact-name"
+                >
+                  {{ name_placeholder }}
+
+                  <abbr title="{{ 'customers.fields.required.label' | t }}">
+                    {{ 'customers.fields.required.symbol' | t }}
+                  </abbr>
+                </label>
+              </div>
+
+              <div class="form-group__field">
+                <textarea
+                  id="contact-message"
+                  class="message-input__textarea"
+                  name="contact[message]"
+                  placeholder="{{ message_placeholder | append: ' *' }}"
+                  rows="4"
+                  required
+                ></textarea>
+
+                <label
+                  class="form-group__label text-body-m-regular"
+                  for="contact-name"
+                >
+                  {{ message_placeholder }}
+
+                  <abbr title="{{ 'customers.fields.required.label' | t }}">
+                    {{ 'customers.fields.required.symbol' | t }}
+                  </abbr>
+                </label>
+              </div>
+
+              <div class="form-group__field">
+                {% render 'btn' with
+                  class: 'contact-us__btn',
+                  label: contact_us_submit_string,
+                  type: submit,
+                %}
+              </div>
+            {% endif %}
+          </div>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema 'contact-us' %}

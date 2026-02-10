@@ -1,0 +1,99 @@
+/**
+ * Component: Splide
+ * -----------------------------------------------------------------------------
+ * Base styles for Splide carousels.
+ *
+ */
+@import '@splidejs/vue-splide/css/core';
+
+.splide {
+  $parent: &;
+  position: relative;
+
+  &__track {
+    z-index: var(--layer-flat);
+  }
+
+  /**
+   * Arrows.
+   */
+  &__arrows {
+    @include transition(opacity);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 var(--spacing-l);
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    width: 100%;
+    z-index: var(--layer-raised);
+  }
+
+  &__arrow {
+    @include button-reset;
+    @include transition(opacity);
+
+    &[disabled] {
+      opacity: 0.5;
+    }
+  }
+
+  /**
+   * Pagination.
+   */
+  &__pagination {
+    bottom: var(--spacing-l);
+    gap: var(--spacing-xs);
+    left: 0;
+    position: absolute;
+    width: 100%;
+    z-index: var(--layer-raised);
+
+    li {
+      display: inherit;
+    }
+  }
+
+  &__pagination__page {
+    @include button-reset;
+    @include transition(background-color, width);
+    // Remove visible artifacts on button after the element transforms states
+    backface-visibility: hidden;
+    background-color: var(--color-neutral-4);
+    border-radius: 12px;
+    height: 6px;
+    width: var(--spacing-m);
+
+    &.is-active {
+      background-color: var(--color-brand-1-default);
+      width: var(--spacing-xl);
+    }
+  }
+
+  /**
+   * Modifiers.
+   */
+  &:not(.is-overflow) {
+    #{$parent}__arrow {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  /**
+   * Active state.
+   */
+  &.is-active {
+    #{$parent}__arrow {
+      pointer-events: auto;
+    }
+  }
+
+  /**
+   * No JS state.
+   */
+  .no-js & {
+    visibility: visible;
+  }
+}

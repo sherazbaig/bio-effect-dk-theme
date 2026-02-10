@@ -1,0 +1,32 @@
+/**
+ * Style: General input (general-input)
+ * -----------------------------------------------------------------------------
+ * Base styles for checkbox input component.
+ *
+ */
+.message-input {
+  &__textarea {
+    @include input-reset;
+    background-color: var(--color-clouds);
+    border: 1px solid var(--color-gray-text);
+    border-radius: 1px;
+    font-size: calc(var(--spacing-s) + var(--spacing-3xs));
+    outline: none;
+    padding: var(--spacing-m);
+    pointer-events: none;
+
+    &::placeholder {
+      opacity: 0.7;
+    }
+
+    /**
+   * Disabled state.
+   */
+    &[disabled],
+    &.is-disabled {
+      background-color: var(--color-breeze);
+      border: 1px solid var(--color-cool);
+      pointer-events: none;
+    }
+  }
+}

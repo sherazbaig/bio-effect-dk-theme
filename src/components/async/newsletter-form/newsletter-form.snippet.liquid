@@ -1,0 +1,66 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Newsletter form (newsletter-form)
+
+  @param {String} [list] - The Klaviyo list identifier.
+  @param {String} [block_class] - Block level class to add to elements.
+------------------------------------------------------------------------------
+{% endcomment %}
+{% liquid
+  assign id_prefix = block_class | default: 'newsletter-form'
+  assign id_template = id_prefix | append: '-' | append: list | append: '-#element#'
+%}
+
+<form
+  class="
+    newsletter-form
+    is-loading
+    liquid
+    {% if block_class %}
+      {{ block_class | append: '__newsletter-form' }}
+    {% endif %}
+  "
+  action="https://manage.kmail-lists.com/ajax/subscriptions/subscribe"
+  method="POST"
+  novalidate
+>
+  <input
+    type="hidden"
+    name="g"
+    value="{{ list }}"
+  >
+
+  <div
+    class="
+      newsletter-form__email
+      {% if block_class %}
+        {{ block_class | append: '__newsletter-email' }}
+      {% endif %}
+    "
+  >
+    <label
+      class="visually-hidden"
+      for="{{ id_template | replace: '#element#', 'email' }}"
+    >
+      {{ 'general.newsletter.email.label' | t }}
+    </label>
+
+    <input
+      id="{{ id_template | replace: '#element#', 'email' }}"
+      class="newsletter-form__email-input text-p-desktop text-mobile-p"
+      type="email"
+      name="email"
+      placeholder="{{ 'general.newsletter.email.placeholder' | t }}"
+      required
+    >
+
+    <button
+      class="newsletter-form__submit"
+      type="submit"
+      disabled
+    >
+      <span class="visually-hidden">{{ 'general.newsletter.submit' | t }}</span>
+      {% render 'icon-directional-navigation' with icon: 'link-arrow' %}
+    </button>
+  </div>
+</form>

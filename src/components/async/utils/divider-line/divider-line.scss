@@ -1,0 +1,56 @@
+/**
+ * Styles: Divider line (divider-line)
+ * -----------------------------------------------------------------------------
+ * Base styles for divider line component.
+ *
+ */
+.divider-line {
+  $parent: &;
+  color: var(--color-neutral-4);
+  display: flex;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) 0;
+  position: relative;
+  width: 100%;
+
+  &#{&}--no-label::before,
+  &__element::before {
+    background-color: currentcolor;
+    content: '';
+    height: 1px;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+  }
+
+  &__element {
+    color: var(--color-neutral-4);
+    display: block;
+    flex: 1;
+    position: relative;
+  }
+
+  &__label {
+    color: var(--color-neutral-2);
+    max-width: calc(100% - (var(--spacing-xl) * 2));
+  }
+
+  /**
+   * Modifiers.
+   */
+  &.is-large {
+    padding: var(--spacing-xl) 0;
+  }
+
+  &.is-dark {
+    color: var(--color-neutral-3);
+
+    #{$parent}__element {
+      color: var(--color-neutral-3);
+    }
+
+    #{$parent}__label {
+      color: var(--color-neutral-6);
+    }
+  }
+}

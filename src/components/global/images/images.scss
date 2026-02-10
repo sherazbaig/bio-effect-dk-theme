@@ -1,0 +1,59 @@
+/**
+ * Styles: Images (images)
+ * -----------------------------------------------------------------------------
+ * Base styles for art direction and responsive image components.
+ *
+ */
+.images {
+  display: block;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  &__spacer {
+    display: block;
+    height: 0;
+  }
+
+  &__picture,
+  &__image {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+
+  &__image {
+    @include transition(opacity, scale);
+    object-fit: cover;
+    object-position: 50% 50%;
+
+    html:not(.no-js) &.is-loading {
+      opacity: 0;
+      scale: 1.05;
+    }
+  }
+
+  /**
+   * Modifiers.
+   */
+  &#{&}--no-padding {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+  }
+
+  @each $breakpoint, $value in $mq-breakpoints {
+    @include mq($from: $breakpoint) {
+      &__spacer {
+        padding-block-end: var(--#{$breakpoint}-padding-bottom);
+      }
+
+      &__image {
+        object-position: var(--#{$breakpoint}-object-position);
+      }
+    }
+  }
+}

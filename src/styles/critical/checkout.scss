@@ -1,0 +1,25 @@
+/*
+ * Critical: Checkout
+ * -----------------------------------------------------------------------------
+ * Critical styles for checkout layout.
+ * - All styles for checkout layout are stored here for performance reasons.
+ * - Compiles into `critical-checkout.liquid`.
+ *
+ */
+@charset 'UTF-8';
+$breakpoint-s: 750px;
+$breakpoint-l: 1000px;
+
+/**
+ * Import base.
+ * - Import order is important.
+ */
+@import '@/base/reset';
+@import '@/base/critical';
+@import '@/base/icon';
+@import '@/base/preview-bar';
+
+/**
+ * Import customised styles.
+ */
+@import '@/components/checkout/main';

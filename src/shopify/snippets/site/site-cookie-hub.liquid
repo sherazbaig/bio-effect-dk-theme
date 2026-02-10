@@ -1,0 +1,53 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet / Site: Cookie Hub
+  - Cookie Hub Snippet
+-----------------------------------------------------------------------------
+{% endcomment %}
+{% if cookiehub_script_id != blank %}
+  <script src="https://cdn.cookiehub.eu/c2/{{settings.cookiehub_script_id}}.js"></script>
+  <script type="text/javascript">
+    var allowedCategories = {}
+    var cpm = {
+      onStatusChange: function(status, previousStatus) {
+        // Load the Customer Privacy API if not already loaded.
+        if (
+          !window.Shopify?.customerPrivacy?.setTrackingConsent &&
+          window.Shopify?.loadFeatures
+        ) {
+          window.Shopify.loadFeatures(
+            [
+              {
+                name: 'consent-tracking-api',
+                version: '0.1',
+              },
+            ]
+          );
+        }
+
+        this.hasConsented('analytics') ?
+          allowedCategories['analytics'] = true :
+          allowedCategories['analytics'] = false;
+
+        this.hasConsented('marketing') ?
+          allowedCategories['marketing'] = true :
+          allowedCategories['marketing'] = false;
+
+        this.hasConsented('preferences') ?
+          allowedCategories['preferences'] = true :
+          allowedCategories['preferences'] = false;
+
+        if (window.Shopify?.customerPrivacy?.setTrackingConsent) {
+          window.Shopify.customerPrivacy.setTrackingConsent(
+            allowedCategories,
+            () => console.log("Consent captured")
+          );
+        }
+      },
+    };
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+      window.cookiehub.load(cpm);
+    });
+  </script>
+{% endif %}

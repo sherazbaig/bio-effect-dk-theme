@@ -1,0 +1,45 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet / Format: Image
+  - Returns image Liquid object formatted as Vue prop data.
+  - Use as a replacement to storefront API queries.
+  - Can be used in a forloop.
+
+  @param {Object} [forloop] - Forloop Liquid object.
+  @param {Object} image - Image Liquid object to format.
+  @returns {Object}
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- unless image -%}
+  false
+{% else %}
+  {%- capture data -%}
+    {%- liquid
+      assign variant = false
+
+      if image.attached_to_variant?
+        assign variant = image.variants.first.id
+      endif
+    -%}
+    {%- if image.src != blank %}
+      alt: {{ image.alt | json | escape }},
+      aspectRatio: {{ image.aspect_ratio | json | escape }},
+      height: {{ image.height | json | escape }},
+      id: {{ image.id | json | escape }},
+      {% if forloop %}
+        index: {{ forloop.index0 | json | escape }},
+      {% endif %}
+      liquid: {{ true | json | escape }},
+      {% if image.presentation.focal_point != blank %}
+        presentation: {
+          focalPoint: {{ image.presentation.focal_point | json | escape }}
+        },
+      {% endif %}
+      src: {{ image.src | image_url: width: width | json | escape }},
+      variant: {{ variant | json | escape }},
+      width: {{ image.width | json | escape }}
+    {%- endif -%}
+  {%- endcapture -%}
+
+  { {{ data | strip | strip_newlines }} }{%- if forloop and forloop.last == false -%},{%- endif -%}
+{%- endunless -%}

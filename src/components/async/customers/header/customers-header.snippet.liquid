@@ -1,0 +1,109 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Customers header (customers-header)
+  - Header and navigation shown on account templates.
+
+  @param {String} current_url - Manual override of current URL for
+  highlighting current active link.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  # Set normalised root, always ends in '/'
+  assign normalised_root = routes.root_url
+
+  if normalised_root != '/'
+    assign normalised_root = normalised_root | append: '/'
+  endif
+
+  # Determine if on overview page
+  if request.page_type == 'customers/account' and template.suffix != 'orders'
+    assign is_overview = true
+  endif
+
+  # Set other page URLs
+  assign orders_url = routes.account_url | append: '?view=orders'
+  assign wishlist_url = normalised_root | append: 'pages/wishlist'
+
+  # Set back to text, icon, and URL
+  assign back_to_page = 'customers.account.title' | t
+  assign back_to_url = routes.account_url
+
+  if request.page_type == 'customers/order'
+    assign back_to_page = 'customers.orders.title' | t
+    assign back_to_url = orders_url
+  endif
+
+  capture back_to_icon
+    render 'icon-directional-navigation' with icon: 'arrow', direction: 'left'
+  endcapture
+
+  assign back_to_string = 'customers.header.back_to' | t: page: back_to_page
+  assign cancel_string = 'customers.addresses.cancel' | t
+-%}
+
+<div
+  class="customers-header customers__pages-header liquid"
+  js-customers-header="container"
+>
+  <div class="customers-header__header">
+    <p
+      class="
+        customers-header__title
+        text-h1-desktop
+        text-h2
+      "
+    >
+      {{ 'customers.header.title' | t: name: customer.first_name }}
+    </p>
+
+    <p class="customers-header__subtitle text-h5-desktop text-h6">
+      {{ 'customers.header.contact_us_html' | t: url: settings.customer_contact_us_url }}
+    </p>
+  </div>
+
+  {% comment %}
+  -----------------------------------------------------------------------------
+    Navigation.
+  -----------------------------------------------------------------------------
+  {% endcomment %}
+  {%- liquid
+    unless linklists[settings.customers_navigation].links.size
+      continue
+    endunless
+  -%}
+
+  <ul
+    class="
+      customers-header__navigation
+      {% unless is_overview %}
+        customers-header__navigation--mobile-hidden
+      {% endunless %}
+    "
+  >
+    {% for link in linklists[settings.customers_navigation].links %}
+      {%- liquid
+        # Get link active state
+        assign link_active = false
+
+        if current_url == blank
+          assign link_active = link.active
+        elsif link.url == current_url
+          assign link_active = true
+        endif
+      -%}
+
+      <li class="customers-header__navigation-item">
+        <a
+          class="
+            customers-header__navigation-link
+            text-button-nav
+          "
+          js-tabs="{{ link.title | camelcase }}"
+          href="{{ link.url }}"
+        >
+          {{ link.title }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>

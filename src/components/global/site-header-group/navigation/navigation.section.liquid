@@ -1,0 +1,59 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Section: Navigation (site-header-group)
+-----------------------------------------------------------------------------
+{% endcomment %}
+<section
+  aria-labelledby="navigation-title"
+  {% render 'header-states' with section: section %}
+>
+  <navigation
+    v-show="getComponentActive('navigation')"
+    :desktop="{
+      handle: {{ section.settings.desktop | json | escape }},
+      items: [
+        {%- for tier1 in linklists[section.settings.desktop].links -%}
+          {
+            handle: {{ tier1.handle | prepend: 'desktop-' | append: '-1-' | append: forloop.index0 | json | escape }},
+            title: {{ tier1.title | json | escape }},
+            url: {{ tier1.url | json | escape }}
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+    }"
+    v-cloak
+  ></navigation>
+
+  {% comment %}
+  ----------------------------------------------------------------------------
+    Loading state.
+  ----------------------------------------------------------------------------
+  {% endcomment %}
+  <div v-if="!getComponentActive('navigation')">
+    <div class="navigation is-loading liquid">
+      <span
+        id="navigation-title"
+        class="visually-hidden"
+      >
+        {{ 'general.site_header.navigation' | t }}
+      </span>
+
+      <nav class="navigation__nav container">
+        <ul class="navigation__list">
+          {% for tier1 in linklists[section.settings.desktop].links %}
+            <li class="navigation__item">
+              <a
+                class="navigation__link text-other-label-s"
+                href="{{ tier1.url }}"
+              >
+                {{ tier1.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</section>
+
+{% schema 'navigation' %}

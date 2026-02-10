@@ -1,0 +1,380 @@
+{% comment %}
+------------------------------------------------------------------------------
+ Section: Main collection (main-collection)
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.main-collection.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign featured_collections = collection.metafields.bio.featured_collections.value
+  assign product_type_filter = collection.filters | where: 'param_name', 'filter.p.product_type' | first
+  assign promos = section.blocks | where: 'type', 'promo'
+  assign full_width_promos = section.blocks | where: 'type', 'full_width_promo'
+  assign banner_cards = section.blocks | where: 'type', 'banner_card'
+
+  assign product_type_filter_values = product_type_filter.values
+  assign page_size = settings.products_per_page
+
+  assign banner_desktop_image = collection.metafields.collection.banner_desktop_image.value
+  assign banner_mobile_image = collection.metafields.collection.banner_mobile_image.value
+  assign banner_title = collection.metafields.collection.banner_title.value
+  assign banner_description = collection.metafields.collection.banner_description.value
+  assign banner_text_theme = collection.metafields.collection.banner_text_theme.value
+  assign banner_cta_text = collection.metafields.collection.banner_cta_text.value
+  assign banner_cta_url = collection.metafields.collection.banner_cta_url.value
+  assign collection_non_JS = settings.enable_non_js_collection
+  assign collection_non_JS_animation = settings.enable_non_js_loading_animation
+  assign filters_layout = section.settings.filters_layout
+
+  assign non_JS_loading = false
+  if collection_non_JS and collection_non_JS_animation
+    assign non_JS_loading = true
+  endif
+
+  assign vif_condition = "!getComponentActive('main-collection')"
+  if collection_non_JS
+    assign vif_condition = "!getComponentActive('main-collection') || !collection"
+  endif
+%}
+
+<section
+  class="main-collection__section"
+  aria-labelledby="template-title"
+  data-component-handle="main-collection"
+  data-component-type="load"
+>
+  {% comment %}
+  -----------------------------------------------------------------------------
+    Loading state.
+  -----------------------------------------------------------------------------
+  {% endcomment %}
+  <div
+    class="
+      main-collection
+      container
+      critical-component-clear
+      {% unless collection_non_JS %}is-loading{% endunless %}
+      liquid
+      grid
+      {% if non_JS_loading %}non-js-loading-animation{% endif %}
+    "
+    v-if="{{ vif_condition }}"
+  >
+    {% if banner_desktop_image != nil or banner_mobile_image != nil %}
+      <div class="main-collection__banner col xs6 l1-14">
+        {% render 'art-direction' with
+          image_desktop: banner_desktop_image,
+          image: banner_mobile_image,
+          alt: banner_desktop_image.alt,
+          ratio: '340:213',
+          ratio_desktop: '1371:286'
+        %}
+
+        <div class="main-collection__bannerCopy {{ banner_text_theme }}">
+          {% if banner_title %}
+            <h6 class="main-collection__bannerTitle text-h2-desktop text-h6">
+              {{ banner_title }}
+            </h6>
+          {% endif %}
+
+          {% if banner_description %}
+            <p
+              class="
+                main-collection__bannerDescription
+                text-p-desktop
+                text-p-xs-bold
+              "
+            >
+              {{ banner_description }}
+            </p>
+          {% endif %}
+
+          {% if banner_cta_text and banner_cta_url %}
+            {% render 'btn' with
+              class: 'main-collection__bannerCTA text-button',
+              label: banner_cta_text,
+              modifiers: 'primary',
+              url: banner_cta_url,
+            %}
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if filters_layout == 'yes' and settings.collection_columns == '3' %}
+      {% render 'main-collection-filter-sidebar' with featured_collections: featured_collections
+        , product_type_filter_values: product_type_filter_values
+      %}
+    {% endif %}
+
+    <div class="main-collection__content col xs6 {% if settings.collection_columns == '4' %}l1-14{% else %}l3-14{% endif %}">
+      <div class="main-collection__header grid">
+        <h1
+          class="
+            main-collection__title
+            text-mobile-titles
+            text-h1-desktop
+            col xs6 l14
+          "
+        >
+          {{ collection.title }}
+        </h1>
+
+        {% if collection.description != blank %}
+          <div
+            class="
+              main-collection__description
+              text-mobile-p
+              text-h6-desktop
+              col xs6 l14
+              rte
+            "
+          >
+            {% render 'rte' with content: collection.description %}
+          </div>
+        {% endif %}
+
+        {% if banner_cards.size > 0 %}
+          <div class="main-collection__link-cards col xs6 l14">
+            <ul class="main-collection__link-cards-list liquid">
+              {% for banner_card in banner_cards %}
+                {% if banner_card.settings.image and banner_card.settings.url and banner_card.settings.title %}
+                  {% if collection_non_JS %}
+                    <li class="main-collection__link-card {% if non_JS_loading %}non-js-loading{% endif %}">
+                      <a href="{{ banner_card.settings.url }}" class="main-collection__link-card-link">
+                        {% if banner_card.settings.image %}
+                          {% render 'art-direction' with
+                            image_desktop: banner_card.settings.image,
+                            image: banner_card.settings.image,
+                            alt: banner_card.settings.title,
+                            ratio: '1:1',
+                            ratio_desktop: '1:1'
+                          %}
+                        {% endif %}
+
+                        <span class="main-collection__link-card-title">
+                          {{ banner_card.settings.title }}
+                        </span>
+                      </a>
+                    </li>
+                  {% else %}
+                    <li class="main-collection__link-card is-loading">
+                      <div class="main-collection__link-card-link">
+                        <div class="images liquid placeholder-image">
+                          <span class="images__spacer" aria-hidden="true"></span>
+                          <div class="images__picture">
+                            <div class="images__placeholder"></div>
+                          </div>
+                        </div>
+                        <span class="main-collection__link-card-title placeholder"></span>
+                      </div>
+                    </li>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        {% if filters_layout == 'yes' and settings.collection_columns == '4' %}
+          {% render 'main-collection-filter-sidebar' with featured_collections: featured_collections
+            , product_type_filter_values: product_type_filter_values
+          %}
+        {% endif %}
+      </div>
+
+      {% paginate collection.products by page_size %}
+        <div class="main-collection__grid main-collection__grid--{{ settings.collection_columns }}">
+          {% assign in_grid_promos_count = 0 %}
+
+          {% for product in collection.products %}
+            {% assign product_index = forloop.index0 %}
+            {% comment %} Inject Promo Cards Start {% endcomment %}
+            {% capture formatted_promos_content %}
+              {%
+                render 'format-promos' with
+                promos: promos,
+                product_index: product_index,
+                in_grid_promos_count: in_grid_promos_count,
+                loading_animation: true
+              %}
+            {% endcapture %}
+
+            {% assign formatted_promos = formatted_promos_content
+              | split: '#########'
+              | first
+            %}
+            {% assign in_grid_promos_count = formatted_promos_content
+              | split: '#########'
+              | last
+            %}
+
+            {{ formatted_promos }}
+            {% comment %} Inject Promo Cards End {% endcomment %}
+
+            {% comment %} Inject Full Width Promos Start {% endcomment %}
+            {% capture formatted_full_width_promos_content %}
+              {%
+                render 'format-full-width-promos' with
+                promos: full_width_promos,
+                product_index: product_index,
+                in_grid_promos_count: in_grid_promos_count,
+                loading_animation: true
+              %}
+            {% endcapture %}
+
+            {% assign formatted_full_width_promos =
+              formatted_full_width_promos_content
+              | split: '#########'
+              | first
+            %}
+            {% assign in_grid_promos_count =
+              formatted_full_width_promos_content
+              | split: '#########'
+              | last
+            %}
+
+            {{ formatted_full_width_promos }}
+            {% comment %} Inject Full Width Promos End {% endcomment %}
+
+            {% if collection_non_JS %}
+              {% render 'product-card' with
+                product: product,
+                loading_animation: false,
+                non_JS_loading_animation: non_JS_loading
+              %}
+
+            {% else %}
+              {% render 'product-card' with
+                product: false,
+                loading_animation: true,
+                non_JS_loading_animation: false
+              %}
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% if paginate.pages > 1 and paginate.next.url %}
+          <a
+            class="button button--primary main-collection__loadMore"
+            href="{{ paginate.next.url }}"
+          >
+            <span
+              class="
+                button__label
+                text-other-button-s
+                text-other-button-l-desktop
+              "
+            >
+              {{ 'collection.load_more' | t }}
+            </span>
+          </a>
+        {% endif %}
+        {% assign page_size = collection.products.size %}
+      {% endpaginate %}
+    </div>
+  </div>
+
+  <div class="main-collection container grid">
+    <main-collection
+      v-if="getComponentVisible('main-collection')"
+      @update-request-object="updateRequestObject"
+      v-cloak
+      :filters="[
+        {%- for filter in collection.filters -%}
+          {%- if filter.param_name contains 'product_type' -%}
+            {
+              label: {{ filter.label | json | escape }},
+              type: {{ filter.type | json | escape }},
+              param_name: {{ filter.param_name | json | escape }},
+              values: [
+                {%- for value in filter.values -%}
+                  {
+                    label: {{ value.label | json | escape }},
+                    value: {{ value.value | json | escape }}
+                  }
+                  {% unless forloop.last %},{% endunless %}
+                {%- endfor -%}
+              ]
+            }
+            {% unless forloop.last %},{% endunless %}
+          {%- endif -%}
+        {%- endfor -%}
+      ]"
+      :featured-collections="[
+        {%- for featured_collection in featured_collections.list.value -%}
+          {
+            title: {{ featured_collection.title | json | escape }},
+            handle: {{ featured_collection.handle | json | escape }},
+            url: {{ featured_collection.url | json | escape }}
+          }
+          {% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]"
+      {% if banner_desktop_image != nil or banner_mobile_image != nil %}
+        :banner="{
+          desktopImage: {% render 'format-image' with image: banner_desktop_image %},
+          mobileImage: {% render 'format-image' with image: banner_mobile_image %},
+          title: {{ banner_title | json | escape }},
+          description: {{ banner_description | json | escape }},
+          textTheme: {{ banner_text_theme | json | escape }},
+          ctaURL: {{ banner_cta_url | json | escape }},
+          ctaText: {{ banner_cta_text | json | escape }}
+        }"
+      {% endif %}
+      :collection="{
+        description: {{ collection.description | json | escape }},
+        handle: {{ collection.handle | json | escape }},
+        title: {{ collection.title | json | escape }}
+      }"
+      :promos="[
+        {%- for promo in promos -%}
+          {
+            title: {{ promo.settings.title | json | escape }},
+            description: {{ promo.settings.description | json | escape }},
+            url: {{ promo.settings.url | json | escape }},
+            image: {% render 'format-image' with image: promo.settings.image %},
+            positionIndex: {{ promo.settings.position_index | json | escape }},
+          }
+          {% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]"
+      :full-width-promos="[
+        {%- for promo in full_width_promos -%}
+          {
+            title: {{ promo.settings.title | json | escape }},
+            description: {{ promo.settings.description | json | escape }},
+            ctaURL: {{ promo.settings.cta_url | json | escape }},
+            ctaText: {{ promo.settings.cta_text | json | escape }},
+            theme: {{ promo.settings.theme | json | escape }},
+            alignment: {{ promo.settings.alignment | json | escape }},
+            imageMobile: {% render 'format-image' with
+              image: promo.settings.image_mobile
+            %},
+            imageDesktop: {% render 'format-image' with
+              image: promo.settings.image_desktop
+            %},
+            rowIndex: {{ promo.settings.row_index | json | escape }},
+          }
+          {% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]"
+      :banner-cards="[
+        {%- for banner_card in banner_cards -%}
+          {
+            title: {{ banner_card.settings.title | json | escape }},
+            url: {{ banner_card.settings.url | json | escape }},
+            image: {% render 'format-image' with
+              image: banner_card.settings.image
+            %}
+          }
+          {% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]"
+      :products-per-page="{{ page_size | json | escape }}"
+      :collection-columns="{{  settings.collection_columns | json | escape }}"
+      :filters-layout="{{ filters_layout | json | escape }}"></main-collection>
+  </div>
+</section>
+
+{% schema 'main-collection' %}

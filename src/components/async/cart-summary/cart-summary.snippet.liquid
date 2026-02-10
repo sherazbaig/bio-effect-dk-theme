@@ -1,0 +1,83 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Cart summary (cart-summary)
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign checkout_string = 'cart.checkout' | t
+  assign total_label = 'cart.summary.total_label' | t
+  assign additional_info = 'cart.summary.additional_info' | t
+  assign terms_enabled = section.settings.terms_and_conditions_enabled
+
+  # Text classes
+  assign text_class = 'text-h5'
+
+  # Determine discounts
+  assign discounts = 0
+
+  for line_item in cart.items
+    assign discounts = discounts | plus: line_item.line_level_total_discount
+  endfor
+
+  assign total_discounts = discounts
+-%}
+
+<div class="cart-summary liquid">
+  {% if total_discounts > 0 %}
+    <div class="cart-summary__discount">
+      <p class="cart-summary__discountLabel">
+        <span class="{{ text_class }}">
+          {{ 'cart.summary.discount_label' | t }}
+        </span>
+
+        {% render 'icon-general' with icon: 'tag' %}
+      </p>
+
+      <p class="{{ text_class }} cart-summary__discountPrice">
+        {{ total_discounts | money }}
+      </p>
+    </div>
+  {% endif %}
+
+  <div class="cart-summary__total">
+    <p class="cart-summary__totalLabel">
+      <span class="{{text_class}}" >{{ total_label }}</span>
+
+      <small class="text-tags cart-summary__additionalInfo">
+        {{ additional_info }}
+      </small>
+
+    </p>
+
+    <p class="{{ text_class }} cart-summary__totalPrice">
+      {{ cart.total_price | money }}
+    </p>
+  </div>
+
+  {% if terms_enabled %}
+    {% assign terms_label = section.settings.terms_and_conditions_link %}
+
+    <div class="cart-summary__terms-and-conditions">
+      <div class="form-group__field">
+        {% render 'checkbox-input' with
+          id: 'accepts-terms-and-conditions-cart',
+          checked: false,
+          label: terms_label,
+          name: 'customer[accepts-terms-and-conditions-cart]',
+          type: 'checkbox'
+        %}
+      </div>
+    </div>
+  {% endif%}
+
+  {% capture button_attributes %}
+    name="checkbox" {% if terms_enabled %} disabled {% endif %}
+  {% endcapture %}
+
+  {% render 'btn' with
+    attributes: button_attributes,
+    class: 'cart-summary__submit text-button'
+    label: checkout_string,
+    type: 'submit',
+  %}
+</div>

@@ -1,0 +1,56 @@
+/**
+ * Styles: Promo card (promo-card)
+ * -----------------------------------------------------------------------------
+ * Base styles for promo card component.
+ *
+ */
+.promo-card {
+  $parent: &;
+  background-color: var(--color-clouds);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+
+  &:hover {
+    box-shadow: 0 0 30px 0 var(--color-hover);
+  }
+
+  &__title {
+    color: var(--color-stone);
+    margin-block: var(--spacing-m) 0;
+    margin-inline: var(--spacing-m);
+  }
+
+  &__description {
+    color: var(--color-stone);
+    margin-block: var(--spacing-2xs) var(--spacing-xl);
+    margin-inline: var(--spacing-m);
+  }
+
+  /**
+   * Loading state.
+   */
+  html:not(.no-js) &.is-loading {
+    pointer-events: none;
+
+    #{$parent}__image,
+    #{$parent}__title,
+    #{$parent}__description {
+      @include loading;
+    }
+
+    #{$parent}__image {
+      padding-block-end: 100%;
+    }
+
+    #{$parent}__title {
+      height: 30px;
+      width: 80%;
+    }
+
+    #{$parent}__description {
+      height: 50px;
+    }
+  }
+}

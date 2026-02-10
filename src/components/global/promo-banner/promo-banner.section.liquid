@@ -1,0 +1,115 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Section: Promo banner (promo-banner)
+  - Component is only loaded if the section has blocks, otherwise the early
+    continue prevents loading it.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  if section.blocks.size < 1
+    continue
+  endif
+
+  assign up_sell_product = section.settings.up_sell_product
+-%}
+
+<section
+  aria-labelledby="section-title-{{ section.id }}"
+  data-sign-post-location="head"
+  data-sign-post-priority="1"
+  {% render 'header-states' with section: section %}
+>
+  <promo-banner
+    v-show="getComponentActive('promo-banner')"
+    v-cloak
+    :autoscroll="{
+      enable: {{ section.settings.enable_autoscroll | json | escape }},
+      timing: {{ section.settings.autoscroll_timing | json | escape }}
+    }"
+    :blocks="[
+      {%- for block in section.blocks -%}
+        {
+          title: {{ block.settings.title | json | escape }},
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]"
+    :desktop-message="{{ section.settings.desktop_message | json | escape }}"
+    :display-store-selector="{{ section.settings.display_store_selector | json | escape }}"
+    :display-account="{{ section.settings.display_account | json | escape }}"
+    :liquid="{
+      sectionId: {{ section.id | json | escape }},
+      {% if
+        up_sell_product != blank and
+        up_sell_product.metafields.seo.hidden != 1
+      %}
+        upSellProduct: {% render 'format-product' with product: up_sell_product %}
+      {% endif %}
+    }"
+  ></promo-banner>
+
+  {% comment %}
+  ----------------------------------------------------------------------------
+    Loading state.
+  ----------------------------------------------------------------------------
+  {% endcomment %}
+  <div v-if="!getComponentActive('promo-banner')">
+    <div
+      class="promo-banner is-loading critical-component-hide liquid"
+      style="--autoscroll-timing: {{ section.settings.autoscroll_timing }}s;"
+    >
+      <div class="promo-banner__container container">
+        <ul class="promo-banner__list">
+          {% for block in section.blocks %}
+            <li
+              class="promo-banner__list-item text-other-label-s"
+              {{ block.shopify_attributes }}
+            >
+              {% if section.settings.enable_autoscroll %}
+                <div class="promo-banner__autoscroll-snap"></div>
+              {% endif %}
+
+              <span>
+                {{ block.settings.title | replace: '<a', '<a class="text-other-label-s"' | replace: '<strong', '<strong class="text-other-label-s"' }}
+              </span>
+            </li>
+          {% endfor %}
+        </ul>
+
+        {% if section.settings.display_store_selector %}
+          <div class="promo-banner__country-select">
+            {% render 'country-select' %}
+          </div>
+        {% endif %}
+
+        <span
+          id="section-title-{{ section.id }}"
+          class="promo-banner__desktop-message"
+        >
+          {{ section.settings.desktop_message }}
+        </span>
+
+      <div class="promo-banner__desktop-icons">
+          <a
+            class="promo-banner__search icon-button"
+            href="/search"
+            aria-label="{{ 'search.title' | t }}"
+          >
+            {% render 'icon-general' with icon: 'search' %}
+          </a>
+
+          {% if section.settings.display_account %}
+            <div class="promo-banner__account">
+              {% render 'icon-general' with icon: 'account' %}
+
+              <span class="promo-banner__account-label text-p-xs-bold">
+                {{ 'general.site_header.account' | t }}
+              </span>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema 'promo-banner' %}

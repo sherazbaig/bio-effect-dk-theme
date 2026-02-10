@@ -1,0 +1,110 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Articles slider (articles-slider)
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.articles-slider.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign next_string = 'accessibility.carousel.next' | t
+  assign previous_string = 'accessibility.carousel.previous' | t
+
+  capture icon_arrow_left
+    render 'icon-directional-navigation' with icon: 'arrow', direction: 'left'
+  endcapture
+
+  capture icon_arrow_right
+    render 'icon-directional-navigation' with icon: 'arrow', direction: 'right'
+  endcapture
+-%}
+
+<section
+  aria-labelledby="section-title-{{ section.id }}"
+  data-component-handle="articles-slider"
+  data-component-type="scroll"
+  js-articles-slider="{{ section.id }}"
+>
+  <div class="articles-slider critical-component-clear liquid">
+    <div class="container grid">
+      <h2
+        id="section-title-{{ section.id }}"
+        class="
+          col xs6 m6 l2-11
+          articles-slider__title
+          text-mobile-titles text-h2-desktop
+          mb-l mb-3xl-desktop
+        "
+      >
+        {{ section.settings.title }}
+      </h2>
+      <div
+        class="
+          col xs6 m6 l1-13
+          splide
+        "
+        js-splide="carousel"
+      >
+        <div class="splide__track">
+          <ul class="articles-slider__carousel splide__list">
+            {% for block in section.blocks %}
+              {%- liquid
+                assign article = block.settings.article
+
+                if article == blank
+                  continue
+                endif
+              -%}
+
+              <div class="articles-slider__slide splide__slide">
+                {% render 'article-item', article: article %}
+              </div>
+            {% endfor %}
+          </ul>
+
+          <div class="articles-slider__footer mt-l">
+            <div class="articles-slider__button-wrapper">
+              {% if section.settings.button_text != blank %}
+                {% render 'btn' with
+                  class: 'articles-slider__button',
+                  label: section.settings.button_text,
+                  url: section.settings.button_url,
+                %}
+              {% endif %}
+            </div>
+
+            <div class="splide__arrows">
+              {% render 'btn' with
+                class: 'splide__arrow splide__arrow--prev',
+                icon: icon_arrow_left,
+                label: previous_string,
+                modifiers: 'light reversed',
+                show_icon: true,
+                type: 'button',
+              %}
+
+              {% render 'btn' with
+                class: 'splide__arrow splide__arrow--next',
+                icon: icon_arrow_right,
+                label: next_string,
+                modifiers: 'light',
+                show_icon: true,
+                type: 'button',
+              %}
+            </div>
+          </div>
+
+          <ul class="splide__pagination"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<articles-slider
+  v-if="getComponentVisible('articles-slider')"
+  v-cloak
+  :section-id="{{ section.id | json | escape }}"
+></articles-slider>
+
+{% schema 'articles-slider' %}

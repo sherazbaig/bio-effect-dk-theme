@@ -1,0 +1,38 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Section: Main page
+-----------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.main-page.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="page-section container grid"
+  aria-labelledby="template-title"
+  data-component-handle="main-page"
+  data-section-schema
+>
+  <div class="main-page critical-component-clear liquid col xs-span l3-12">
+    <h1
+      id="template-title"
+      class="main-page__title text-mobile-titles text-h1-desktop"
+    >
+      {{ page.title }}
+    </h1>
+
+    <div class="main-page__content rte">
+      {% render 'rte' with
+        content: page.content,
+        image_width: 1030,
+      %}
+    </div>
+
+    {% render 'social-sharing' with
+      class: 'main-page__social-sharing',
+      section: section,
+      title: page.title,
+      url: page.url,
+    %}
+  </div>
+</section>
+
+{% schema 'main-page' %}

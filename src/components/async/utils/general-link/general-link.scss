@@ -1,0 +1,29 @@
+/**
+ * Styles: General link (general-link)
+ * -----------------------------------------------------------------------------
+ * Base styles for general link component.
+ *
+ */
+.general-link {
+  &__link {
+    color: var(--color-stone);
+    display: flex;
+    font-size: calc(var(--spacing-s) + var(--spacing-4xs));
+    justify-content: space-between;
+    padding-inline-end: var(--spacing-xs);
+    text-decoration: none;
+
+    &--hover {
+      color: var(--color-teal);
+
+      .icon {
+        translate: var(--spacing-xs);
+      }
+    }
+  }
+
+  .icon {
+    @include transition(translate);
+    width: var(--spacing-3xl);
+  }
+}

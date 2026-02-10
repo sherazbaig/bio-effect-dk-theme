@@ -1,0 +1,72 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Quantity selector
+  - Loading placeholder only.
+
+  @param {String} [class] - Additional classes to render.
+  @param {String} id - Unique ID used for input.
+  @param {Boolean} [large] - Large styles.
+  @param {String} [name] - Name of quantity input.
+  @param {Number} quantity - Quantity to display for loading state.
+  @param {Boolean} [readonly] - Quantity input is readonly.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign readonly = readonly | default: true, allow_false: true
+
+  if large
+    assign large_class = 'quantity-selector--large'
+  endif
+-%}
+
+<div class="quantity-selector liquid {{ class }} {{ large_class }}">
+  <div class="quantity-selector__control quantity-selector__control--button">
+    <button
+      class="quantity-selector__button"
+      disabled
+      type="button"
+    >
+      <span class="visually-hidden">
+        {{ 'cart.line_item.decrease_quantity' | t }}
+      </span>
+
+      {% render 'icon-directional-navigation' with icon: 'minus-round' %}
+    </button>
+  </div>
+
+  <div class="quantity-selector__control quantity-selector__control--input">
+    <label
+      class="visually-hidden"
+      for="quantity-selector-input-{{ id | default: 'product' }}"
+    >
+      {{ 'cart.line_item.quantity' | t }}
+    </label>
+
+    <input
+      id="quantity-selector-input-{{ id | default: 'product' }}"
+      class="quantity-selector__input"
+      name="{{ name | default: 'quantity' }}"
+      pattern="[0-9]*"
+      {% if readonly %}
+        readonly
+      {% endif %}
+      tabindex="-1"
+      type="number"
+      value="{{ quantity | default: 1 }}"
+    >
+  </div>
+
+  <div class="quantity-selector__control quantity-selector__control--button">
+    <button
+      class="quantity-selector__button"
+      disabled
+      type="button"
+    >
+      <span class="visually-hidden">
+        {{ 'cart.line_item.increase_quantity' | t }}
+      </span>
+
+      {% render 'icon-directional-navigation' with icon: 'plus-round' %}
+    </button>
+  </div>
+</div>

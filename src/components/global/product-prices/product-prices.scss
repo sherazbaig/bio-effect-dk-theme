@@ -1,0 +1,24 @@
+/**
+ * Styles: Product prices (product-prices)
+ * -----------------------------------------------------------------------------
+ * Base styles for product prices component.
+ *
+ */
+.product-prices {
+  $parent: &;
+  display: inline-flex;
+  gap: var(--spacing-xs);
+
+  &__sold-out {
+    color: var(--color-system-error-light-mode);
+  }
+
+  &__compare-at-price {
+    color: var(--color-gray-text);
+    text-decoration: line-through;
+  }
+
+  &__price {
+    color: var(--color-stone);
+  }
+}

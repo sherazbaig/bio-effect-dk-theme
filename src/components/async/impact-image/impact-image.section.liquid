@@ -1,0 +1,122 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Impact image (impact-image)
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.impact-image.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign show_section = false
+
+  if section.settings.title != blank or section.settings.video != blank or section.settings.youtube_embed != blank or section.settings.desktop_image != blank
+    assign show_section = true
+  endif
+%}
+
+<section
+  {% if section.settings.title != blank %}
+    aria-labelledby="section-title-{{ section.id }}"
+  {% endif %}
+  data-component-handle="impact-image"
+  data-component-type="load"
+  data-component-animation
+>
+  {% if show_section %}
+    <div
+      class="
+        impact-image
+        critical-component-clear
+        liquid
+      "
+    >
+      <div class="container grid">
+        <div class="impact-image__media col xs-span">
+          {% if
+            section.settings.video or section.settings.vimeo_embed != blank or section.settings.youtube_embed != blank
+          %}
+            {% if section.settings.video %}
+              {{ section.settings.video | video_tag:
+              class: 'impact-image__video',
+              autoplay: true,
+              image_size: '1280x600',
+              loop: true,
+              muted: true,
+              playsinline: true
+              }}
+
+            {% elsif section.settings.vimeo_embed != blank %}
+              <iframe
+                class="impact-image__video"
+                src="https://player.vimeo.com/video/{{ section.settings.vimeo_embed }}?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0"
+                frameborder="0"
+                allow="autoplay"
+                title="{{ 'accessibility.vimeo_video_player' | t }}"
+              >
+              </iframe>
+
+            {% elsif section.settings.youtube_embed != blank %}
+              <iframe
+                class="impact-image__video"
+                src="https://www.youtube-nocookie.com/embed/{{ section.settings.youtube_embed }}"
+                frameborder="0"
+                allow="autoplay"
+                title="{{ 'accessibility.youtube_video_player' | t }}"
+              >
+              </iframe>
+            {% endif %}
+
+          {% elsif section.settings.desktop_image != blank %}
+            {% render 'art-direction' with
+              image_desktop: section.settings.desktop_image,
+              image: section.settings.mobile_image,
+              alt: section.settings.desktop_image.alt,
+              ratio: '16:9',
+              ratio_desktop: '16:9'
+            %}
+          {% endif %}
+        </div>
+
+        <div class="impact-image__text-content col xs-span grid no-gap">
+          <div class="impact-image__content-block col xs6 l11">
+            {% if section.settings.title != blank %}
+              <h2
+                class="
+                  impact-image__title
+                  text-mobile-titles
+                  text-h2-desktop
+                "
+                id="section-title-{{ section.id }}"
+              >
+                {{ section.settings.title }}
+              </h2>
+            {% endif %}
+
+            {% if section.settings.text != blank %}
+              <div class="impact-image__text text-mobile-p">
+                {{ section.settings.text }}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="impact-image__btn-block col xs6 l3">
+            {% if
+              section.settings.cta_url != blank and
+              section.settings.cta_text != blank
+            %}
+              {% render 'btn' with
+                class: 'impact-image__button',
+                label: section.settings.cta_text,
+                url: section.settings.cta_url,
+                modifiers: 'primary',
+                show_icon: false,
+              %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+{% schema 'impact-image' %}

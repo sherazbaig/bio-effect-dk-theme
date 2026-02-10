@@ -1,0 +1,143 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Responsive image (images)
+  - Liquid version of responsive image component.
+
+  @param {String} [alt] - Override image alt.
+  @param {String} [block_class] - Block level class to apply to all elements.
+  @param {String} [class] - Additional classes to render.
+  @param {Boolean} [lazyload] - Lazyload image, defaults to true.
+  @param {Object} image - Image object formatted from Shopify response.
+  @param {String} [min_max] - Min and max size for srcset in `min-max` format.
+  @param {Boolean} [padding] - Add padding based on image ratio or supplied
+  ratio, default to true, disable to make image fill its parent container.
+  @param {Boolean|Number|String} [ratio] - Aspect ratio of image in
+  `width:height`, `width / height`, or decimal ratio format (width/height),
+  will use the original ratio of image if set to false or 'image'.
+  @param {String} [sizes] - Value for sizes attribute.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign image_alt = image.alt
+
+  if padding == false
+    assign padding_class = 'images--no-padding '
+  endif
+
+  if alt != blank
+    assign image_alt = alt
+  endif
+-%}
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Aspect ratio and padding bottom.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  # Aspect ratio
+  if ratio == false or ratio == true or ratio == blank
+    if image.aspect_ratio
+      assign aspect_ratio = image.aspect_ratio
+    else
+      assign height = image.height | times: 1.00
+      assign width = image.width | times: 1.00
+      assign aspect_ratio = width | divided_by: height
+    endif
+
+  elsif ratio contains '.'
+    assign aspect_ratio = ratio
+
+  else
+    assign aspect_ratio = ratio | replace: ':', ' / '
+  endif
+
+  # Padding bottom
+  assign decimal = aspect_ratio
+
+  if aspect_ratio contains '/'
+    assign first = aspect_ratio | split: '/' | first | trim | times: 1.00
+    assign second = aspect_ratio | split: '/' | last | trim | times: 1.00
+    assign decimal = first | divided_by: second
+  endif
+
+  assign padding_bottom = 1.00 | divided_by: decimal | times: 100.00 | append: '%'
+-%}
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Image sizes.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign min = 200
+  assign max = 1000
+
+  if min_max contains '-'
+    assign min = min_max | split: '-' | first | strip | times: 1
+    assign max = min_max | split: '-' | last | strip | times: 1
+  endif
+
+  assign range = max | minus: min
+  assign increment = range | divided_by: 5
+
+  for i in (1..5)
+    assign step = increment | times: i
+    assign value = min | plus: step
+    assign srcset = srcset | append: value | append: ','
+  endfor
+
+  assign srcset = srcset | remove_last: ',' | split: ','
+-%}
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Focal point.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign styles = false
+
+  if image.presentation.focal_point != blank
+    assign styles = 'object-position: ' | append: image.presentation.focal_point | append: ';'
+  endif
+-%}
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Output HTML.
+-----------------------------------------------------------------------------
+{% endcomment %}
+<div
+  class="images liquid {{ class }} {{ padding_class }}"
+  style="
+    {% unless padding == false %}
+      padding-bottom: {{ padding_bottom }};
+    {% endunless %}
+  "
+>
+  {% if image != blank %}
+    <img
+      class="images__image"
+      alt="{{ image_alt | escape }}"
+      decoding="async"
+      {% unless lazyload == false %}
+        loading="lazy"
+      {% endunless %}
+      onload="setTimeout(() => {this.classList.remove('is-loading')}, 100)"
+      {% if image_alt == blank %}
+        role="presentation"
+      {% endif %}
+      sizes="{{ sizes | default: 'auto' }}"
+      src="{{ image | image_url: width: min }}"
+      srcset="
+        {%- for set in srcset -%}
+          {{ image | image_url: width: set }} {{ set }}w{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      "
+      {% if styles %}
+        style="{{ styles }}"
+      {% endif %}
+    >
+  {% endif %}
+</div>

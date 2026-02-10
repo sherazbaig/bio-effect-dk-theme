@@ -1,0 +1,52 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet / Format: Variant
+  - Returns variant Liquid object formatted as Vue prop data.
+  - Use as a replacement to storefront API queries.
+  - Can be used in a forloop.
+
+  @param {Object} [forloop] - Forloop Liquid object.
+  @param {Object} product - Product Liquid object.
+  @param {Object} variant - Variant Liquid object to format.
+  @returns {Object}
+-----------------------------------------------------------------------------
+{% endcomment %}
+{% liquid
+  unless product
+    assign product = variant.product
+  endunless
+
+  capture image
+    render 'format-image' with image: variant.featured_image
+  endcapture
+%}
+
+{%- capture data -%}
+  {%- liquid
+    assign title = variant.title
+
+    if product.gift_card?
+      assign title = variant.price | money
+    endif
+  -%}
+  available: {{ variant.available | json | escape }},
+  compareAtPrice: {% render 'format-price' with price: 'compare_at_price', object: variant %},
+  id: {{ variant.id }},
+  image: {{ image }},
+  inventory: {{ variant.inventory_quantity | json | escape  }},
+  liquid: {{ true | json | escape }},
+  price: {% render 'format-price' with price: 'price', object: variant %},
+  selectedOptions: [
+    {%- for option in variant.options -%}
+      {
+        liquid: {{ true | json | escape }},
+        name: {{ product.options[forloop.index0] | json | escape }},
+        value: {{ option | json | escape }}
+      }{%- if forloop and forloop.last == false -%},{%- endif -%}
+    {%- endfor -%}
+  ],
+  title: {{ title | json | escape }},
+  fgwp: {{ variant.metafields.custom.free_gift_with_purchase.value | json | escape  }},
+{%- endcapture -%}
+
+{ {{ data | strip | strip_newlines }} }{%- if forloop and forloop.last == false -%},{%- endif -%}

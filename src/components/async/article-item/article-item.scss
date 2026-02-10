@@ -1,0 +1,44 @@
+/**
+ * Styles: Article item (article-item)
+ * -----------------------------------------------------------------------------
+ * Base styles for article item component.
+ *
+ */
+.article-item {
+  $parent: &;
+
+  &__image {
+    position: relative;
+  }
+
+  .images {
+    border-radius: 1px;
+
+    &__image {
+      @include transition(transform 0.7s cubic-bezier(0.5, 1, 0.89, 1));
+
+      &:hover {
+        transform: scale3d(1.075, 1.1, 1);
+      }
+    }
+  }
+
+  &__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+
+  &__badge {
+    background-color: var(--color-clouds);
+    border: 1px solid var(--color-cool);
+    border-radius: 50px;
+    display: inline-block;
+    padding: calc(var(--spacing-2xs) + var(--spacing-3xs)) var(--spacing-l);
+  }
+
+  &__title {
+    display: block;
+    text-decoration: none;
+  }
+}

@@ -1,0 +1,224 @@
+/**
+ * Styles: Product card
+ * -----------------------------------------------------------------------------
+ * Base styles for product card.
+ *
+ */
+.product-card-section {
+  height: 100%;
+}
+
+.product-card {
+  $parent: &;
+  background-color: var(--color-clouds);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-inline: calc((var(--spacing-m)) + (var(--spacing-2xs)));
+  text-decoration: unset;
+
+  &:hover {
+    box-shadow: 0 0 30px 0 var(--color-hover);
+  }
+
+  &.critical-component-hide {
+    display: flex;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__image-container {
+    flex: 1;
+    margin-block-end: var(--spacing-m);
+    position: relative;
+  }
+
+  &__primary-image img {
+    object-fit: contain;
+  }
+
+  &__header {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding-block: calc(var(--spacing-m) + var(--spacing-2xs));
+  }
+
+  // Magic values for now as 900 doesn't exist in tokens
+  // Copied from figma as class wasn't visible there
+  &__title {
+    color: var(--color-stone);
+    font-size: var(--font-size-5);
+    font-weight: var(--font-weight-demi-bold);
+    line-height: var(--line-height-loose);
+  }
+
+  &__badge {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    height: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 35%;
+  }
+
+  &__primary-image {
+    height: 100%;
+  }
+
+  &__badgeText {
+    // Magic number to match design
+    border-radius: 44px;
+    color: var(--color-stone);
+    display: flex;
+    height: fit-content;
+    margin-inline-start: var(--spacing-s);
+    padding-block: calc(var(--spacing-2xs) + var(--spacing-3xs));
+    padding-inline: var(--spacing-s);
+    white-space: nowrap;
+  }
+
+  &__awards {
+    bottom: 35px;
+    display: flex;
+    gap: var(--spacing-xs);
+    height: 60px;
+    justify-content: flex-start;
+    position: absolute;
+    right: 0;
+    width: 100%;
+
+    &-with-variant {
+      bottom: 0;
+    }
+  }
+
+  &__award {
+    max-width: 60px;
+    position: relative;
+    width: 20%;
+
+    img {
+      object-fit: contain;
+    }
+  }
+
+  &__footer {
+    display: grid;
+    gap: var(--spacing-s);
+    padding-block-end: var(--spacing-m);
+    position: relative;
+  }
+
+  &__add-button {
+    @include button-reset;
+    padding-block: calc(var(--spacing-m) + var(--spacing-3xs)) calc(var(--spacing-m) - var(--spacing-3xs));
+    padding-inline: var(--spacing-m);
+  }
+
+  &__button-label {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    &.text-center {
+      justify-content: center;
+    }
+  }
+
+  &__variant-selector {
+    display: flex;
+    gap: var(--spacing-xs);
+    justify-content: flex-end;
+    z-index: var(--layer-heightened);
+
+    &.is-hidden {
+      display: none;
+    }
+  }
+
+  &__variant-choice {
+    border: 1px solid var(--color-grey);
+    border-radius: var(--spacing-2xs);
+    color: var(--color-stone);
+    font-size: var(--font-size-0);
+    padding-block: var(--spacing-4xs);
+    padding-inline: var(--spacing-m);
+    text-align: center;
+
+    &.active {
+      background-color: var(--color-stone);
+      border: 1px solid var(--color-stone);
+      color: var(--color-clouds);
+    }
+  }
+
+  &__prices {
+    flex-direction: row-reverse;
+    line-height: var(--line-height-baseline);
+
+    .product-prices-compare-at-price,
+    .product-prices-price {
+      font-size: var(--font-size-3);
+    }
+
+    .product-prices-compare-at-price {
+      color: var(--color-gray-text);
+      text-decoration: line-through;
+    }
+
+    .product-prices-sold-out {
+      display: none;
+    }
+  }
+
+  /**
+   * Loading state.
+   */
+  html:not(.no-js) &.is-loading,
+  &.liquid.non-js-loading-animation {
+    pointer-events: none;
+
+    #{$parent}__primary-image,
+    #{$parent}__vendor,
+    #{$parent}__title,
+    #{$parent}__price,
+    #{$parent}__variant-choice,
+    #{$parent}__add-button {
+      @include loading;
+    }
+
+    #{$parent}__primary-image {
+      padding-block-end: 100%;
+      width: 100%;
+    }
+
+    #{$parent}__vendor {
+      height: 15px;
+      width: 50%;
+    }
+
+    #{$parent}__title {
+      height: 20px;
+      width: 80%;
+    }
+
+    #{$parent}__price {
+      height: 16px;
+      text-indent: -9999px;
+      width: 70px;
+    }
+
+    #{$parent}__add-button {
+      opacity: 1;
+    }
+
+    #{$parent}__awards {
+      opacity: 0;
+    }
+  }
+}

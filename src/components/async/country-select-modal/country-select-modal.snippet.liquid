@@ -1,0 +1,40 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Multi-store modal (country-select-modal)
+------------------------------------------------------------------------------
+{% endcomment %}
+<section
+  data-component-handle="country-select-modal"
+  data-component-type="trigger"
+>
+  <overlay
+    key="countrySelectModal"
+    block-class="country-select-modal container"
+    direction="fade"
+    namespace="countrySelectModal"
+    type="modal"
+    :template="false"
+  >
+    <template #body="overlay">
+      <country-select-modal
+        v-if="getComponentVisible('country-select-modal')"
+        v-cloak
+        :is-active="overlay.isActive"
+        :overlay="overlay"
+      ></country-select-modal>
+
+      {% comment %}
+      ----------------------------------------------------------------------------
+        Loading state.
+      ----------------------------------------------------------------------------
+      {% endcomment %}
+      <div v-if="!getComponentVisible('country-select-modal')">
+        <div class="country-select-modal is-loading liquid">
+          <button class="country-select-modal__toggle">
+            {{ 'general.multi_store.choose_settings' | t}}
+          </button>
+        </div>
+      </div>
+    </template>
+  </overlay>
+</section>

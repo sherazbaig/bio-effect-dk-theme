@@ -1,0 +1,22 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Header states (site-header-group)
+  - Outputs header state based on section settings.
+  - Use `header-states.js` schema fragment.
+
+  @param {Object} section - Liquid section object.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign header_states = 'open'
+
+  if section.settings.collapsed
+    assign header_states = header_states | append: ', collapsed'
+  endif
+
+  if section.settings.minimised
+    assign header_states = header_states | append: ', minimised'
+  endif
+
+  echo 'data-site-header-states="#"' | replace: '#', header_states
+-%}

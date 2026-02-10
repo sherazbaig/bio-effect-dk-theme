@@ -1,0 +1,39 @@
+/**
+ * Styles: Breadcrumbs (breadcrumbs)
+ * -----------------------------------------------------------------------------
+ * Base styles for breadcrumbs component.
+ *
+ */
+.breadcrumbs {
+  $parent: &;
+
+  &__list-element {
+    @include list-reset;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+
+  .icon {
+    // To match design.
+    height: 7px;
+    width: 4px;
+  }
+
+  &__list-item {
+    align-items: center;
+    color: var(--color-gray-text);
+    display: flex;
+    font-weight: var(--font-weight-medium);
+    gap: var(--spacing-xs);
+  }
+
+  &__link {
+    text-decoration: none;
+
+    &:hover {
+      color: var(--color-teal);
+    }
+  }
+}

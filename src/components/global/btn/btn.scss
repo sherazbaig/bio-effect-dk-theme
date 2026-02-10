@@ -1,0 +1,342 @@
+/**
+ * Styles: Button (btn)
+ * -----------------------------------------------------------------------------
+ * Base styles for button component.
+ *
+ */
+// stylelint-disable max-nesting-depth, function-disallowed-list
+
+.button {
+  @include button-reset;
+  @include transition(background-color, border-color, opacity);
+  --button-gap: var(--spacing-m);
+  --button-icon-size: var(--icon-2xs);
+  $parent: &;
+  align-items: center;
+  border: 1px solid var(--color-neutral-1);
+  color: var(--color-stone);
+  display: inline-flex;
+  font-size: var(--font-size-2);
+  gap: var(--button-gap);
+  justify-content: space-between;
+  // Matches icon height
+  line-height: var(--icon-2xs);
+  margin: 0;
+  overflow: hidden;
+  padding: var(--spacing-m) var(--spacing-4xl);
+  position: relative;
+  text-decoration: unset;
+  text-transform: uppercase;
+
+  /**
+   * Label.
+   */
+  &__label {
+    @include transition(color, opacity);
+    align-items: center;
+    display: flex;
+    z-index: 1;
+
+    &--wrapper {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+  }
+
+  /**
+   * Icons.
+   */
+  &__icon {
+    display: inherit;
+    position: relative;
+  }
+
+  &__default-icon,
+  &__hover-icon,
+  &__state-icon {
+    @include transition(opacity);
+    display: inherit;
+    pointer-events: none;
+
+    .icon {
+      height: var(--button-icon-size);
+      width: var(--button-icon-size);
+    }
+  }
+
+  &__hover-icon {
+    display: inherit;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+  }
+
+  &__state-icon {
+    left: 50%;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    translate: -50% -50%;
+    z-index: var(--layer-raised);
+  }
+
+  /**
+   * Primary.
+   */
+  &#{&}--primary {
+    background-color: var(--color-bio);
+    color: var(--color-stone);
+    padding-inline: var(--spacing-5xl);
+
+    &::before {
+      @include transition(all var(--timing-slow) cubic-bezier(0.65, 0, 0.35, 1));
+      --x-position: 0;
+      background-color: var(--color-clouds);
+      box-shadow: 0 0 20px 10px var(--color-clouds);
+      content: '';
+      display: block;
+      height: var(--spacing-2xl);
+      // Took values from Bioeffect site directly.
+      left: calc(-50px - 50%);
+      opacity: 0.35;
+      pointer-events: none;
+      position: absolute;
+      top: 50%;
+      transform: translate3d(var(--x-position), 0, 0) rotate(60deg);
+      transform-origin: 50% 50%;
+      transition: transform 0.7s;
+      width: 100%;
+      z-index: 0;
+    }
+
+    &:not([disabled], .is-disabled) {
+      &:hover, &.is-hover {
+        &::before {
+          --x-position: 175%;
+          transition-duration: 875ms;
+        }
+      }
+    }
+
+    &.is-loading {
+      cursor: wait;
+      opacity: 0.7;
+
+      &::before {
+        animation: loading 525ms infinite;
+      }
+    }
+  }
+
+  /**
+   * Secondary.
+   */
+  &#{&}--secondary {
+    border: 1px solid var(--color-bio);
+    color: var(--color-stone);
+
+    &::after {
+      --scale-x: 0;
+      background-color: var(--color-bio);
+      content: '';
+      inset: 0;
+      pointer-events: none;
+      position: absolute;
+      transform: skew(40deg) scaleX(var(--scale-x));
+      transform-origin: 100% 100%;
+      transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+      width: 150%;
+      z-index: 0;
+    }
+
+    &:not([disabled], .is-disabled) {
+      &:hover, &.is-hover {
+        &::after {
+          --scale-x: 1;
+          background-color: var(--color-bio);
+          transform-origin: 0 100%;
+          transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+      }
+    }
+
+    &#{$parent}--dark {
+      border-color: var(--color-neutral-6);
+      color: var(--color-neutral-6);
+
+      &:not([disabled], .is-disabled) {
+        &:hover, &.is-hover {
+          background-color: var(--color-neutral-1);
+        }
+      }
+    }
+
+    &.is-loading {
+      cursor: wait;
+
+      &::after {
+        @keyframes animate-loading-secondary {
+          0% {
+            transform: skew(40deg) translateX(100%);
+          }
+
+          100% {
+            transform: skew(40deg) translateX(-110%);
+          }
+        }
+        animation: animate-loading-secondary 1.4s cubic-bezier(0.65, 0, 0.35, 1) -0.35s infinite;
+      }
+    }
+  }
+
+  /**
+   * Fill.
+   */
+  &#{&}--fill {
+    background-color: var(--color-neutral-2);
+    border-color: var(--color-neutral-1);
+    color: var(--color-neutral-6);
+
+    &:not([disabled], .is-disabled) {
+      &:hover, &.is-hover {
+        background-color: var(--color-neutral-1);
+      }
+    }
+
+    &#{$parent}--dark {
+      background-color: var(--color-neutral-6);
+      color: var(--color-neutral-1);
+
+      &:not([disabled], .is-disabled) {
+        &:hover, &.is-hover {
+          background-color: var(--color-neutral-4);
+        }
+      }
+    }
+  }
+
+  /**
+   * Text.
+   */
+  &#{&}--text {
+    background-color: transparent;
+    border: 0;
+    color: var(--color-neutral-2);
+    overflow: visible;
+    padding: 0;
+
+    &#{$parent}--dark {
+      color: var(--color-neutral-6);
+    }
+  }
+
+  /**
+   * General modifers.
+   */
+  &#{&}--block {
+    display: flex;
+    width: 100%;
+  }
+
+  &#{&}--reversed {
+    direction: rtl;
+
+    [dir=rtl] & {
+      direction: ltr;
+    }
+  }
+
+  &#{&}--center {
+    justify-content: center;
+
+    #{$parent}__label {
+      text-align: center;
+    }
+  }
+
+  /**
+   * No icon modifier.
+   */
+  &.no-icon {
+    gap: 0;
+  }
+
+  /**
+   * Hover icon hover state.
+   */
+  &:not([disabled], .is-disabled) {
+    &.has-hover-icon.no-icon {
+      #{$parent}__icon {
+        @include transition(margin);
+        height: var(--button-icon-size);
+        margin-inline-start: calc(var(--button-icon-size) * -1);
+        width: var(--button-icon-size);
+      }
+    }
+
+    &.has-hover-icon:hover {
+      #{$parent}__default-icon {
+        opacity: 0;
+      }
+
+      #{$parent}__hover-icon {
+        opacity: 1;
+      }
+
+      &.no-icon {
+        #{$parent}__icon {
+          margin-inline-start: var(--button-gap);
+          width: var(--button-icon-size);
+        }
+      }
+    }
+  }
+
+  /**
+   * Show state icon.
+   */
+  &.show-state-icon {
+    pointer-events: none;
+
+    #{$parent}__label,
+    #{$parent}__icon {
+      opacity: 0;
+    }
+
+    #{$parent}__state-icon {
+      opacity: 1;
+    }
+  }
+
+  /**
+   * Disabled state.
+   */
+  &[disabled], &.is-disabled {
+    cursor: default;
+    opacity: 0.4;
+  }
+
+  /**
+   * Focus state.
+   */
+  .is-tabbable & {
+    &:focus-visible, &.is-focus {
+      @include focus-ring;
+    }
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: l) {
+    --button-gap: var(--spacing-l);
+
+    &#{&}--text {
+      padding: 0;
+    }
+  }
+}

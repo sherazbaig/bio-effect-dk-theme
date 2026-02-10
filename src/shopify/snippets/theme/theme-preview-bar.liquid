@@ -1,0 +1,23 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet / Theme: Preview bar
+  - Custom replacement for Shopify preview bar.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign theme_name = theme.name | downcase
+
+  if settings.remove_custom_preview_bar or theme_name contains 'production' or request.design_mode
+    continue
+  endif
+-%}
+
+<a
+  class="preview-bar"
+  href="?preview_theme_id="
+  tabindex="-1"
+  title="{{ theme.id }}"
+  aria-hidden="true"
+>
+  {{ theme.name }}
+</a>

@@ -1,0 +1,88 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Article card (main-blog)
+
+  @param {Object} article - Liquid article.
+  @param {String} [class] - Additional classes to render.
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign read_more_string = 'blog.read_more_html' | t: title: article.title
+  assign excerpt = article.content | strip_html | truncatewords: 20, '...'
+  assign read_text = 'article.read' | t
+  assign url_parts = article.url | split: '/'
+  assign blog = blogs[url_parts[2]]
+  assign badges = ''
+  assign ratio = '0.88'
+
+  if modifier == 'l2-9'
+    assign ratio = '1.82'
+  endif
+
+  for tag in article.tags
+    if tag contains 'badge:'
+      assign badge = tag | split: 'badge:' | last | replace: '-', ' ' | capitalize
+      unless badges == ''
+        assign badges = badges | append: ','
+      endunless
+      assign badges = badges | append: badge
+    endif
+  endfor
+  assign badges = badges | split: ','
+
+  if article.excerpt != blank
+    assign excerpt = article.excerpt | strip_html | truncatewords: 20, '...'
+  endif
+-%}
+
+<div class="article-card liquid {{ class }} is-loading">
+  <a
+    href="{{ article.url }}"
+    tabindex="-1"
+  >
+    {% render 'responsive-image' with
+      class: 'article-card__image-container',
+      image: article.image,
+      min_max: '300-800',
+      ratio: ratio,
+    %}
+  </a>
+
+  <div class="article-card__footer">
+    {% if badges.size > 0 %}
+      <ul class="article-card__badges">
+        {% for badge in badges %}
+          {% assign tag = badge | prepend: 'badge:' %}
+          <li>
+            <a
+              class="article-card__badge text-tags"
+              href="{{ tag | handleize | prepend: '/tagged/' | within: blog }}"
+            >
+              {{ badge }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% assign title_class = 'article-card__title text-h5-desktop text-h6' %}
+
+    {% unless badges.size > 0 %}
+      {% assign title_class = title_class | append: ' mt-xl-desktop mt-l' %}
+    {% endunless %}
+
+    <h2 class="{{ title_class }}">
+      {{ article.title }}
+    </h2>
+
+    <p
+      class="
+        article-card__excerpt
+        text-p-desktop
+        text-mobile-p
+      "
+    >
+      {{ excerpt }}
+    </p>
+  </div>
+</div>

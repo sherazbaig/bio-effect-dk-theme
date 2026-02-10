@@ -1,0 +1,67 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Full width promo (full-width-promo)
+
+  @param {Boolean|Object} cardData - Liquid object, false shows loading state.
+  @param {Boolean} [loading_animation] - Force the display of the loading state.
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign title = cardData.title
+  assign description = cardData.description
+  assign cta_url = cardData.cta_url
+  assign cta_text = cardData.cta_text
+  assign theme = cardData.theme
+  assign alignment = cardData.alignment
+  assign image_mobile = cardData.image_mobile
+  assign image_desktop = cardData.image_desktop
+  assign row_index = cardData.row_index
+
+  if loading_animation or cardData == false
+    assign loading_class = 'is-loading'
+    assign title = false
+    assign description = false
+    assign cta_url = false
+    assign cta_text = false
+    assign theme = false
+    assign alignment = false
+    assign image_mobile = false
+    assign image_desktop = false
+  endif
+-%}
+
+<div class="full-width-promo liquid full-width {{ loading_class }}">
+  {% render 'art-direction' with
+    image_desktop: image_desktop,
+    image: image_mobile,
+    alt: image_desktop.alt,
+    ratio: '343:283',
+    ratio_desktop: '1170:541'
+  %}
+
+  <div class="
+    full-width-promo__copy
+    {{ cardData.theme }}
+    {{ cardData.alignment }}
+  ">
+    {% if loading_animation or title %}
+      <h2 class=" full-width-promo__title text-h2-desktop text-mobile-titles">
+        {{ title }}
+      </h2>
+    {% endif %}
+
+    {% if loading_animation or description %}
+      <p class="full-width-promo__description text-p-desktop text-mobile-p">
+        {{ description }}
+      </p>
+    {% endif %}
+
+    {% if loading_animation or cta_url and cta_text %}
+      {% render 'btn' with
+        class: 'full-width-promo__cta text-button'
+        label: cta_text,
+        url: cta_url,
+      %}
+    {% endif %}
+  </div>
+</div>

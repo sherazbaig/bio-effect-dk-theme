@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "site-header-offset": {
+      "type": "site-header-offset",
+      "settings": {}
+    },
+    "store-locator": {
+      "type": "store-locator",
+      "settings": {}
+    },
+    "special-stores": {
+      "type": "special-stores",
+      "settings": {}
+    }
+  },
+  "order": [
+    "site-header-offset",
+    "store-locator",
+    "special-stores"
+  ]
+}

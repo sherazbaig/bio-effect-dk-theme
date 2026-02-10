@@ -1,0 +1,187 @@
+/**
+ * Styles: Product upsell carousel (product-upsell-carousel)
+ * -----------------------------------------------------------------------------
+ * Base styles for product upsell carousel component.
+ *
+ */
+.product-upsell-carousel {
+  --gutter: var(--spacing-xl);
+  $parent: &;
+  opacity: 0;
+
+  /**
+   * Section styles.
+   */
+  &__title {
+    color: var(--color-stone);
+    // Matches designs
+    margin-block-end: 20px;
+    padding-inline-start: var(--spacing-2xs);
+  }
+
+  .splide {
+    padding-inline-start: var(--spacing-2xs);
+
+    &__arrows {
+      gap: var(--spacing-xs);
+      justify-content: flex-end;
+      position: relative;
+    }
+
+    .button__icon {
+      align-items: center;
+      background-color: var(--color-black42);
+      border-radius: 50%;
+      height: calc(var(--spacing-3xl) + var(--spacing-3xs));
+      justify-content: center;
+      opacity: 0.7;
+      width: calc(var(--spacing-3xl) + var(--spacing-3xs));
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+
+    .icon {
+      height: var(--spacing-m);
+      width: var(--spacing-xs);
+    }
+
+    path {
+      fill: var(--color-clouds);
+    }
+  }
+
+  &__track.splide__track {
+    --offset: 0;
+    overflow: visible;
+    transform: translateX(var(--offset));
+  }
+
+  &__footer {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-block-start: var(--spacing-2xl);
+    padding-inline-end: var(--gutter);
+    position: relative;
+  }
+
+  &__footer-button.button {
+    justify-content: center;
+    padding-inline: var(--spacing-m);
+    // As in design.
+    width: 220px;
+  }
+
+  /**
+   * Loading state styles.
+   */
+  .splide:not(.is-active) {
+    #{$parent}__carousel {
+      display: grid;
+      gap: var(--spacing-m);
+      grid-template-columns: repeat(2, minmax(10px, 1fr));
+    }
+
+    #{$parent}__slide {
+      flex-shrink: unset;
+    }
+  }
+
+  /**
+   * Animations.
+   */
+  &.is-active[data-component-animation=true] {
+    opacity: 1;
+    transition: opacity var(--timing-slow) cubic-bezier(0.65, 0, 0.35, 1);
+
+    #{$parent}__track {
+      --offset: 0;
+      transition: transform var(--timing-slow) cubic-bezier(0.65, 0, 0.35, 1);
+    }
+  }
+
+  /**
+   * Non-JS visual update
+   */
+  &.product-upsell-carousel-non-js:not(.is-active) {
+    opacity: 1;
+
+    #{$parent}__carousel {
+      grid-template-columns: 1fr;
+    }
+
+    .splide {
+      #{$parent}__slide.splide__slide {
+        display: block;
+      }
+    }
+  }
+
+  /**
+   * Reduced motion.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
+    transition: none;
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: m) {
+    --gutter: var(--spacing-3xl);
+
+    &__title {
+      margin-block-end: var(--spacing-xl);
+    }
+
+    .splide:not(.is-active) {
+      #{$parent}__carousel {
+        gap: var(--spacing-xl);
+      }
+    }
+  }
+
+  @include mq($until: l) {
+    &__title {
+      font-size: var(--font-size-9);
+    }
+
+    .splide:not(.is-active) {
+      #{$parent}__slide:nth-child(n + 3) {
+        display: none;
+      }
+    }
+  }
+
+  @include mq($from: l) {
+    .splide:not(.is-active) {
+      #{$parent}__carousel {
+        gap: var(--gutter-desktop);
+        grid-template-columns: repeat(4, minmax(10px, 1fr));
+      }
+
+      #{$parent}__slide:nth-child(n + 5) {
+        display: none;
+      }
+    }
+
+    &__track {
+      --offset: var(--spacing-2xl);
+    }
+
+    /**
+    * Non-JS visual update
+    */
+    &.product-upsell-carousel-non-js:not(.is-active) {
+      .splide {
+        #{$parent}__carousel {
+          gap: var(--spacing-xl);
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+      }
+    }
+  }
+}

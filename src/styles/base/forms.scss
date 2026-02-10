@@ -1,0 +1,148 @@
+/**
+ * Base: Form
+ * -----------------------------------------------------------------------------
+ * Form resets, browser normalizing and base styling.
+ *
+ */
+form {
+  margin: 0;
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  margin: 0;
+  padding: 0;
+}
+
+a,
+area,
+button,
+[role=button],
+input,
+label,
+select,
+summary,
+textarea {
+  font-family: inherit;
+  touch-action: manipulation;
+}
+
+input,
+textarea,
+select {
+  &[disabled] {
+    cursor: default;
+  }
+}
+
+button,
+input[type=submit],
+label[for] {
+  cursor: pointer;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+/**
+ * Force option color (affects IE only).
+ */
+option {
+  background-color: var(--color-neutral-6);
+  color: var(--color-neutral-1);
+}
+
+.input-error {
+  background-color: var(--color-neutral-6);
+  border-color: var(--color-system-error-light-mode);
+  color: var(--color-neutral-1);
+}
+
+input[type=email],
+input[type=number],
+input[type=password],
+input[type=search],
+input[type=tel],
+input[type=text],
+textarea,
+select {
+  -moz-appearance: textfield;
+  appearance: textfield;
+  border-radius: 0;
+  border-style: solid;
+
+  &::placeholder {
+    color: var(--color-neutral-3);
+    opacity: 1;
+  }
+
+  &[disabled] {
+    cursor: default;
+    opacity: 0.75;
+  }
+
+  &:focus {
+    border-color: var(--color-system-info-light-mode);
+  }
+
+  /**
+   * Remove input spinners.
+   */
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
+
+  &::-ms-clear {
+    display: none;
+    height: 0;
+    width: 0;
+  }
+
+  &::-ms-reveal {
+    display: none;
+    height: 0;
+    width: 0;
+  }
+
+  &::-webkit-search-decoration,
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-results-button,
+  &::-webkit-search-results-decoration {
+    display: none;
+  }
+}
+
+label {
+  display: inline-block;
+}
+
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-clip: padding-box;
+  background-color: var(--color-neutral-6);
+  background-position: right 10px center;
+  background-repeat: no-repeat;
+  background-size: var(--icon-xs) var(--icon-xs);
+  border-radius: 0;
+  text-transform: none;
+}
+
+input[type=checkbox],
+input[type=radio] {
+  margin-inline-end: var(--spacing-xs);
+}

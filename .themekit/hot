@@ -1,0 +1,21 @@
+# Files to ignore when running `yarn hot`
+assets/*.*.js.LICENSE.txt
+assets/*.*.js.map
+assets/bundle.*.css
+assets/bundle.*.js
+assets/component.*.css
+assets/component.*.js
+assets/critical-*.js
+assets/layout.*.css
+assets/layout.*.js
+assets/runtime.js
+assets/template.*.css
+assets/template.*.js
+assets/vendor.*.js
+
+config/settings_data.json
+
+sections/*.json
+
+templates/customers/*.json
+templates/*.json

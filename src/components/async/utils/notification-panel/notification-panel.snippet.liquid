@@ -1,0 +1,77 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Notification panel (notification-panel)
+
+  @param {String} [attributes] - Custom attributes to add to element, space
+  separated list.
+  @param {String} [class] - Additional classes to render.
+  @param {String} [class_text] - Text element class, overrides text classes.
+  @param {String} [class_title] - Title element class, overrides text classes.
+  @param {Boolean} [show_close] - Show close button.
+  @param {String} text - Text content.
+  @param {String} [title] - Title content.
+  @param {Boolean} [toast] - Act as toast/pop-up.
+  @param {String} [type] - Type of notification, `error`, `success`, or `info`,
+  if no type is provided then it defaults to general.
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign attributes = attributes | split: ' '
+  assign class_text = class_text | default: 'text-body-m-regular'
+  assign class_title = class_title | default: 'text-heading-m'
+
+  if type != blank
+    assign type_class = 'notification-panel--' | append: type
+  endif
+
+  if show_close != false
+    assign close_class = 'notification-panel--show-close'
+  endif
+
+  if toast
+    assign toast_class = 'notification-panel--toast'
+  endif
+
+  # Classes
+  # class="text-heading-m text-body-m-regular"
+-%}
+
+<div
+  class="
+    notification-panel
+    liquid
+    {{ class }}
+    {{ type_class }}
+    {{ close_class }}
+    {{ toast_class }}
+  "
+  {% for attribute in attributes %}
+    {{ attribute }}
+  {% endfor %}
+>
+  {% if title != blank %}
+    <p class="notification-panel__title {{ class_title }}">
+      {{ title }}
+    </p>
+  {% endif %}
+
+  <p class="notification-panel__text {{ class_text }}">
+    {{ text }}
+  </p>
+
+  {% unless show_close == false %}
+    <button
+      v-if="showClose"
+      class="notification-panel__close icon-button"
+      type="button"
+      @click="handleCloseClick"
+    >
+      <span
+        class="visually-hidden"
+        v-text="$string('accessibility.close')"
+      />
+
+      <icon-close />
+    </button>
+  {% endunless %}
+</div>

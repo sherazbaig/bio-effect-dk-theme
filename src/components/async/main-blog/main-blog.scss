@@ -1,0 +1,75 @@
+/**
+ * Styles: Main blog (main-blog)
+ * -----------------------------------------------------------------------------
+ * Base styles for main blog component.
+ *
+ */
+.main-blog {
+  $parent: &;
+  margin-block-end: var(--spacing-3xl);
+  margin-block-start: var(--spacing-xl);
+  min-height: 550px;
+
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__header {
+    margin-block-end: var(--spacing-xl);
+    row-gap: var(--spacing-s);
+  }
+
+  &__title, &__description {
+    color: var(--color-stone);
+  }
+
+  &__tags {
+    margin-block-end: var(--spacing-xl);
+  }
+
+  &__grid {
+    gap: var(--spacing-xl);
+  }
+
+  &__load-container {
+    display: flex;
+    justify-content: center;
+    margin-block-start: var(--spacing-xl);
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: l) {
+    margin-block-end: var(--spacing-7xl);
+    margin-block-start: var(--spacing-4xl);
+    min-height: 950px;
+
+    &__grid {
+      gap: var(--spacing-6xl) var(--spacing-xl);
+    }
+
+    &__tags {
+      flex-wrap: wrap;
+      justify-content: start;
+      margin-block-end: var(--spacing-7xl);
+    }
+
+    &__header {
+      margin-block-end: var(--spacing-l);
+    }
+
+    &__description {
+      margin-block-start: calc(var(--spacing-l) + var(--spacing-2xs));
+      min-height: 102px;
+    }
+
+    &__load-container {
+      margin-block-start: var(--spacing-4xl);
+    }
+  }
+}

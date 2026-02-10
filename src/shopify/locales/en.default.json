@@ -1,0 +1,530 @@
+{
+  "404": {
+    "title": "404: Page not found",
+    "text_html": "We can't seem to find the page you're looking for. Error code: 404."
+  },
+  "accessibility": {
+    "youtube_video_player": "Youtube Video Player",
+    "vimeo_video_player": "Vimeo Video Player",
+    "skip_to": "Skip to {{ label }}",
+    "sign_posts": {
+      "button": "Accessibility information",
+      "information": "Press Option\/Alt + K at any time to jump back to these sign posts, or continue tabbing",
+      "site_header": "site header",
+      "main_content": "main content"
+    },
+    "open": "Open",
+    "close": "Close",
+    "view": "View",
+    "loading": "Loading",
+    "carousel": {
+      "previous": "Previous slide",
+      "next": "Next slide",
+      "slide": "Slide {{ page }} of {{ total }}",
+      "play": "Play",
+      "pause": "Pause"
+    },
+    "video": {
+      "loading": "Loading",
+      "play": "Play",
+      "pause": "Pause",
+      "cc": "CC",
+      "subtitles": "Subtitles"
+    },
+    "bioeffect_logo": "Bioeffect logo"
+  },
+  "article": {
+    "read": "Read",
+    "reading_time": "{{ time }} minute read"
+  },
+  "blog": {
+    "all_category": "All",
+    "show_articles": "Show articles tagged with {{ tag }}",
+    "read_more_html": "Read more <span class=\"visually-hidden\">from {{ title }}<\/span>",
+    "load_more": "Load More"
+  },
+  "cart": {
+    "title": "My bag",
+    "item_count": {
+      "one": "{{ count }} item",
+      "other": "{{ count }} items"
+    },
+    "line_item": {
+      "item": "Item",
+      "quantity": "Quantity",
+      "total": "Total",
+      "variant": "{{ option_name }}: {{ selected_value }}",
+      "price": "Price: ",
+      "decrease_quantity": "Decrease quantity",
+      "increase_quantity": "Increase quantity",
+      "remove": "Remove",
+      "loading": "Loading..."
+    },
+    "notifications": {
+      "limited_stock": {
+        "title": "Limited stock",
+        "text": {
+          "one": "Only {{ count }} item is available, please adjust your quantity before checkout",
+          "other": "Only {{ count }} items are available, please adjust your quantity before checkout"
+        }
+      },
+      "maximum_quantity": {
+        "title": "Maximum quantity",
+        "text": {
+          "one": "There is only {{ count }} item left in stock",
+          "other": "There are only {{ count }} items left in stock"
+        }
+      }
+    },
+    "checkout": "Checkout",
+    "empty": {
+      "title": "Your Cart",
+      "text_html": "Your cart is currently empty!\nWhy not try our recommendations below",
+      "drawer_text": "Your bag is currently empty.",
+      "continue_shopping": "Shop Now"
+    },
+    "details": {
+      "priceLabel": "Subtotal",
+      "taxLabel": "Tax (calculated in checkout)",
+      "taxMessage": "--",
+      "shippingLabel": "Shipping",
+      "shippingMessage": "Free"
+    },
+    "summary": {
+      "total_label": "Subtotal",
+      "additional_info": "Excluding tax & shipping",
+      "discount_label": "Savings"
+    },
+    "free_shipping_notification": {
+      "title_amount_to_spend": "Spend {{ amount }} more to get FREE delivery",
+      "title_successful": "Congrats! You've qualified for FREE delivery!"
+    },
+    "free_gift_with_purchase": {
+      "title": "You've qualified for a free gift with your Hydrating Cream",
+      "no_thanks": "NO THANKS",
+      "reclaim_gift": "Reclaim your free gift",
+      "add_gift": "Add free gift",
+      "first_threshold": "Spend {{ amount }} to receive a free gift",
+      "second_threshold": "Spend {{ amount }} to receive a second free gift",
+      "gifts_selected": "{{ selected }}/{{ allowed }} free gifts selected",
+      "fgwp": "Free Gift with purchase"
+    }
+  },
+  "collection": {
+    "filter_label": "Filter by category",
+    "clear_filters": "Clear filters",
+    "load_more": "Load More"
+  },
+  "customers": {
+    "fields": {
+      "required": {
+        "label": "Required",
+        "symbol": "*"
+      },
+      "optional": "Optional",
+      "first_name": {
+        "label": "First name",
+        "placeholder": "First name *"
+      },
+      "last_name": {
+        "label": "Last name",
+        "placeholder": "Last name *"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Email *"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Password *"
+      },
+      "password_new": {
+        "label": "Enter new password",
+        "placeholder": "Enter new password"
+      },
+      "password_confirmation": {
+        "label": "Confirm password",
+        "placeholder": "Confirm password"
+      },
+      "company": {
+        "label": "Company",
+        "placeholder": "Company"
+      },
+      "address1": {
+        "label": "Address line 1",
+        "placeholder": "Address line 1 *"
+      },
+      "address2": {
+        "label": "Address line 2",
+        "placeholder": "Address line 2"
+      },
+      "city": {
+        "label": "City",
+        "placeholder": "City *"
+      },
+      "country": {
+        "label": "Country"
+      },
+      "province": {
+        "label": "Province"
+      },
+      "zip": {
+        "label": "Postcode",
+        "placeholder": "Postcode / zip *"
+      },
+      "phone": {
+        "label": "Telephone",
+        "placeholder": "Telephone *"
+      }
+    },
+    "header": {
+      "title": "Welcome {{ name }}",
+      "back_to": "Back to {{ page }}",
+      "log_out": "Log Out",
+      "contact_us_html": "<a href=\"{{ url }}\">Contact us</a> if you need any further information about your account."
+    },
+    "order_card": {
+      "product_count": "+{{ count }}",
+      "order_number": "Order #{{ order_number }}",
+      "total": "Total: {{ total }}",
+      "track_order": "Track order",
+      "view_details": "View details",
+      "labels": {
+        "order_status": "Order status",
+        "order_number": "Order number",
+        "date_of_order": "Date of order",
+        "date_of_cancel": "Date of cancel",
+        "payment_status": "Payment status",
+        "total_before_discount": "Total before discount",
+        "discount": "Discount",
+        "shipping": "Shipping (free standard shipping over $30)",
+        "tax": "Tax (calculated in checkout)",
+        "total": "Total"
+      }
+    },
+    "order_status": {
+      "authorized": "Payment authorised",
+      "expired": "Card expired",
+      "paid": "Paid",
+      "partially_paid": "Partially paid",
+      "partially_refunded": "Payment partially refunded",
+      "pending": "Payment pending",
+      "refunded": "Payment refunded",
+      "unpaid": "Unpaid",
+      "voided": "Payment voided",
+      "fulfilled": "Shipped",
+      "partial": "Partially shipped",
+      "restocked": "Order restocked",
+      "unfulfilled": "Order not shipped",
+      "cancelled": "Order cancelled"
+    },
+    "account": {
+      "title": "Overview",
+      "recently_viewed": "Recently viewed products",
+      "recent_orders": {
+        "title": "My orders",
+        "none": "You don’t have any orders. When you do, their status will appear on this page.",
+        "check_status": "Here you can check the status of your orders.",
+        "cta": "Go Shopping"
+      },
+      "addresses": {
+        "title": "Addresses",
+        "your_saved_addresses": "Your saved addresses",
+        "add_address_to_saved": "Add an address to your saved addresses",
+        "add_address": "Add address",
+        "none": "You haven't saved any addresses yet",
+        "default_address": "Default address",
+        "cta": "View all"
+      }
+    },
+    "activate_account": {
+      "title": "Activate Account",
+      "account_created": "Account created. Please log in.",
+      "email_already_taken": "Email has already been taken",
+      "text_html": "Choose a password to activate your account",
+      "cta": "Activate Account",
+      "decline_cta": "Decline Invitation"
+    },
+    "addresses": {
+      "title": "Address Book",
+      "text_html": "Saved addresses allow for a faster checkout",
+      "no_addresses_html": "You haven't saved any addresses yet",
+      "address_count": {
+        "one": "{{ count }} address",
+        "other": "{{ count }} addresses"
+      },
+      "default": "Default",
+      "additional": "Additional",
+      "address_block": {
+        "tel": "Tel:",
+        "edit": "Edit",
+        "delete": "Delete",
+        "set_as_default": "Set as default"
+      },
+      "add_new_address": "Add new address",
+      "new": {
+        "title": "Add Address",
+        "text_html": "",
+        "set_as_default": "Make my default address",
+        "confirm": "Add address",
+        "cancel": "Cancel"
+      },
+      "edit": {
+        "title": "Edit Address",
+        "text_html": "Note: Editing this address will only affect future orders",
+        "set_as_default": "Make my default address",
+        "confirm": "Update address",
+        "cancel": "Cancel"
+      },
+      "default_address": {
+        "text_html": "Are you sure you want to change your default address to:\n\n{{ address }}\nNote: Editing this address will only affect future orders.",
+        "confirm": "Yes, change address",
+        "cancel": "Cancel"
+      },
+      "delete": {
+        "text_html": "Are you sure you want to delete this address?\n\n{{ address }}",
+        "confirm": "Yes, delete",
+        "cancel": "Cancel"
+      }
+    },
+    "login": {
+      "too_many_attempts": "Too many attempts, try again later.",
+      "hi": "Hi",
+      "title": "Sign In",
+      "sign_out": "Sign Out",
+      "text_html": "Sign in to view your personal information and check up on your recent orders",
+      "cta": "Sign In",
+      "go_to_my_account": "Go to my account",
+      "forgot_password_link": "Forgot your password?",
+      "forgot_password": {
+        "title": "Reset your password",
+        "text_html": "We will send you an email to reset your password.",
+        "cta": "Submit",
+        "cancel": "Cancel",
+        "success": "Recovery email sent!"
+      },
+      "register_prompt_html": "Don't have an account? <a href=\"{{ url }}\">Create account<\/a>",
+      "guest": {
+        "title": "Continue as a guest",
+        "cta": "Continue"
+      }
+    },
+    "order": {
+      "title": "Order No. {{ number }}",
+      "text_html": "Purchased {{ date }}",
+      "cancelled": {
+        "title": "Order cancelled on {{ date }}",
+        "reason": "Reason: {{ reason }}"
+      },
+      "item_count": {
+        "one": "{{ count }} item",
+        "other": "{{ count }} items"
+      },
+      "order_status": {
+        "ordered": "Ordered",
+        "processing": "Processing",
+        "shipped": "Shipped",
+        "delivered": "Delivered",
+        "cancelled": "Cancelled"
+      },
+      "fulfillment": {
+        "shipment": "Shipment {{ number }}",
+        "not_shipped": "Not yet shipped",
+        "track_order": "Track order"
+      },
+      "item_card": {
+        "variant": "{{ selected_value }}",
+        "quantity": "quantity {{ quantity }}",
+        "discount": "Discount: {{ discount }}",
+        "total": "{{ total }}",
+        "free": "0"
+      },
+      "shipping": {
+        "title": "Shipping",
+        "shipping_address": "Shipping Address",
+        "billing_address": "Billing Address"
+      },
+      "billing": {
+        "title": "Billing",
+        "subtotal": "Subtotal",
+        "discount": "Discount ({{ discount_code }})",
+        "shipping": "Shipping ({{ shipping_method }})",
+        "tax": "Tax ({{ tax_rate }})",
+        "total": "Total"
+      },
+      "need_help": {
+        "title": "Need help?",
+      "text_html": "If there's a problem with any of your kit, or if you'd justs like to talk to one of us, we're always happy to help out if you email {{ email_address }}.",
+        "returns_html": "If you need to exchange or return something, <a href=\"{{ returns_url }}\">just answer a few questions here<\/a> to get started."
+      }
+    },
+    "orders": {
+      "title": "Orders",
+      "text_html": "Click 'View details' to track a delivery",
+      "order_count": {
+        "one": "{{ count }} order",
+        "other": "{{ count }} orders"
+      },
+      "no_orders_html": "You haven't placed any orders yet"
+    },
+    "register": {
+      "title": "Sign Up",
+      "text_html": "Create an account to keep track of your orders and store addresses for a quicker checkout and more",
+      "accepts_marketing_html": "Yes, sign me up for BIOEFFECT's mailing list",
+      "privacy_text": "By creating an account, I agree to BIOEFFECT's Privacy Policy",
+      "cta": "Create account",
+      "login_prompt_html": "Already have an account? <a href=\"{{ url }}\">Sign in here<\/a>"
+    },
+    "reset_password": {
+      "title": "Reset Account Password",
+      "text_html": "Enter a new password for {{ email }}",
+      "cta": "Reset Password",
+      "cancel": "Cancel"
+    }
+  },
+  "general": {
+    "site_header": {
+      "promo_banner": "Promo banner",
+      "site_header": "Site header",
+      "navigation": "Site navigation",
+      "menu": "Toggle menu",
+      "account": "Account",
+      "cart": "My Bag"
+    },
+    "site_footer": {
+      "copyright": "&copy; {{ year }} BIOEFFECT All rights Reserved Worldwide",
+      "return_home": "Return to home"
+    },
+    "menu_drawer": {
+      "back_to": "Back to",
+      "top_level": "Top level",
+      "account": "Account",
+      "login": "Login",
+      "register": "Register",
+      "title": "Menu"
+    },
+    "meta": {
+      "page": "Page {{ page }}",
+      "tags": "Tagged \"{{ tags }}\""
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous page",
+      "page": "Page",
+      "next": "Next page"
+    },
+    "social_sharing": {
+      "facebook": "Share to Facebook",
+      "pinterest": "Share to Pinterest",
+      "twitter": "Share to Twitter",
+      "whatsapp": "Share to Whatsapp"
+    },
+    "newsletter": {
+      "email": {
+        "label": "Email address",
+        "placeholder": "Enter your email"
+      },
+      "submit": "Sign Up",
+      "sign_up": {
+        "email_placeholder": "Email",
+        "disclaimer_label": "*Offer valid only for new customers. Cannot be combined with other special offers, promotions or discounts."
+      },
+      "success": "You have successfully subscribed to our newsletter. An email confirmation should arrive soon.",
+      "error": "Please enter a valid email"
+    },
+    "title": "Title",
+    "breadcrumbs": {
+      "home": "Home",
+      "label": "Breadcrumbs",
+      "separator": ">"
+    },
+    "faq": {
+      "show_answer": "Show Answer"
+    },
+    "update": "Update"
+  },
+  "country_select": {
+    "location_set": "Your location is set to {{ country }} ",
+    "update": "Update",
+    "ship_in": "Ship in {{ currency }} ",
+    "shipping_options": "Get shipping options for {{ country_code }} ",
+    "change_country": "Change country",
+    "continue": "Continue",
+    "cancel": "Cancel"
+  },
+  "gift_card": {
+    "title": "Here's your gift card!",
+    "expired": "Expired",
+    "gift_card_code": "Gift card code",
+    "copy_message": "Copied code to clipboard",
+    "notice": "Use this code at checkout to redeem your gift card",
+    "expired_notice": "This gift card expired on {{ date }}",
+    "remaining": "Remaining {{ balance }}",
+    "qr_image_alt": "Scan this QR code to redeem your gift card",
+    "add_to_apple_wallet": "Add to Apple Wallet",
+    "shop_link": "Start shopping",
+    "print_gift_card": "Print"
+  },
+  "list_collections": {
+    "title": "All Collections"
+  },
+  "password_page": {
+    "title": "Opening Soon",
+    "label": "If you have a password use it below to enter the store",
+    "sign_in": "Sign in"
+  },
+  "product": {
+    "gallery": {
+      "label": "{{ product }} image gallery",
+      "zoom": "Zoom"
+    },
+    "images": {
+      "change_image": "Change image"
+    },
+    "form": {
+      "sold_out": "Out of stock"
+    },
+    "cta": {
+      "add_to_cart": "Add to Bag",
+      "add_to_bag": "Add to Bag",
+      "added_to_cart": "Added to Cart",
+      "added": "Added!"
+    },
+    "prices": {
+      "sold_out": "Out of stock",
+      "free": "Free",
+      "from": "From"
+    }
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "What are you looking for?",
+    "empty_html": "Please enter a search term",
+    "submit": "Search",
+    "load_more": "Load More",
+    "no_results_html": "No results found for your search <span class='text-body-s-bold'>'{query}'<\/span>",
+    "result_count": {
+      "one": "{{ count }} result found",
+      "other": "{{ count }} results found"
+    }
+  },
+  "date_formats": {
+    "day_month_year": "%d\/%m\/%Y",
+    "day_full_month_year": "%B %d, %Y",
+    "day_full_month_year_time": "%B %d, %Y %I:%M%p"
+  },
+  "contact": {
+    "content": "No matter what the inquiry, we're here to assist you. Kindly fill out the form below and one of our customer success specialists will reach out to you shortly. We look forward to hearing from you.",
+    "email_placeholder": "Your email Address",
+    "inquiry": {
+      "inquiry_option": "Inquiry",
+      "customer_service": "Customer Service",
+      "press_and_collaborations": "Press and collaborations",
+      "business_inquiries": "Business inquiries"
+    },
+    "name": "Name",
+    "message": "Your message here (f.ex. order number)",
+    "submit": "Submit",
+    "success_title": "Form posted successfully"
+  }
+}

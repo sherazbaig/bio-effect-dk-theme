@@ -1,0 +1,13 @@
+/**
+ * Component: Checkout main
+ * -----------------------------------------------------------------------------
+ * - Overrides Shopify default styles on the checkout page.
+ *
+ */
+
+// stylelint-disable color-no-hex
+
+button[aria-label='Apply Discount Code']:disabled {
+  background-color: #c8c8c8;
+  color: var(--color-clouds);
+}

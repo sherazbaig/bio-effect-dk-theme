@@ -1,0 +1,52 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Radio input (radio-radio)
+
+  @param {Boolean} [checked] - Is checked?
+  @param {Boolean} [disabled] - Input is disabled.
+  @param {String} id - ID for input.
+  @param {String} [input] - Input if provided by Liquid.
+  @param {String} label - Input label.
+  @param {Boolean} [loading] - Loading state.
+  @param {String} name - Input group name.
+  @param {Number|String} value - Input value.
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  if disabled
+    assign disabled_class = 'is-disabled'
+  endif
+
+  if loading
+    assign loading_class = 'is-loading'
+  endif
+-%}
+
+<div class="radio-input liquid {{ loading_class }}">
+  <input
+    id="{{ id }}"
+    class="radio-input__input visually-hidden {{ disabled_class }}"
+    {%- liquid
+      if checked
+        echo 'checked'
+      endif
+      if disabled
+        echo 'disabled'
+      endif
+      if name != blank
+        echo 'name="#"' | replace: '#', name
+      endif
+      if value != blank
+        echo 'value="#"' | replace: '#', value
+      endif
+    -%}
+    type="radio"
+  >
+
+  <label
+    class="radio-input__label text-body-m-regular {{ label_class }}"
+    for="{{ id }}"
+  >
+    {{ label }}
+  </label>
+</div>

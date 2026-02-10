@@ -1,0 +1,105 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Button (btn)
+
+  @param {String} [attributes] - Custom attributes to add to element, space
+  separated list, Liquid only.
+  @param {String} [class] - Additional classes to render.
+  @param {String} [class_label] - Label class.
+  @param {String} [custom_element] - Optional override to set button element.
+  @param {String} [icon] - Icon to render, pass icon snippet.
+  @param {String} [hover_icon] - Icon to render on hover, pass icon snippet.
+  @param {String} label - Button label.
+  @param {String} [modifiers] - Button modifiers in space separated list
+  (primary, secondary, fill, text, dark, block, center, or reversed).
+  @param {Boolean} [show_icon] - Whether to show the default icon, hover icons
+  will still be displayed if passed into their slot.
+  @param {String} [type] - Type of button (button or submit).
+  @param {String} [url] - URL if link.
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  capture default_icon
+    render 'icon-directional-navigation' with icon: 'arrow', direction: 'right'
+  endcapture
+
+  assign attributes = attributes | split: ' '
+  assign element = 'button'
+  assign icon = icon | default: default_icon
+  assign modifiers = modifiers | default: 'primary block center' | split: ' '
+  assign show_icon = show_icon | default: false, allow_false: true
+
+  if class_label == blank
+    if modifiers contains 'text'
+      assign label_classes = 'text-body-m-underline text-body-l-underline-desktop'
+    else
+      assign label_classes = 'text-other-button-s text-other-button-l-desktop'
+    endif
+  else
+    assign label_classes = class_label
+  endif
+
+  for modifier in modifiers
+    assign modifier_class = modifier_class | append: ' button--' | append: modifier
+  endfor
+
+  if show_icon == false
+    assign no_icon_class = 'no-icon'
+  endif
+
+  if hover_icon != blank
+    assign hover_class = 'has-hover-icon'
+  endif
+
+  if url != blank
+    assign element = 'a'
+  endif
+
+  if custom_element != blank
+    assign element = custom_element
+  endif
+-%}
+
+<{{ element }}
+  class="
+    button
+    liquid
+    {{ class }}
+    {{ modifier_class }}
+    {{ no_icon_class }}
+    {{ hover_class }}
+  "
+  {%- liquid
+    if url
+      echo 'href="#"' | replace: '#', url
+    endif
+    if type
+      echo 'type="#"' | replace: '#', type
+    endif
+    for attribute in attributes
+      echo attribute
+    endfor
+  -%}
+>
+  {% if label %}
+    <span class="button__label {{ label_classes }}">
+    {{ label }}
+    </span>
+  {% endif %}
+
+  {% if show_icon or hover_icon %}
+    <span class="button__icon">
+      {% if show_icon %}
+        <span class="button__default-icon">
+          {{ icon }}
+        </span>
+      {% endif %}
+
+      {% if hover_icon %}
+        <span class="button__hover-icon">
+          {{ hover_icon }}
+        </span>
+      {% endif %}
+    </span>
+  {% endif %}
+</{{ element }}>

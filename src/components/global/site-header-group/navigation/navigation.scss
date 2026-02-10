@@ -1,0 +1,31 @@
+/**
+ * Styles: Navigation (site-header-group)
+ * -----------------------------------------------------------------------------
+ * Base styles for navigation.
+ *
+ */
+.navigation {
+  background-color: var(--color-brand-1-lighter);
+  display: none;
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: l) {
+    display: block;
+
+    &__list {
+      align-items: center;
+      display: flex;
+      gap: var(--spacing-m);
+      justify-content: center;
+      // Offset first link's left padding
+      margin-inline-start: calc(var(--spacing-xs) * -1);
+    }
+
+    &__link {
+      display: block;
+      padding: var(--spacing-xs);
+    }
+  }
+}

@@ -1,0 +1,9 @@
+# Files to ignore when running `yarn deploy` or `yarn watch`
+assets/component.*-vue.css
+assets/component.*-vue.js
+assets/*.*.js.LICENSE.txt
+
+config/settings_data.json
+sections/*.json
+templates/customers/*.json
+templates/*.json

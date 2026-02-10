@@ -1,0 +1,132 @@
+/**
+ * Styles: Quote and image (quote-and-image)
+ * -----------------------------------------------------------------------------
+ * Base styles for quote and image component.
+ *
+ */
+.quote-and-image {
+  $parent: &;
+  padding-block-end: var(--spacing-4xl);
+  padding-block-start: var(--spacing-xl);
+
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__quote {
+    display: flex;
+    position: relative;
+  }
+
+  &__icon {
+    left: 0;
+    position: absolute;
+    top: 0;
+
+    .icon {
+      height: calc(var(--icon-m) * 2);
+      width: calc(var(--icon-m) * 3);
+    }
+
+    path {
+      fill: var(--color-bio);
+    }
+  }
+
+  &__quote-text {
+    padding-block-start: var(--spacing-5xl);
+
+    * {
+      @include text-mobile-titles;
+      color: var(--color-stone);
+      font-size: var(--font-size-5);
+    }
+  }
+
+  &__sub-quote {
+    color: var(--color-gray-text);
+    margin-block-end: var(--spacing-xs);
+    padding-block-start: var(--spacing-4xl);
+  }
+
+  &__thumbnail {
+    cursor: pointer;
+    height: 70px;
+    list-style: none;
+    margin: 0 0.2rem;
+    max-width: 90px;
+    opacity: 0.38;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+
+    &.is-active {
+      opacity: 1;
+    }
+  }
+
+  &__image-block {
+    display: contents;
+  }
+
+  &__image-logo {
+    // Match to design.
+    max-width: 90px;
+
+    .images__image {
+      object-fit: contain;
+    }
+  }
+
+  @include mq($from: l) {
+    padding-block-end: var(--spacing-5xl);
+    padding-block-start: var(--spacing-3xl);
+
+    &__quote {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(10px, 1fr));
+    }
+
+    &__icon {
+      grid-column: 1 / 2;
+    }
+
+    &__quote-text {
+      grid-column: 2 / 13;
+      padding-block-start: var(--spacing-l);
+
+      p {
+        @include text-quote;
+      }
+    }
+
+    &__sub-quote {
+      margin-block-end: var(--spacing-m);
+      padding-block-start: var(--spacing-s);
+      padding-inline-start: var(--spacing-7xl);
+    }
+
+    &__thumbnails {
+      display: flex;
+    }
+
+    &__thumbnail {
+      // Match to design.
+      max-width: 120px;
+    }
+
+    &__image {
+      margin-inline-end: calc(var(--spacing-m) + var(--spacing-2xs));
+      margin-inline-start: calc(var(--spacing-m) + var(--spacing-2xs));
+    }
+
+    &__image-logo {
+      // Match to design.
+      max-width: 160px;
+    }
+  }
+}

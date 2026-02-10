@@ -1,0 +1,64 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Main list collections (main-list-collections)
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.main-list-collections.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="page-section container"
+  aria-labelledby="section-title-{{ section.id }}"
+  data-component-handle="main-list-collections"
+  data-section-schema
+>
+  <div class="main-list-collections critical-component-clear liquid">
+    <h1
+      id="section-title-{{ section.id }}"
+      class="
+        main-list-collections__title
+        text-heading-3xl
+        text-heading-5xl-desktop
+        text-center
+      "
+    >
+      {{ 'list_collections.title' | t }}
+    </h1>
+
+    {% paginate collections by settings.collections_per_page %}
+      <div class="main-list-collections__grid grid">
+        {% for collection in collections %}
+          {%- liquid
+            assign alt = collection.image.alt | default: collection.title | escape
+            assign image = collection.image | default: collection.products.first.featured_image
+          -%}
+
+          <div class="col xs-span m3 l4">
+            <a
+              class="main-list-collections__card"
+              href="{{ collection.url }}"
+            >
+              {% render 'responsive-image' with
+                class: 'main-list-collections__image-container',
+                alt: alt,
+                image: image,
+                min_max: '300-800',
+                ratio: '3:2',
+              %}
+
+              <h2 class="text-heading-m">
+                {{ collection.title }}
+              </h2>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if paginate.pages > 1 %}
+        {% render 'pagination' with paginate: paginate %}
+      {% endif %}
+    {% endpaginate %}
+  </div>
+</section>
+
+{% schema 'main-list-collections' %}

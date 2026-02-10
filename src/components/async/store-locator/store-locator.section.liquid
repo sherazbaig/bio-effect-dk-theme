@@ -1,0 +1,19 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Store locator (store-locator)
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.store-locator.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="shopify-app-block container"
+  aria-labelledby="section-title-{{ section.id }}"
+  data-component-handle="store-locator"
+>
+  <div class="store-locator critical-component-clear liquid">
+    {{ page.content }}
+  </div>
+</section>
+
+{% schema 'store-locator' %}

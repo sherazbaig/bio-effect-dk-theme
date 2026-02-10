@@ -1,0 +1,21 @@
+#import "~graphql/fragments/product.gql"
+
+query freeSamples(
+  $country: CountryCode!,
+  $language: LanguageCode!
+) @inContext(country: $country, language: $language) {
+  metaobject(handle: { handle: "free-samples", type: "free_samples" }) {
+    title: field(key: "title") {
+      value
+    }
+    list: field(key: "list") {
+      references(first: 3) {
+        nodes {
+          ... on Product {
+            ...product
+          }
+        }
+      }
+    }
+  }
+}

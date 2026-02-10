@@ -1,0 +1,13 @@
+{
+  "type": "footer",
+  "name": "Site Footer Group",
+  "sections": {
+    "site-footer": {
+      "type": "site-footer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "site-footer"
+  ]
+}

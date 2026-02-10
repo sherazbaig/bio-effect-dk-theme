@@ -1,0 +1,70 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Order status (cards)
+  - Order status progress bar.
+
+  @param {String} [class] - Additional classes to render.
+  @param {Object} order - Liquid order object.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  unless settings.customer_order_status
+    continue
+  endunless
+
+  assign stages = 'ordered, processing, shipped' | split: ', '
+  assign active_index = 0
+
+  if order.financial_status == 'paid'
+    case order.fulfillment_status
+      when 'unfulfilled' or 'restocked' or 'partial'
+        assign active_index = 1
+      when 'fulfilled'
+        assign active_index = 2
+    endcase
+  endif
+
+  if order.cancelled
+    assign active_index = 2
+  endif
+-%}
+
+<div
+  class="order-status liquid {{ class }}"
+  aria-hidden="true"
+>
+  {% for stage in stages %}
+    <div
+      class="
+        order-status__stage
+        {% if forloop.first %}order-status__stage--first{% endif %}
+        {% if forloop.last %}order-status__stage--last{% endif %}
+        {% if forloop.index0 <= active_index %}is-active{% endif %}
+        {% if stage == 'shipped' and order.fulfillment_status == 'partial' %}partially-shipped{% endif %}
+        {% if order.cancelled %}cancelled{% endif %}
+      "
+    >
+      <p
+        class="
+          order-status__label
+          text-body-s-regular
+          text-body-m-regular-desktop
+          {% if forloop.first %}order-status__label--first{% endif %}
+          {% if forloop.last %}order-status__label--last{% endif %}
+          {% if forloop.index0 == active_index %}is-active{% endif %}
+          {% if order.cancelled %}cancelled{% endif %}
+        "
+      >
+        {%- liquid
+          if order.cancelled and stage == 'ordered'
+            echo 'customers.order.order_status.cancelled' | t
+          elsif order.cancelled
+            echo '&nbsp;'
+          else
+            echo 'customers.order.order_status.#' | replace: '#', stage | t
+          endif
+        -%}
+      </p>
+    </div>
+  {% endfor %}
+</div>

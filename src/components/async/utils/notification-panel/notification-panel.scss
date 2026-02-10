@@ -1,0 +1,78 @@
+/**
+ * Styles: Notification panel (notification-panel)
+ * -----------------------------------------------------------------------------
+ * Base styles for notification panel component.
+ *
+ */
+.notification-panel {
+  @include transition(background-color, border-color, opacity);
+  align-items: center;
+  background-color: var(--color-neutral-4);
+  border-inline-start: 4px solid var(--color-neutral-3);
+  border-radius: 4px;
+  display: grid;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-m);
+  position: relative;
+
+  &__close {
+    position: absolute;
+    right: var(--spacing-m);
+  }
+
+  /**
+   * Show close.
+   */
+  &#{&}--show-close {
+    // Desired padding + icon width + element padding
+    padding-inline-end: calc(var(--spacing-2xl) + var(--icon-m) + var(--spacing-m));
+  }
+
+  /**
+   * Modifiers.
+   */
+  &#{&}--error {
+    background-color: var(--color-system-error-pale);
+    border-color: var(--color-system-error-light-mode);
+  }
+
+  &#{&}--info {
+    background-color: var(--color-system-info-pale);
+    border-color: var(--color-system-info-light-mode);
+  }
+
+  &#{&}--success {
+    background-color: var(--color-system-success-pale);
+    border-color: var(--color-system-success-light-mode);
+  }
+
+  /**
+   * Toast/pop-up.
+   */
+  &#{&}--toast {
+    bottom: var(--spacing-m);
+    position: fixed;
+    right: var(--spacing-m);
+    // Desired width - alignment
+    width: calc(100% - (var(--spacing-m) * 2));
+  }
+
+  /**
+   * RTL.
+   */
+  [dir=rtl] & {
+    &__close {
+      left: var(--spacing-m);
+      right: unset;
+    }
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: l) {
+    &#{&}--toast {
+      max-width: 450px;
+    }
+  }
+}

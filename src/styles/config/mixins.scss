@@ -1,0 +1,284 @@
+/**
+ * Config: Mixins
+ * -----------------------------------------------------------------------------
+ * Global and reusable utility functions to reduce common styling.
+ * - Add in alphabetical order.
+ *
+ */
+// stylelint-disable declaration-no-important, order/order, property-disallowed-list
+
+@use 'sass:list';
+$global-font-size: 16px !default;
+
+/**
+ * Resets form buttons to appear as a standard text link.
+ */
+@mixin button-reset($background: transparent, $font: true) {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: $background;
+  border: 0;
+  box-shadow: none;
+  color: inherit;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  width: auto;
+
+  @if $font {
+    font: inherit;
+  }
+}
+
+/**
+ * Sets container properties.
+ */
+@mixin container() {
+  margin-inline: auto;
+  max-width: calc(var(--max-content-width) + (2 * var(--layout-mobile-margin)));
+  padding-inline-end: var(--layout-mobile-margin);
+  padding-inline-start: var(--layout-mobile-margin);
+  width: 100%;
+
+  @include mq($from: m) {
+    max-width: calc(var(--max-content-width) + (2 * var(--layout-tablet-margin)));
+    padding-inline-end: var(--layout-tablet-margin);
+    padding-inline-start: var(--layout-tablet-margin);
+  }
+
+  @include mq($from: l) {
+    max-width: calc(var(--max-content-width) + (2 * var(--layout-desktop-margin)));
+    padding-inline-end: var(--layout-desktop-margin);
+    padding-inline-start: var(--layout-desktop-margin);
+  }
+}
+
+/**
+ * Reset container properties.
+ */
+@mixin container-reset() {
+  margin-inline-end: 0;
+  margin-inline-start: 0;
+  max-width: 100%;
+  padding-inline-end: 0;
+  padding-inline-start: 0;
+}
+
+/**
+ * Sets custom scrollbar on element.
+ * - Add to element with overflow.
+ */
+@mixin custom-scrollbar($hide: false, $thumb: var(--color-neutral-3), $track: transparent, $width: 5px) {
+  @if $hide {
+    scrollbar-width: none;
+  } @else {
+    // Property only supports named colours
+    // stylelint-disable-next-line color-named
+    scrollbar-color: grey;
+    scrollbar-width: thin;
+  }
+
+  &::-webkit-scrollbar {
+    @if $hide {
+      display: none;
+      width: 0;
+    } @else {
+      width: $width;
+    }
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $track;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $thumb;
+  }
+}
+
+/**
+ * Default focus styling for browsers.
+ */
+@mixin focus-ring() {
+  outline: 1px dashed var(--color-focus-state);
+  outline-offset: var(--spacing-xs);
+}
+
+/**
+ * Resets input elements.
+ */
+@mixin input-reset() {
+  appearance: none;
+  background-color: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+/**
+ * Resets list elements to appear as a stacked text links.
+ */
+@mixin list-reset() {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/**
+ * Loading animation.
+ */
+@mixin loading($border-radius: true, $display: block, $background: var(--color-skeleton-background), $position: relative) {
+  background-color: $background;
+  border-color: transparent;
+  color: transparent;
+  display: $display;
+  overflow: hidden;
+  position: $position;
+  user-select: none;
+
+  @if $border-radius {
+    border-radius: $border-radius;
+  }
+
+  &::after {
+    animation: left-to-right var(--timing-loading, 2s) linear infinite;
+    background-image: linear-gradient(-90deg, var(--color-skeleton-background) 34%, rgb(245 245 245) 50%, var(--color-skeleton-background) 66%);
+    content: '';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    translate: -100% 0;
+    width: 100%;
+  }
+
+  * {
+    color: transparent;
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+/**
+ * Reset text style to default.
+ * - Used for preview bar and Storybook styles.
+ */
+@mixin text-reset($font-family: false, $font-size: false, $font-weight: normal, $line-height: 100%) {
+  font-weight: $font-weight;
+  letter-spacing: 0;
+  line-height: $line-height;
+  text-decoration: none;
+  text-indent: 0;
+  word-spacing: 0;
+
+  @if $font-family {
+    font-family: $font-family;
+  }
+
+  @if $font-size {
+    font-size: $font-size;
+  }
+}
+
+/**
+ * Outputs list of transition properties.
+ *
+ * Accepts:
+ * - $transitions: {String} List of transition properties to set
+ *
+ * Usage:
+ * .selector {
+ *   @include transition(width, height var(--timing-quick);
+ * }
+ */
+@mixin transition($transitions...) {
+  $output: ();
+
+  @each $transition in $transitions {
+    $output: list.append($output, get-transition-properties($transition), comma);
+  }
+  transition: $output;
+}
+
+/**
+ * Returns the transition properties in the correct format.
+ * This function is used by @mixin transition($transitions...).
+ */
+@function get-transition-properties($transition) {
+  $property: all;
+  $duration: var(--timing-normal);
+  $easing: var(--easing-normal);
+  $delay: null;
+  $default-properties: (
+    $property,
+    $duration,
+    $easing,
+    $delay
+  );
+  $properties: ();
+
+  @for $i from 1 through length($default-properties) {
+    $iteration: null;
+
+    @if $i <= length($transition) {
+      $iteration: list.nth($transition, $i);
+    } @else {
+      $iteration: list.nth($default-properties, $i);
+    }
+    $properties: list.append($properties, $iteration);
+  }
+
+  @return $properties;
+}
+
+/**
+ * Hide element but make it accessible to screen readers.
+ */
+@mixin visually-hidden() {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+/**
+ * Reverse the properties applied by @mixin visually-hidden.
+ * @param {String} $position - Positioning method for element.
+ */
+@mixin visually-shown($position: inherit) {
+  clip: unset;
+  clip-path: unset;
+  height: unset;
+  margin: 0;
+  overflow: unset;
+  position: $position !important;
+  white-space: unset;
+  width: unset;
+}
+
+/**
+ * Converts one or more pixel values into matching rem values.
+ * @param {String} $values - One or more values to convert. Be sure to separate
+ * them with spaces and not commas.
+ * @returns {List} Converted values.
+ */
+@function rem-calc($values) {
+  $rem-values: ();
+
+  @each $value in $values {
+    $rem-value: $value / $global-font-size;
+    $rem-values: list.append($rem-values, #{$rem-value}rem);
+  }
+
+  @return $rem-values;
+}

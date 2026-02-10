@@ -1,0 +1,123 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Layout: Checkout
+  - Primary checkout layout file.
+  - Does not take effect until checkout customisation is enabled.
+  - https://shopify.dev/themes/architecture/layouts/checkout-liquid
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign not_production = true
+  assign theme_name = theme.name | downcase
+
+  if theme_name contains 'production'
+    assign not_production = false
+  endif
+-%}
+
+<!doctype html>
+<html
+  class="{{ checkout_html_classes }}"
+  dir="{{ direction }}"
+  lang="{{ locale }}"
+>
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, height=device-height, minimum-scale=1" name="viewport">
+    <meta content="origin" name="referrer">
+    <title>{{ page_title }}</title>
+
+    {%- liquid
+      render 'site-favicon'
+      render 'theme-fonts'
+      render 'theme-variables-checkout'
+    -%}
+
+    <!-- BEGIN content_for_header -->
+    {% capture shopify_header_content %}
+      {{ content_for_header }}
+    {% endcapture %}
+
+    {% if settings.remove_preview_bar and not_production %}
+      {{ shopify_header_content | remove: 'previewBarInjector.init();' }}
+      <style>#preview-bar-iframe { display: none; }</style>
+    {% else %}
+      {{ shopify_header_content }}
+    {% endif %}
+    <!-- END content_for_header -->
+
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+
+    {% comment %}
+    ----------------------------------------------------------------------------
+      Theme styles.
+      - Must be placed here to override checkout styles.
+      - All styles are applied as critical to avoid flash of styles.
+    ----------------------------------------------------------------------------
+    {% endcomment %}
+    {% render 'critical-checkout' %}
+  </head>
+
+  {% comment %}
+  -----------------------------------------------------------------------------
+    Default checkout template.
+  -----------------------------------------------------------------------------
+  {% endcomment %}
+  <body>
+    {{ skip_to_content_link }}
+
+    <header class="banner" data-header role="banner">
+      <div class="wrap">
+        {{ content_for_logo }}
+      </div>
+    </header>
+
+    {{ order_summary_toggle }}
+    <div class="content" data-content>
+      <div class="wrap">
+        <div class="main">
+          <header class="main__header" role="banner">
+            {{ content_for_logo }}
+            {{ breadcrumb }}
+            {{ alternative_payment_methods }}
+          </header>
+
+          <main class="main__content" role="main">
+            {{ content_for_layout }}
+          </main>
+
+          <footer class="main__footer" role="contentinfo">
+            {{ content_for_footer }}
+          </footer>
+        </div>
+
+        <aside class="sidebar" role="complementary">
+          <div class="sidebar__header">
+            {{ content_for_logo }}
+          </div>
+
+          <div class="sidebar__content">
+            {{ content_for_order_summary }}
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    {{ tracking_code }}
+
+    {% comment %}
+    -----------------------------------------------------------------------------
+      Custom preview bar.
+    -----------------------------------------------------------------------------
+    {% endcomment %}
+    {% render 'theme-preview-bar' %}
+  </body>
+
+  {% comment %}
+  ----------------------------------------------------------------------------
+    Theme scripts.
+  ----------------------------------------------------------------------------
+  {% endcomment %}
+  {% render 'theme-scripts' with layout: 'checkout' %}
+</html>

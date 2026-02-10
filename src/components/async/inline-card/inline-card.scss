@@ -1,0 +1,77 @@
+/**
+ * Styles: Inline card (inline-card)
+ * -----------------------------------------------------------------------------
+ * Base styles for inline card component.
+ *
+ */
+.inline-card {
+  $parent: &;
+  $copy-gap: calc(var(--spacing-m) + var(--spacing-2xs));
+  display: block;
+  padding-block: var(--spacing-s);
+  padding-inline: 0;
+  text-decoration: none;
+  transition: box-shadow var(--timing-normal) cubic-bezier(0.65, 0, 0.35, 1);
+
+  &.liquid.is-loading {
+    #{$parent}__badges {
+      display: none;
+    }
+  }
+
+  &.is-loading {
+    #{$parent}__badge,
+    #{$parent}__title,
+    #{$parent}__excerpt {
+      @include loading;
+    }
+
+    #{$parent}__title {
+      // Magic number to match design
+      height: 30px;
+      width: 50%;
+    }
+
+    #{$parent}__excerpt {
+      // Magic number to match design
+      height: 60px;
+      width: 90%;
+    }
+  }
+
+  &__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+
+  &__badge {
+    background-color: var(--color-clouds);
+    border: 1px solid var(--color-cool);
+    border-radius: var(--spacing-2xs);
+    color: var(--color-stone);
+    display: inline-block;
+    padding: calc(var(--spacing-2xs) + var(--spacing-3xs)) var(--spacing-l);
+    text-transform: capitalize;
+  }
+
+  &__title {
+    color: var(--color-stone);
+    margin-block-end: $copy-gap;
+  }
+
+  &__excerpt {
+    color: var(--color-stone);
+    margin-block-start: $copy-gap;
+  }
+
+  @media (pointer: fine) {
+    padding-block: var(--spacing-l);
+    padding-inline: var(--spacing-l);
+
+    &:hover {
+      background-color: var(--color-clouds);
+      box-shadow: 0 0 30px 0 rgb(0 0 0 / 6%);
+    }
+  }
+}

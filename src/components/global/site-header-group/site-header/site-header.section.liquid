@@ -1,0 +1,188 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Section: Site header (site-header-group)
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign title_element = 'span'
+
+  if request.page_type == 'index'
+    assign title_element = 'h1'
+  endif
+
+  assign cart_count = 0
+
+  for item in cart.items
+    unless item.properties._gift
+      assign cart_count = cart_count | plus: item.quantity
+    endunless
+  endfor
+-%}
+
+<section
+  id="site-header"
+  aria-labelledby="site-header-title"
+  data-sign-post-location="head"
+  data-sign-post-priority="1"
+  {% render 'header-states' with section: section %}
+  js-sign-post="{{ 'accessibility.sign_posts.site_header' | t }}"
+>
+  <site-header
+    v-show="getComponentActive('site-header')"
+    :liquid="{
+      sectionId: {{ section.id | json | escape }},
+    }"
+    :mobile="{
+      handle: {{ section.settings.mobile | json | escape }},
+      itemCount: {{ linklists[section.settings.mobile].links | size | json | escape }},
+      displayAccount: {{ section.settings.display_account | json | escape }}
+    }"
+    :desktop="{
+      handle: {{ section.settings.desktop | json | escape }},
+      items: [
+        {%- for tier1 in linklists[section.settings.desktop].links -%}
+          {
+            handle: {{ tier1.handle | prepend: 'desktop-' | append: '-1-' | append: forloop.index0 | json | escape }},
+            title: {{ tier1.title | json | escape }},
+            url: {{ tier1.url | json | escape }},
+            links: [
+              {% for tier2 in tier1.links %}
+                {
+                  title: {{ tier2.title | json | escape }},
+                  handle: {{ tier2.handle | json | escape }},
+                  links: [
+                    {% for tier3 in tier2.links %}
+                      {
+                        title: {{ tier3.title | json | escape }},
+                        url: {{ tier3.url | json | escape }},
+                        handle: {{ tier3. handle | json | escape }}
+                      } {% unless forloop.last %},{% endunless %}
+                    {% endfor %}
+                  ]
+                } {% unless forloop.last %},{% endunless %}
+              {% endfor %}
+            ]
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+    }"
+    :discover="{
+      enabled: {{ section.settings.show_discovery }},
+      title: {{ section.settings.discover_title | json | escape }},
+      desktopImage: {{ section.settings.desktop_image | json | escape }},
+      desktopLink: {{ section.settings.desktop_link_page | json | escape }},
+      desktopLinkLabel: {{ section.settings.desktop_link_text | json | escape }},
+      mobile: {
+        mobileLinks: [
+          {% for link in section.blocks %}
+            {% if link.type == 'link' %}
+              {
+                url: {{ link.settings.page | json | escape }},
+                title: {{ link.settings.title | json | escape }},
+              } {% unless forloop.last %},{% endunless %}
+            {% endif %}
+          {% endfor %}
+        ]
+      }
+    }"
+    title-element="{{ title_element }}"
+    v-cloak
+  ></site-header>
+  {% comment %}
+  ----------------------------------------------------------------------------
+    Loading state.
+  ----------------------------------------------------------------------------
+  {% endcomment %}
+  <div v-if="!getComponentActive('site-header')">
+    <div class="site-header-container container">
+      <header class="site-header is-loading liquid">
+        <div class="site-header__container container">
+          <div class="site-header__left">
+            <a
+              class="site-header__logo"
+              href="{{ routes.root_url }}"
+            >
+              <span
+                id="site-header-title"
+                class="visually-hidden"
+              >
+                {{ shop.name }}
+              </span>
+
+              {% render 'icon-general' with icon: 'brand-logo' %}
+            </a>
+          </div>
+
+          <div class="site-header__right">
+            <a
+              class="site-header__cart icon-button"
+              href="{{ routes.cart.url }}"
+            >
+              <span class="visually-hidden"></span>
+
+              {% render 'icon-general' with icon: 'cart' %}
+
+              {% if cart.item_count > 0 %}
+                <span class="site-header__cart-badge critical-clear text-body-2xs-regular">
+                  {{ cart_count }}
+                </span>
+              {% endif %}
+            </a>
+
+            <button
+              class="site-header__menu icon-button"
+              type="button"
+            >
+              {% render 'icon-general' with icon: 'menu' %}
+            </button>
+          </div>
+
+          <div class="site-header__navigation">
+            <ul class="site-header__navigation-list">
+                {% for tier1 in linklists[section.settings.desktop].links %}
+                    <li class="site-header__navigation-item">
+                        <a
+                            class="site-header__navigation-link text-button-nav"
+                            href="{{ tier1.url }}"
+                        >
+                            {{ tier1.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+
+                <li class="site-header__navigation-item">
+                  <button
+                    class="site-header__navigation-button"
+                    type="button"
+                  >
+                    <span class="site-header__desktop-cart">
+                      {% render 'icon-general' with icon: 'cart' %}
+                    </span>
+
+                    <span class="site-header__hover-text text-button-nav">
+                      <span
+                        class="site-header__hover-text-text"
+                      >
+                        {{ 'general.site_header.cart' | t }}
+                      </span>
+                    </span>
+
+                    {% if cart.item_count > 0 %}
+                      <span class="site-header__cart-badge critical-clear text-body-2xs-regular">
+                        {{ cart_count }}
+                      </span>
+                    {% endif %}
+
+                  </button>
+                </li>
+              </ul>
+          </div>
+        </div>
+      </header>
+    </div>
+  </div>
+
+  {% render 'menu-drawer' %}
+</section>
+
+{% schema 'site-header' %}

@@ -1,0 +1,40 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product form (product-form)
+
+  @param {String} [class] - Additional classes.
+  @param {Boolean} [loading] - Loading state.
+  @param {Object} product - Liquid object.
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign add_to_cart_string = 'product.cta.add_to_bag' | t
+-%}
+
+{% capture product_form %}
+  {% if product.available %}
+    {% render 'btn' with
+      class: 'product-form__add-to-cart',
+      label: add_to_cart_string,
+      type: 'submit',
+    %}
+  {% endif %}
+{% endcapture %}
+
+<div
+  id="product-form"
+  class="product-form is-loading liquid {{ class }}"
+  data-sign-post-location="main"
+  js-sign-post
+>
+  {% if product %}
+    {% form 'product', product, class: 'product-form__form' %}
+      {{ product_form }}
+    {% endform %}
+
+  {% else %}
+    <div class="product-form__form">
+      {{ product_form }}
+    </div>
+  {% endif %}
+</div>

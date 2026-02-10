@@ -1,0 +1,43 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Divider line (divider-line)
+
+  @param {String} [class] - Additional classes to render.
+  @param {Boolean} [dark] - Dark mode styles.
+  @param {String} [label] - Divider line label.
+  @param {Boolean} [large] - Large styles.
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign element_class = ''
+  if dark
+    assign element_class = element_class | append: ' is-dark'
+  endif
+
+  if label == blank
+    assign element_class = element_class | append: ' divider-line--no-label'
+  endif
+
+  if large
+    assign element_class = element_class | append: ' is-large'
+  endif
+-%}
+
+<div class="divider-line liquid {{ element_class }} {{ class }}">
+  {% if label != blank %}
+    <span class="divider-line__element"></span>
+
+    <span
+      class="
+        divider-line__label
+        text-body-xs-regular
+        text-body-s-regular-desktop
+        text-center
+      "
+    >
+      {{ label }}
+    </span>
+
+    <span class="divider-line__element"></span>
+  {% endif %}
+</div>

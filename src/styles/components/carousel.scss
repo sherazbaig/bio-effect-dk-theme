@@ -1,0 +1,75 @@
+/**
+ * Styles: Carousel
+ * -----------------------------------------------------------------------------
+ * Override styles for Splide carousel.
+ *
+ */
+@import '@splidejs/vue-splide/css/core';
+
+.splide {
+  $parent: &;
+  position: relative;
+
+  &__arrows {
+    display: flex;
+    gap: var(--spacing-2xl);
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: var(--layer-raised);
+  }
+
+  &__arrow {
+    @include transition(opacity);
+    pointer-events: auto;
+
+    &[disabled] {
+      opacity: 0.5;
+    }
+
+    /**
+       * Override button styles.
+       */
+    &.button {
+      padding-block: var(--spacing-m);
+    }
+
+    .button__label {
+      @include visually-hidden;
+    }
+  }
+
+  &__pagination {
+    gap: var(--spacing-xs);
+    margin-block-start: var(--spacing-m);
+
+    &__page {
+      @include button-reset;
+      @include transition(background-color);
+      background-color: var(--color-neutral-3);
+      border-radius: 100%;
+      height: calc(var(--icon-2xs) / 2);
+      width: calc(var(--icon-2xs) / 2);
+
+      &.is-active {
+        background-color: var(--color-neutral-2);
+      }
+    }
+  }
+
+  /**
+     * Modifiers.
+     */
+  &:not(.is-overflow) {
+    #{$parent}__arrow {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  /**
+     * No JS state.
+     */
+  .no-js & {
+    visibility: visible;
+  }
+}

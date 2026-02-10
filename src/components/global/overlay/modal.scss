@@ -1,0 +1,68 @@
+/**
+ * Styles: Modal (overlay)
+ * -----------------------------------------------------------------------------
+ * Specific styles for modal overlays.
+ *
+ */
+.modal {
+  display: grid;
+  height: 100%;
+  left: 0;
+  place-items: center;
+  pointer-events: none;
+  top: 0;
+  width: 100%;
+
+  &__container {
+    background-color: var(--color-breeze);
+    max-width: 684px;
+    padding: var(--spacing-l);
+    pointer-events: auto;
+    width: 90%;
+  }
+
+  &__close-container {
+    height: auto;
+    position: absolute;
+    right: var(--spacing-m);
+    top: var(--spacing-m);
+    z-index: var(--layer-raised);
+  }
+
+  /**
+   * RTL.
+   */
+  [dir=rtl] & {
+    &__close-container {
+      left: var(--spacing-m);
+      right: unset;
+    }
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: l) {
+    &__container {
+      padding: var(--spacing-4xl);
+    }
+
+    &__header {
+      &#{&}--no-title {
+        margin-block-end: 0;
+      }
+    }
+
+    &__close-container {
+      right: var(--spacing-l);
+      top: var(--spacing-l);
+    }
+
+    [dir=rtl] & {
+      &__close-container {
+        left: var(--spacing-l);
+        right: unset;
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Upsell popup (upsell-popup)
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.upsell-popup.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign button_string = 'product.cta.add_to_bag' | t
+%}
+
+<section
+  data-component-handle="upsell-popup"
+  data-component-type="trigger"
+>
+  <overlay
+    key="upsellPopup"
+    block-class="upsell-popup"
+    direction="left"
+    namespace="upsellPopup"
+    type="modal"
+  >
+    <template #body="overlay">
+      <upsell-popup
+        v-if="getComponentVisible('upsell-popup')"
+        v-cloak
+        :overlay="overlay"
+        :is-active="overlay.isActive"
+      ></upsell-popup>
+
+      {% comment %}
+      --------------------------------------------------------------------------
+       Loading state.
+      --------------------------------------------------------------------------
+      {% endcomment %}
+      <div v-if="!getComponentActive('upsell-popup')">
+        <div class="upsell-popup is-loading critical-component-hide liquid">
+          <div class="upsell-popup__grid grid mt-l-desktop">
+            <div class="col xs-span l1-6">
+              <h2 class="upsell-popup__title liquid ml-l-desktop mb-m"></h2>
+              <p class="upsell-popup__description liquid"></p>
+
+              {% render 'btn'
+                class: 'upsell-popup__add-to-cart mt-xl-desktop mt-l liquid',
+                label: button_string,
+                modifiers: 'secondary center',
+                type: 'button',
+              %}
+            </div>
+          </div>
+
+          <div class="col l7-10 liquid"></div>
+        </div>
+      </div>
+    </template>
+  </overlay>
+</section>
+
+{% schema 'upsell-popup' %}

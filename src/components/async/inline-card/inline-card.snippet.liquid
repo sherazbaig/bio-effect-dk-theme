@@ -1,0 +1,59 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Inline card (inline-card)
+
+  @param {Object} data - Data to populate inline card.
+  @param {String} class - Css class passed from parent.
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- liquid
+  assign url = data.url
+  assign title = data.title
+  assign excerpt = ''
+  assign badges = ''
+
+  for tag in data.tags
+    if tag contains 'badge:'
+      assign badge = tag | split: 'badge:' | last | replace: '-', ' ' | capitalize
+      unless badges == ''
+        assign badges = badges | append: ','
+      endunless
+      assign badges = badges | append: badge
+    endif
+  endfor
+
+  assign badges = badges | split: ','
+
+  if data.object_type == 'product'
+    assign excerpt = data.metafields.product.excerpt
+  elsif data.object_type == 'article'
+    assign excerpt = data.excerpt
+  elsif data.object_type == 'page'
+    assign excerpt = data.metafields.page.excerpt
+    assign badges = ''
+  endif
+-%}
+
+<a href="{{ url }}" class="inline-card {{ class }} is-loading liquid">
+  {%- comment -%}
+    Inline card is used currently just in its loading state,
+    so no need to render badges, to match vuejs loading state.
+  {%- endcomment -%}
+  {% if badges.size > 0 %}
+    <ul
+      class="inline-card__badges mb-m"
+    >
+      {% for badge in badges %}
+        {% assign tag = badge | prepend: 'badge:' %}
+        <li class="inline-card__badge text-tags">
+          {{ badge }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  <h3 class="inline-card__title text-h5-desktop text-h6 mt-m">
+    {{ title }}
+  </h3>
+  <p class="inline-card__excerpt">{{ excerpt }}</p>
+</a>

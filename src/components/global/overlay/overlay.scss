@@ -1,0 +1,75 @@
+/**
+ * Styles: Overlay (overlay)
+ * -----------------------------------------------------------------------------
+ * Base styles for overlays (default styles for drawers and modals).
+ *
+ */
+@import '~global/overlay/window-overlay';
+
+.overlay {
+  $parent: &;
+  position: fixed;
+  z-index: var(--layer-overlay);
+
+  &__container {
+    max-height: 100%;
+    overflow-y: auto;
+    padding: var(--spacing-m);
+    position: relative;
+  }
+
+  &__header {
+    align-items: center;
+    display: grid;
+    gap: var(--spacing-m);
+    grid-template-columns: 1fr var(--icon-m);
+    margin-block-end: var(--spacing-l);
+  }
+
+  &__close-container {
+    display: flex;
+    flex-direction: column;
+    grid-column: 2;
+    justify-content: flex-start;
+  }
+
+  &__body {
+    margin-block-start: var(--spacing-l);
+
+    &#{&}--no-margin {
+      margin-block-start: 0;
+    }
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: l) {
+    &__header {
+      gap: var(--spacing-l);
+    }
+
+    &__close {
+      margin: calc(var(--spacing-m) * -1);
+      padding: var(--spacing-m);
+    }
+  }
+}
+
+/**
+ * Import overriding type styles.
+ */
+@import '~global/overlay/drawer';
+@import '~global/overlay/modal';
+@import '~global/overlay/shelf';
+
+/**
+ * Import component-specific styles.
+ */
+@import '~async/cart-drawer/cart-drawer-overlay';
+@import '~async/country-select-modal/country-select-modal';
+@import '~async/menu-drawer/menu-drawer-overlay';
+@import '~global/account-forms/account-forms-overlay';
+@import '~global/mega-nav/mega-nav-overlay';
+@import '~global/newsletter-modal/newsletter-modal-overlay';
+@import '~async/predictive-search/predictive-search-overflow';

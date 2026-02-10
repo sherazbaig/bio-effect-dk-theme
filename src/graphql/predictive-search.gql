@@ -1,0 +1,34 @@
+#import "~graphql/fragments/product.gql"
+#import "~graphql/fragments/article.gql"
+
+query predictiveSearch(
+  $country: CountryCode!
+  $language: LanguageCode!
+  $query: String!
+) @inContext(country: $country, language: $language) {
+  predictiveSearch(
+    query: $query
+    limitScope: ALL
+    limit: 3
+    searchableFields: [AUTHOR, BODY, PRODUCT_TYPE, TAG, TITLE, VARIANTS_BARCODE, VARIANTS_SKU, VARIANTS_TITLE, VENDOR]
+    types: [PRODUCT, ARTICLE, PAGE]
+    unavailableProducts: LAST
+  ) {
+    queries {
+      text
+    }
+    products {
+      ...product
+    }
+    articles {
+      ...article
+    }
+    pages {
+      excerpt: bodySummary
+      id
+      handle
+      url: onlineStoreUrl
+      title
+    }
+  }
+}

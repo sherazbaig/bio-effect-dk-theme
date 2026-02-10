@@ -1,0 +1,56 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Toggle switch (toggle-switch)
+
+  @param {Boolean} [checked] - Is checked, does not work with radio inputs.
+  @param {Boolean} [disabled] - Input is disabled.
+  @param {String} id - ID for input.
+  @param {String} [label_false] - False/inactive/left side label.
+  @param {String} label_true - True/active/right side label.
+  @param {Boolean} [loading] - Loading state.
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  if disabled
+    assign disabled_class = 'is-disabled'
+  endif
+
+  if loading
+    assign loading_class = 'is-loading'
+  endif
+-%}
+
+<label
+  class="toggle-switch liquid {{ disabled_class }} {{ loading_class }}"
+  for="{{ id }}"
+>
+  <input
+    id="{{ id }}"
+    class="toggle-switch__input visually-hidden"
+    {%- liquid
+      if checked
+        echo 'checked'
+      endif
+
+      if disabled
+        echo 'disabled'
+      endif
+    -%}
+    type="checkbox"
+  >
+
+  {% if label_false != blank %}
+    <span class="toggle-switch__label text-body-m">
+      {{ label_false }}
+    </span>
+  {% endif %}
+
+  <span
+    class="toggle-switch__toggle"
+    aria-hidden="true"
+  ></span>
+
+  <span class="toggle-switch__label text-body-m">
+    {{ label_true }}
+  </span>
+</label>

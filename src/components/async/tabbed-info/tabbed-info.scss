@@ -1,0 +1,350 @@
+/**
+ * Styles: Tabbed info (tabbed-info)
+ * -----------------------------------------------------------------------------
+ * Base styles for tabbed info component.
+ *
+ */
+
+// stylelint-disable color-no-hex
+.tabbed-info {
+  $parent: &;
+  padding-block: var(--spacing-7xl);
+
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__navigation {
+    border-bottom: 1px solid rgba(115 115 115 / 20%);
+    display: flex;
+    margin-block-end: var(--spacing-2xl);
+    -ms-overflow-style: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    width: 100%;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__before-after-text {
+    color: var(--color-gray-text);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .splide__track {
+    overflow: visible;
+  }
+
+  &__content {
+    &.column {
+      display: block;
+    }
+
+    &-heading {
+      color: var(--color-stone);
+      margin-block-end: var(--spacing-l);
+    }
+
+    ul {
+      color: var(--color-stone);
+      list-style: square outside;
+      padding-inline-start: var(--spacing-m);
+    }
+
+    li {
+      @include text-mobile-p;
+      color: var(--color-stone);
+      list-style: inherit;
+      margin-block-end: var(--spacing-xs);
+
+      &::marker {
+        color: var(--color-bio);
+        list-style: inherit;
+      }
+    }
+
+    a {
+      text-decoration: none;
+
+      &::after {
+        background-image: url('data:~icons/general/pdf-link.svg');
+        content: '';
+        display: inline-block;
+        height: var(--icon-2xs);
+        margin-inline-start: var(--spacing-s);
+        width: var(--icon-2xs);
+      }
+    }
+
+    p {
+      @include text-mobile-p;
+      color: var(--color-stone);
+      margin-block: var(--spacing-xl);
+
+      &:last-child {
+        margin-block-end: 0;
+      }
+
+      &:first-child {
+        margin-block-end: var(--spacing-s);
+        margin-block-start: 0;
+      }
+    }
+
+    strong {
+      font-weight: var(--font-weight-demi-bold);
+    }
+
+    h2 {
+      @include text-mobile-titles;
+      color: var(--color-stone);
+
+      + p {
+        margin-block-start: var(--spacing-xs);
+      }
+    }
+
+    h3 {
+      @include text-h3;
+      color: var(--color-stone);
+    }
+
+    h5 {
+      @include text-h6;
+      color: var(--color-stone);
+      margin: 0;
+
+      + p {
+        margin-block-start: var(--spacing-m);
+      }
+    }
+
+    h6 {
+      @include text-mobile-p;
+      color: var(--color-stone);
+      font-weight: var(--font-weight-demi-bold);
+      margin: 0;
+
+      + p {
+        margin-block-start: var(--spacing-m);
+      }
+    }
+  }
+
+  &__before-image {
+    clip-path: polygon(0 0, var(--range-value) 0, var(--range-value) 100%, 0 100%);
+    z-index: 2;
+  }
+
+  &__after-image {
+    z-index: 1;
+  }
+
+  &__before-after {
+    position: relative;
+  }
+
+  &__before-after-images {
+    height: calc((100vw - ( 2 * var(--layout-mobile-margin))) * 0.56);
+    position: relative;
+  }
+
+  .images {
+    left: 0;
+    position: absolute;
+    top: 0;
+  }
+
+  input[type=range] {
+    appearance: none;
+    background-color: transparent;
+    cursor: pointer;
+    height: 100%;
+    margin: 0;
+    outline: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 4;
+
+    &::-webkit-slider-thumb {
+      visibility: hidden;
+    }
+  }
+
+  &__separator {
+    bottom: 0;
+    left: calc(var(--range-value) - 18px);
+    position: absolute;
+    top: 0;
+    width: rem-calc(36px);
+    z-index: 3;
+
+    &::before,
+    &::after {
+      background-color: var(--color-clouds);
+      content: '';
+      height: calc(50% - 12px);
+      left: rem-calc(18px);
+      position: absolute;
+      width: 1px;
+    }
+
+    &::before {
+      top: 0;
+    }
+
+    &::after {
+      bottom: 0;
+    }
+  }
+
+  &__separator-icon {
+    border: 1px solid var(--color-clouds);
+    border-radius: rem-calc(30px);
+    height: rem-calc(24px);
+    left: 0;
+    position: absolute;
+    top: calc(50% - 12px);
+    width: rem-calc(36px);
+
+    &::before,
+    &::after {
+      border-style: solid;
+      content: '';
+      height: 0;
+      position: absolute;
+      top: 5px;
+      width: 0;
+    }
+
+    &::before {
+      border-color: #fff0 #fff #fff0 #fff0;
+      border-width: 6px 8px 6px 0;
+      left: 5px;
+    }
+
+    &::after {
+      border-color: #fff0 #fff0 #fff0 #fff;
+      border-width: 6px 0 6px 8px;
+      right: 5px;
+    }
+  }
+
+  &__navigation-item {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    height: rem-calc(50px);
+    margin-inline-end: var(--spacing-xl);
+    position: relative;
+    white-space: nowrap;
+
+    .icon__info-sheet {
+      color: var(--color-gray-text);
+    }
+
+    &::after {
+      background-color: var(--color-bio);
+      bottom: -1px;
+      content: '';
+      height: 3px;
+      left: 0;
+      position: absolute;
+      transform: scaleX(0);
+      transform-origin: 0 0;
+      transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+      width: 100%;
+    }
+
+    &.is-active {
+      &::after {
+        transform: none;
+      }
+
+      #{$parent}__navigation-link {
+        color: var(--color-stone);
+      }
+
+      .icon__info-sheet {
+        color: var(--color-stone);
+      }
+    }
+
+    &:hover {
+      #{$parent}__navigation-link {
+        color: var(--color-stone);
+      }
+
+      .icon__info-sheet {
+        color: var(--color-stone);
+      }
+    }
+  }
+
+  &__navigation-link {
+    align-items: center;
+    color: var(--color-gray-text);
+    display: flex;
+    gap: var(--spacing-s);
+    margin-inline-end: var(--spacing-m);
+    text-transform: uppercase;
+
+    .icon:last-of-type {
+      margin-inline-start: auto;
+    }
+  }
+
+  @include mq($from: l) {
+    padding-block: var(--spacing-8xl);
+
+    &__content {
+      &.column {
+        column-count: 2;
+        column-gap: var(--spacing-xl);
+      }
+
+      li {
+        @include text-p;
+      }
+
+      p {
+        @include text-p;
+      }
+
+      h2 {
+        @include text-h2;
+      }
+
+      h3 {
+        @include text-h3;
+      }
+
+      h5 {
+        @include text-h5;
+      }
+
+      h6 {
+        @include text-p;
+      }
+    }
+
+    &__before-after-images {
+      height: calc((65vw - ( 2 * var(--layout-desktop-margin))) * 0.56);
+    }
+  }
+
+  @include mq($from: xl) {
+    &__before-after-images {
+      height: rem-calc(450px);
+    }
+  }
+}

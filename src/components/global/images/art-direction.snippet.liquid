@@ -1,0 +1,220 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Art direction (images)
+  - Liquid version of art direction component.
+
+  @param {String} [alt] - Override image alt.
+  @param {String} [block_class] - Block level class to apply to all elements.
+  @param {String} [breakpoint_sizes] - Sizes to use at each breakpoint.
+  @param {String} [class] - Additional classes.
+  @param {String} [desktop_breakpoint] - Breakpoint to use desktop image and
+  ratio at, if not set then it uses 'l' and 'xl' breakpoints.
+  @param {Boolean} [lazyload] - Lazyload image, defaults to true.
+  @param {Object} image - Image object formatted from Shopify response.
+  @param {Object} [image_desktop] - Override image object for desktop.
+  @param {Boolean} [padding] - Add padding based on image ratio or supplied
+  ratio, default to true, disable to make image fill its parent container.
+  @param {Boolean|Number|String} [ratio] - Aspect ratio of image in
+  `width:height`, `width / height`, or decimal ratio format (width/height),
+  will use the original ratio of image if set to false or 'image'.
+  @param {String} [ratio_desktop] - Override image ratio for desktop, pass
+ * 'image' or false to use image's original aspect ratio, pass true or '' to
+ * use existing value of ratio calculated using mobile image.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign breakpoints = 'xs-0,s-576,m-768,l-1024,xl-1366' | split: ','
+  assign breakpoint_sizes = breakpoint_sizes | split: '-'
+  assign desktop_breakpoint = desktop_breakpoint | default: 'l'
+  assign image_alt = alt | default: image.alt
+
+  if padding == false
+    assign padding_class = 'images--no-padding'
+  endif
+-%}
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Aspect ratio and padding bottom.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  # Mobile
+  # Aspect ratio
+  if ratio == false or ratio == blank or ratio == 'image'
+    if image.aspect_ratio
+      assign aspect_ratio = image.aspect_ratio
+    else
+      assign height = image.height | times: 1.00
+      assign width = image.width | times: 1.00
+      assign aspect_ratio = width | divided_by: height
+    endif
+
+  elsif ratio contains '.'
+    assign aspect_ratio = ratio
+
+  else
+    assign aspect_ratio = ratio | replace: ':', ' / '
+  endif
+
+  # Padding bottom
+  assign decimal = aspect_ratio
+
+  if aspect_ratio contains '/'
+    assign first = aspect_ratio | split: '/' | first | trim | times: 1.00
+    assign second = aspect_ratio | split: '/' | last | trim | times: 1.00
+    assign decimal = first | divided_by: second
+  endif
+
+  assign padding_bottom = 1.00 | divided_by: decimal | times: 100.00 | append: '%'
+
+  # Desktop
+  if ratio_desktop
+    # Aspect ratio
+    assign image_object = image
+
+    if image_desktop
+      assign image_object = image_desktop
+    endif
+
+    if ratio_desktop == 'image'
+      if image_object.aspect_ratio
+        assign desktop_aspect_ratio = image_object.aspect_ratio
+      else
+        assign desktop_height = image_object.height | times: 1.00
+        assign desktop_width = image_object.width | times: 1.00
+        assign desktop_aspect_ratio = desktop_width | divided_by: desktop_height
+      endif
+
+    elsif ratio_desktop == true or ratio_desktop == ''
+      assign desktop_aspect_ratio = aspect_ratio
+
+    elsif ratio_desktop contains '.'
+      assign desktop_aspect_ratio = ratio_desktop
+
+    else
+      assign desktop_aspect_ratio = ratio_desktop | replace: ':', ' / '
+    endif
+
+    # Padding bottom
+    assign desktop_decimal = desktop_aspect_ratio
+
+    if desktop_aspect_ratio contains '/'
+      assign desktop_first = desktop_aspect_ratio | split: '/' | first | trim | times: 1.00
+      assign desktop_second = desktop_aspect_ratio | split: '/' | last | trim | times: 1.00
+      assign desktop_decimal = desktop_first | divided_by: desktop_second
+    endif
+
+    assign desktop_padding_bottom = 1.00 | divided_by: desktop_decimal | times: 100.00 | append: '%'
+  endif
+-%}
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Styles.
+  - Builds CSS variables for each breakpoint based on desktop_breakpoint.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  for value in breakpoints
+    assign breakpoint = value | split: '-' | first
+    assign object_position_value = image.presentation.focal_point
+    assign padding_value = padding_bottom
+
+    if breakpoint == desktop_breakpoint
+      assign desktop_value = true
+    endif
+
+    if desktop_value
+      assign desktop_breakpoints = desktop_breakpoints | append: breakpoint | append: ','
+      assign padding_value = desktop_padding_bottom
+
+      if image_desktop and image_desktop.presentation.focal_point
+        assign object_position_value = image_desktop.presentation.focal_point
+      elsif image_desktop
+        assign object_position_value = '50% 50%;'
+      endif
+    endif
+
+    # Object position (focal point)
+    assign object_position_variable = '--breakpoint-object-position: object_position;' | replace: 'breakpoint', breakpoint | replace: 'object_position', object_position_value
+    assign image_styles = image_styles | append: object_position_variable | append: ';'
+    # Padding (spacer ratio)
+    assign padding_variable = '--breakpoint-padding-bottom: padding_bottom;' | replace: 'breakpoint', breakpoint | replace: 'padding_bottom', padding_value
+    assign spacer_styles = spacer_styles | append: padding_variable | append: ';'
+  endfor
+
+  assign desktop_breakpoints = desktop_breakpoints | remove_last: ',' | split: ','
+-%}
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Output HTML.
+-----------------------------------------------------------------------------
+{% endcomment %}
+<div class="images liquid {{ class }} {{ padding_class }}">
+  {% unless padding == false %}
+    <span
+      class="images__spacer"
+      style="{{ spacer_styles }}"
+      aria-hidden="true"
+    ></span>
+  {% endunless %}
+
+  {% if image != blank %}
+    <picture class="images__picture">
+      {% for value in breakpoints %}
+        {%- liquid
+          assign key = value | split: '-' | first
+          assign desktop = false
+          assign image_object = image
+
+          if desktop_breakpoints contains key
+            assign desktop = true
+          endif
+
+          if image_desktop and desktop
+            assign image_object = image_desktop
+          endif
+
+          unless forloop.last
+            assign media_query_size = breakpoints[forloop.index] | split: '-' | last
+          endunless
+
+          assign size = media_query_size | default: 1024
+
+          if forloop.last
+            assign size = image_object.width | default: 2048
+          endif
+
+          if breakpoint_sizes.size > 0
+            assign size = breakpoint_sizes[forloop.index0]
+          endif
+        -%}
+
+        <source
+          class="images__image is-loading"
+          {% unless forloop.last %}
+            media="(max-width: {{ media_query_size | minus: 1 }}px)"
+          {% endunless %}
+          srcset="{{ image_object | image_url: width: size }}"
+        >
+      {% endfor %}
+
+      <img
+        class="images__image is-loading"
+        alt="{{ image_alt | escape }}"
+        decoding="async"
+        {% unless lazyload == false %}
+          loading="lazy"
+        {% endunless %}
+        onload="setTimeout(() => {this.classList.remove('is-loading')}, 100)"
+        {% if image_alt == blank %}
+          role="presentation"
+        {% endif %}
+        src="{{ image | image_url: width: 100 }}"
+        style="{{ image_styles }}"
+      >
+    </picture>
+  {% endif %}
+</div>

@@ -1,0 +1,67 @@
+/**
+ * Styles: Drawer (overlay)
+ * -----------------------------------------------------------------------------
+ * Specific styles for drawer overlays.
+ *
+ */
+.drawer {
+  $parent: &;
+  background-color: var(--color-neutral-6);
+  height: var(--viewport-height);
+  left: 0;
+  max-width: 500px;
+  top: 0;
+  width: 100%;
+
+  &__container {
+    min-height: 100%;
+    padding-block-end: calc(var(--spacing-m) + env(safe-area-inset-bottom));
+  }
+
+  &__body {
+    display: flex;
+    max-height: 100%;
+    min-height: 100%;
+
+    > div,
+    > div:not([class]) > div {
+      width: 100%;
+    }
+
+    > div:not(.critical-component-hide),
+    > div:not([class]) > div:not(.critical-component-hide) {
+      display: flex;
+    }
+  }
+
+  /**
+   * Modifiers.
+   */
+  &#{&}--left {
+    left: unset;
+    right: 0;
+  }
+
+  /**
+   * RTL.
+   */
+  [dir=rtl] & {
+    left: unset;
+    right: 0;
+
+    &#{$parent}--left {
+      left: 0;
+      right: unset;
+    }
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: l) {
+    &__container {
+      padding: var(--spacing-l);
+      padding-block-end: calc(var(--spacing-l) + env(safe-area-inset-bottom));
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Text&Subtext (text-subtext)
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.text-subtext.css' | asset_url | stylesheet_tag }}
+
+<section
+  {% if block.settings.title != blank %}
+    aria-labelledby="section-title-{{ section.id }}"
+  {% endif %}
+  data-component-handle="text-subtext"
+>
+  <div class="text-subtext critical-component-clear liquid">
+    <div class="container grid no-gap">
+      {% for block in section.blocks %}
+        {% if
+          block.settings.title != blank or
+          block.settings.subtext != blank
+        %}
+          <div class="text-subtext__cell col xs-span l3-12 mt-2xl mb-3xl">
+            {% if block.settings.title != blank %}
+              <h2
+                id="section-title-{{ section.id }}"
+                class="text-subtext__title text-mobile-titles text-h2-desktop"
+              >
+                {{ block.settings.title }}
+              </h2>
+            {% endif %}
+
+            {% if block.settings.subtext != blank %}
+              <div class="text-subtext__subtext rte">
+                {% render 'rte' with content: block.settings.subtext %}
+              </div>
+            {% endif %}
+
+            {% if
+              block.settings.cta_text != blank and
+              block.settings.cta_url != blank
+            %}
+              <div class="mt-l">
+                {% render 'btn' with
+                  class: 'text-subtext__button',
+                  label: block.settings.cta_text,
+                  url: block.settings.cta_url,
+                  modifiers: 'primary',
+                  show_icon: false,
+                %}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema 'text-subtext' %}

@@ -1,0 +1,107 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Product recommendations (product-recommendations)
+  - If recommendations is disabled then the Vue component is not loaded.
+  - The products prop also supports being passed an array of objects.
+  - This isn't used by default to reduce Liquid overhead.
+  - However if this section is always visible then replace the dynamic and
+    section products props with the below value:
+  - [{% render 'format-product' for section.settings.dynamic_products as product, with full_data: false %}]
+  - [{% render 'format-product' for section.settings.section_products as product, with full_data: false %}]
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.product-recommendations.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  # Calculate fallback product count
+  assign fallback_product_count = 0
+
+  for product in section.settings.dynamic_products
+    assign fallback_product_count = fallback_product_count | plus: forloop.length
+    break
+  endfor
+
+  for product in section.settings.section_products
+    assign fallback_product_count = fallback_product_count | plus: forloop.length
+    break
+  endfor
+
+  # Calculate number of loading product cards to show
+  assign loading_product_count = section.settings.product_count
+
+  if section.settings.enable_recommendations == false and fallback_product_count < section.settings.product_count
+    assign loading_product_count = fallback_product_count
+  endif
+
+  # Hide on empty cart
+  if request.page_type == 'cart' and cart.item_count == 0
+    assign hidden_class = 'is-hidden'
+
+    if fallback_product_count > 0 and section.settings.display_empty_cart
+      assign hidden_class = ''
+    endif
+  endif
+
+  # Hide when disabled with no fallback products
+  if section.settings.enable_recommendations == false and fallback_product_count == 0
+    assign hidden_class = 'is-hidden'
+  endif
+-%}
+
+<section
+  ref="productRecommendations"
+  class="{{ hidden_class }}"
+  {% if section.settings.title != blank %}
+    aria-labelledby="section-title-{{ section.id }}"
+  {% endif %}
+  data-component-handle="product-recommendations"
+  data-component-type="scroll"
+>
+  <product-recommendations
+    v-if="getComponentVisible('product-recommendations')"
+    v-cloak
+    :container-ref="$refs.productRecommendations"
+    :display-empty-cart="{{ section.settings.display_empty_cart | json | escape }}"
+    :liquid="{
+      productId: {{ product.id | json | escape }},
+      sectionId: {{ section.id | json | escape }},
+      title: {{ section.settings.title | json | escape }},
+      buttonText: {{ section.settings.button_text | json | escape }},
+      buttonUrl: {{ section.settings.button_url | json | escape }}
+    }"
+    :override-product-id="{{ section.settings.override_product.id | json | escape }}"
+    :product="product"
+    :product-count="{{ section.settings.product_count | json | escape }}"
+    :products="{
+      count: {{ fallback_product_count | json | escape }},
+      dynamic: [
+        {%- for product in section.settings.dynamic_products -%}
+          {{ product.handle | json | escape }}{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+      section: [
+        {%- for product in section.settings.section_products -%}
+          {{ product.handle | json | escape }}{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+    }"
+    :recommendations="{
+      enable: {{ section.settings.enable_recommendations | json | escape }},
+      type: {{ section.settings.recommendation_type | json | escape }}
+    }"
+  ></product-recommendations>
+
+  {% comment %}
+  -----------------------------------------------------------------------------
+    Loading state.
+  -----------------------------------------------------------------------------
+  {% endcomment %}
+  <div v-if="!getComponentActive('product-recommendations')">
+    {% render 'product-recommendations' with
+      loading_product_count: loading_product_count,
+      section: section,
+    %}
+  </div>
+</section>
+
+{% schema 'product-recommendations' %}

@@ -1,0 +1,315 @@
+/**
+ * Styles: Menu drawer
+ * -----------------------------------------------------------------------------
+ * Base styles for menu drawer component.
+ * - See global/overlay/menu-drawer-overlay.scss for critical styles.
+ *
+ */
+.menu-drawer {
+  @include custom-scrollbar;
+  --menu-horizontal-gutter: var(--spacing-l);
+  --menu-vertical-gutter: var(--spacing-m);
+  $parent: &;
+  background-color: var(--color-clouds);
+  display: flex;
+  flex-direction: column;
+  inset: 0;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: absolute;
+
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  /**
+     * Header/
+     */
+  &__header {
+    align-items: center;
+    display: flex;
+    gap: calc((var(--spacing-2xs)) + (var(--spacing-m)));
+    justify-content: flex-end;
+    padding-block-end: calc((var(--spacing-2xs)) + (var(--spacing-5xl)));
+    padding-block-start: var(--spacing-xs);
+    padding-inline-end: var(--spacing-m);
+  }
+
+  &__close {
+    background-color: rgb(174 224 197 / 32%);
+    border-radius: 100%;
+    padding: var(--spacing-m);
+  }
+
+  &__account-label {
+    text-transform: uppercase;
+  }
+
+  /**
+   * Navigation.
+   */
+  &__title {
+    align-items: center;
+    display: flex;
+    padding-inline-start: calc(var(--menu-horizontal-gutter) * 2);
+    position: relative;
+    text-transform: uppercase;
+
+    // Magic values to follow designs
+    .icon {
+      height: 10px;
+      left: var(--spacing-l);
+      position: absolute;
+      top: 3px;
+      width: 10px;
+    }
+  }
+
+  &__navigation {
+    flex: 1;
+    width: 100%;
+  }
+
+  &__menus {
+    // 100% height - margin top - margin bottom - menu title height.
+    height: calc(100% - var(--spacing-l) - 20px);
+    margin-block-end: var(--spacing-s);
+    margin-block-start: var(--spacing-s);
+    position: relative;
+    width: 100%;
+  }
+
+  /**
+   * Menu (tier linklist).
+   */
+  &__menu#{$parent}__menu {
+    @include transition(opacity, translate);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    left: 0;
+    list-style-type: none;
+    margin-block: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    &.is-active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  &__tier2,
+  &__tier3 {
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    translate: 100%;
+
+    &.is-active {
+      height: unset;
+      overflow: visible;
+    }
+  }
+
+  &__tier1 {
+    &:not(.is-active) > li {
+      height: 0;
+
+      > #{$parent}__link {
+        opacity: 0;
+      }
+    }
+
+    .show-tier2 & {
+      translate: -100%;
+    }
+
+    .show-tier3 & {
+      translate: -200%;
+    }
+  }
+
+  &__menu-divider {
+    padding: 0 var(--menu-horizontal-gutter);
+  }
+
+  /**
+   * Links.
+   */
+  &__link {
+    align-items: center;
+    color: var(--color-neutral-1);
+    display: flex;
+    margin-block-end: 0;
+    // Icon height + padding so all links match height
+    min-height: calc(var(--icon-m) + (var(--menu-vertical-gutter) * 2));
+    padding: var(--menu-vertical-gutter) calc(var(--menu-horizontal-gutter) * 2);
+    position: relative;
+    text-align: left;
+    text-decoration: none;
+    width: 100%;
+  }
+
+  &__title-label {
+    color: var(--color-gray-text);
+    text-transform: uppercase;
+  }
+
+  &__button {
+    @include button-reset($font: false);
+    padding: var(--menu-vertical-gutter) calc(var(--menu-horizontal-gutter) * 2);
+    width: 100%;
+
+    .icon {
+      margin-inline-start: auto;
+    }
+
+    .icon-minus {
+      display: none;
+    }
+
+    &.active + ul {
+      display: block;
+    }
+
+    &.active > .icon-plus {
+      display: none;
+    }
+
+    &.active > .icon-minus {
+      display: block;
+    }
+  }
+
+  &__back {
+    color: var(--color-neutral-1);
+    justify-content: center;
+    position: relative;
+
+    .icon {
+      left: var(--menu-horizontal-gutter);
+      position: absolute;
+    }
+  }
+
+  /**
+   * Styles for search form.
+   */
+  &__form {
+    display: flex;
+    height: fit-content;
+    margin-block-end: var(--spacing-xs);
+    position: relative;
+
+    &::after,
+    &::before {
+      bottom: 0;
+      content: '';
+      height: var(--spacing-4xs);
+      left: 0;
+      position: absolute;
+      width: 100%;
+    }
+
+    &::after {
+      background-color: var(--color-teal);
+      transform: scaleX(0);
+      transform-origin: 0 0;
+      transition: transform var(--timing-normal) cubic-bezier(0.65, 0, 0.35, 1);
+      z-index: 0;
+    }
+
+    &::before {
+      background-color: var(--color-grey);
+      transition: opacity var(--timing-normal) cubic-bezier(0.65, 0, 0.35, 1) var(--timing-normal);
+    }
+
+    &:focus-within::after {
+      transform: none;
+      transition-delay: var(--timing-normal);
+    }
+
+    &:focus-within::before {
+      opacity: var(--layer-base);
+      transition-delay: 0ms;
+      transition-duration: var(--timing-quick);
+    }
+
+    .icon__arrow-link {
+      // Magic number to match design - 2.75rem = 44px
+      width: 2.75rem;
+    }
+  }
+
+  &__input {
+    &#{&} {
+      @include input-reset;
+      color: var(--color-stone);
+      min-height: var(--spacing-2xl);
+      width: 100%;
+
+      &::placeholder {
+        color: var(--color-grey);
+      }
+    }
+  }
+
+  &__loading {
+    @include loading;
+    height: calc(100% - (var(--menu-vertical-gutter) * 2));
+    left: var(--menu-horizontal-gutter);
+    position: absolute;
+    top: var(--menu-vertical-gutter);
+    width: calc(100% - (var(--menu-horizontal-gutter) * 2));
+  }
+
+  &__tier3-links {
+    display: none;
+    margin-inline-start: var(--spacing-4xl);
+  }
+
+  &__tier3-link {
+    color: var(--color-stone);
+    padding-block-end: var(--spacing-m);
+  }
+
+  &__footer {
+    margin-block-start: auto;
+    padding-block: calc((var(--spacing-7xl)) + (var(--spacing-xs)));
+    padding-inline: calc(var(--menu-horizontal-gutter) * 2);
+  }
+
+  &__mobile-discover > button {
+    padding-block-end: var(--spacing-l);
+    padding-block-start: var(--spacing-xl);
+    text-transform: uppercase;
+  }
+
+  /**
+   * Loading state.
+   */
+  &.is-loading {
+    #{$parent}__link {
+      pointer-events: none;
+      user-select: none;
+    }
+  }
+
+  /**
+   * Set focus ring to be inset so it's not cropped.
+   */
+  .is-tabbable & {
+    a[href]#{$parent}__link:focus,
+    button:enabled#{$parent}__link:focus {
+      @include focus-ring;
+    }
+  }
+}

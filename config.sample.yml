@@ -1,0 +1,19 @@
+# ThemeKit configuration
+development:
+  password: api_password
+  theme_id: '1234567890'
+  store: store_name.myshopify.com
+  directory: dist
+
+staging:
+  password: api_password
+  theme_id: '1234567890'
+  store: store_name.myshopify.com
+  directory: dist
+
+production:
+  password: api_password
+  theme_id: '1234567890'
+  store: store_name.myshopify.com
+  directory: dist
+  readonly: true

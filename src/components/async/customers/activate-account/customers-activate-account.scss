@@ -1,0 +1,15 @@
+/**
+ * Styles: Customers activate account (customers-activate-account)
+ * -----------------------------------------------------------------------------
+ * Base styles for customers activate account component.
+ *
+ */
+.customers-activate-account {
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+}

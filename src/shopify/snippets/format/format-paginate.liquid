@@ -1,0 +1,31 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet / Format: Paginate
+  - Returns paginate Liquid object formatted as Vue prop data.
+  - Use as a replacement to storefront API queries.
+  - Builds cursor from Liquid, cursor is base64 encoded object.
+
+  @param {Object} [collection] - Paginated collection object.
+  @param {Object} paginate - Paginate Liquid object to format.
+  @returns {Object}
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- capture data -%}
+  {%- liquid
+    assign end_cursor_format = '{"last_id":#,"last_value":"0"}'
+    assign start_cursor_format = '{"last_id":#,"last_value":"0"}'
+
+    # Start cursor has a last_value of "1" on first page
+    if paginate.current_page == 1
+      assign start_cursor_format = '{"last_id":#,"last_value":"1"}'
+    endif
+  -%}
+  currentPage: {{ paginate.current_page | json | escape }},
+  endCursor: {{ end_cursor_format | replace: '#', collection.products.last.id | base64_encode | json | escape }},
+  hasNextPage: {{ paginate.next.is_link | json | escape }},
+  hasPreviousPage: {{ paginate.previous.is_link | json | escape }},
+  liquid: {{ true | json | escape }},
+  startCursor: {{ start_cursor_format | replace: '#', collection.products.first.id | base64_encode | json | escape }},
+{%- endcapture -%}
+
+{ {{ data | strip | strip_newlines }} }

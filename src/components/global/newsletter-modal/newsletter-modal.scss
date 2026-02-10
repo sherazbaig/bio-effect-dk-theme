@@ -1,0 +1,134 @@
+/**
+ * Styles: Newsletter modal (newsletter-modal)
+ * -----------------------------------------------------------------------------
+ * Base styles for newsletter modal component.
+ *
+ */
+.newsletter-modal {
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  .grid {
+    gap: var(--layout-desktop-gutter);
+  }
+
+  &__title {
+    color: var(--color-stone);
+  }
+
+  &__disclaimer {
+    color: var(--color-stone);
+  }
+
+  &__email-block {
+    &.has-success {
+      display: none;
+    }
+  }
+
+  &__email-input {
+    border: 1px solid var(--color-grey);
+    color: var(--color-gray-text);
+    font-size: var(--font-size-3);
+    font-weight: var(--font-weight-medium);
+    height: rem-calc(50px);
+    padding: var(--spacing-s) var(--spacing-m);
+    width: 100%;
+  }
+
+  &__terms {
+    span {
+      color: var(--color-stone);
+      font-size: var(--font-size-2);
+    }
+
+    &.has-success {
+      display: none;
+    }
+  }
+
+  &__submit {
+    width: 100%;
+  }
+
+  &__disclaimer-label {
+    color: var(--color-gray-text);
+  }
+
+  &__stripes-container {
+    display: none;
+    left: rem-calc(-24px);
+    position: absolute;
+    top: rem-calc(-72px);
+
+    svg {
+      height: rem-calc(100px);
+      width: rem-calc(100px);
+    }
+  }
+
+  &__error {
+    color: var(--color-error-red);
+    font-size: var(--font-size-0);
+  }
+
+  &__success {
+    color: var(--color-gray-text);
+    font-size: var(--font-size-0);
+  }
+
+  &__image {
+    display: none;
+  }
+
+  @include mq($until: l) {
+    &__title {
+      font-size: var(--font-size-8);
+      font-weight: var(--font-weight-medium);
+    }
+  }
+
+  @include mq($from: l) {
+    &__media-col {
+      order: 2;
+    }
+
+    &__image {
+      display: block;
+    }
+
+    &__content-col {
+      // According to design width.
+      max-width: rem-calc(430px);
+      order: 1;
+    }
+
+    &__disclaimer-col {
+      order: 3;
+    }
+
+    &__title {
+      padding-block-start: var(--spacing-m);
+    }
+
+    &__disclaimer {
+      p {
+        @include text-p;
+      }
+    }
+
+    &__form {
+      // According to design width.
+      max-width: rem-calc(330px);
+    }
+
+    &__stripes-container {
+      display: block;
+    }
+  }
+}

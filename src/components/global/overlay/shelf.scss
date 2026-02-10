@@ -1,0 +1,37 @@
+/**
+ * Styles: Shelf (overlay)
+ * -----------------------------------------------------------------------------
+ * Specific styles for shelf overlays.
+ *
+ */
+.shelf {
+  background-color: var(--color-neutral-6);
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  &__container {
+    @include container;
+    @include custom-scrollbar;
+    max-height: calc(var(--viewport-height) - var(--spacing-5xl));
+    overflow-y: auto;
+    padding: var(--spacing-m);
+  }
+
+  /**
+   * Modifiers.
+   */
+  &#{&}--down {
+    bottom: unset;
+    top: 0;
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: l) {
+    &__container {
+      padding: var(--spacing-l);
+    }
+  }
+}

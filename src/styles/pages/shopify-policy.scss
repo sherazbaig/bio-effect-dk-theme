@@ -1,0 +1,19 @@
+/**
+ * Page: Shopify policy
+ * -----------------------------------------------------------------------------
+ * Styles for policies.
+ * - Has no template, but does have a page type.
+ *
+ */
+.shopify-policy {
+  &__container {
+    @include container;
+    margin-block-end: var(--layout-padding-bottom);
+    margin-block-start: var(--layout-padding-top);
+  }
+
+  &__title {
+    margin-block-end: var(--spacing-m);
+    text-align: flex-start;
+  }
+}

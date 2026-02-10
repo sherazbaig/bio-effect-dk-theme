@@ -1,0 +1,159 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Section: Main gift card
+  - This is not the gift card product template.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign gift_card_balance = gift_card.balance | money_without_trailing_zeros
+
+  # Strings
+  assign print_gift_card_string = 'gift_card.print_gift_card' | t
+  assign shop_link_string = 'gift_card.shop_link' | t
+
+  if gift_card.enabled == false or gift_card.expired
+    assign expiry_date = gift_card.expires_on | date: format: 'day_month_year'
+    assign gift_card_disabled = true
+  endif
+-%}
+
+<section
+  class="gift-card container liquid"
+  aria-labelledby="template-title"
+  data-expired="{{ gift_card_disabled | default: false }}"
+  js-gift-card="container"
+>
+  <div class="gift-card__content">
+    <h1
+      id="template-title"
+      class="gift-card__title text-heading-2xl text-heading-3xl-desktop"
+    >
+      {{ 'gift_card.title' | t }}
+    </h1>
+
+    <div class="gift-card__image-wrapper">
+      <img
+        class="gift-card__image"
+        alt=""
+        height="400"
+        loading="lazy"
+        role="presentation"
+        sizes="auto"
+        src="{{ 'gift-card.jpg' | asset_img_url: '300x' }}"
+        srcset="
+          {{ 'gift-card.jpg' | asset_img_url: '300x' }} 300w,
+          {{ 'gift-card.jpg' | asset_img_url: '450x' }} 450w,
+          {{ 'gift-card.jpg' | asset_img_url: '600x' }} 600w,
+          {{ 'gift-card.jpg' | asset_img_url: '750x' }} 750w,
+          {{ 'gift-card.jpg' | asset_img_url: '900x' }} 900w
+        "
+        width="600"
+      >
+
+      <div class="gift-card__badge text-heading-m">
+        {{ gift_card.initial_value | money_without_trailing_zeros }}
+      </div>
+
+      {% if gift_card_disabled %}
+        <div
+          class="
+            gift-card__badge
+            gift-card__badge--expired
+            text-heading-m
+          "
+        >
+          {{ 'gift_card.expired' | t }}
+        </div>
+      {% endif %}
+    </div>
+
+    {% unless gift_card_disabled %}
+      <div class="gift-card__code-container">
+        <label
+          class="visually-hidden"
+          for="gift-card-code"
+        >
+          {{ 'gift_card.gift_card_code' | t }}
+        </label>
+
+        <input
+          id="gift-card-code"
+          class="gift-card__code text-body-m-regular text-center"
+          readonly
+          type="text"
+          value="{{ gift_card.code | format_code }}"
+          js-gift-card="code"
+        >
+
+        <p
+          class="gift-card__copy-message text-body-m-regular"
+          data-copy-message="{{ 'gift_card.copy_message' | t }}"
+          js-gift-card="copyMessage"
+        ></p>
+      </div>
+    {% endunless %}
+
+    <div class="gift-card__information">
+      {% if gift_card_disabled %}
+        <p class="gift-card__notice text-body-m-regular">
+          {{ 'gift_card.expired_notice' | t: date: expiry_date }}
+        </p>
+
+      {% else %}
+        {% if gift_card.balance != gift_card.initial_value %}
+          <p class="text-body-m-regular text-body-l-regular-desktop">
+            {{ 'gift_card.remaining' | t: balance: gift_card_balance }}
+          </p>
+        {% endif %}
+
+        <p class="gift-card__notice text-body-m-regular">
+          {{ 'gift_card.notice' | t }}
+        </p>
+
+        <div
+          class="gift-card__qr-code"
+          data-identifier="{{ gift_card.qr_identifier }}"
+          data-qr-image-alt="{{ 'gift_card.qr_image_alt' | t }}"
+          js-gift-card="qr"
+        ></div>
+      {% endif %}
+    </div>
+
+    {% unless gift_card_disabled %}
+      <div class="gift-card__buttons">
+        {% if gift_card.pass_url %}
+          <div class="button-container gift-card__button-container">
+            <a
+              class="gift-card__apple-wallet"
+              href="{{ gift_card.pass_url }}"
+            >
+              <img
+                alt=""
+                height="40"
+                loading="lazy"
+                role="presentation"
+                src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}"
+                width="120"
+              >
+            </a>
+          </div>
+        {% endif %}
+
+        {% render 'btn' with
+          class: 'gift-card__start-shopping',
+          label: shop_link_string,
+          url: routes.root_url,
+        %}
+
+        {% render 'btn' with
+          attributes: 'js-gift-card="print"',
+          class: 'gift-card__print',
+          label: print_gift_card_string,
+          modifiers: 'secondary block center',
+        %}
+      </div>
+    {% endunless %}
+  </div>
+</section>
+
+{% schema 'main-gift_card' %}

@@ -1,0 +1,306 @@
+/* stylelint-disable max-nesting-depth */
+/* stylelint-disable selector-max-id */
+/* stylelint-disable declaration-no-important */
+/* stylelint-disable function-disallowed-list */
+
+/**
+ * Styles: Store locator (store-locator)
+ * -----------------------------------------------------------------------------
+ * Base styles for store locator component.
+ *
+ */
+.store-locator {
+  padding-block: var(--spacing-5xl) var(--spacing-6xl);
+
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  #storemapper {
+    --icon-search: url('data:~icons/directional-navigation/link-arrow.svg') !important;
+    margin: 0 !important;
+    padding-block: 0 !important;
+    padding-inline: 0 !important;
+  }
+
+  .strmpr-layout-horizontal {
+    grid-template-columns: 40% auto !important;
+  }
+
+  /**
+   * Styles for search form.
+   */
+  .strmpr-search {
+    display: flex;
+    height: fit-content;
+    margin-block-end: var(--spacing-xs);
+    position: relative;
+
+    &::after,
+    &::before {
+      bottom: 0;
+      content: '';
+      height: rem-calc(1px);
+      left: 0;
+      position: absolute;
+      width: 100%;
+    }
+
+    &::after {
+      @include transition(transform var(--timing-normal) cubic-bezier(0.65, 0, 0.35, 1));
+      background-color: var(--color-teal);
+      transform: scaleX(0);
+      transform-origin: 0 0;
+      z-index: 0;
+    }
+
+    &::before {
+      @include transition(opacity var(--timing-normal) cubic-bezier(0.65, 0, 0.35, 1) var(--timing-normal));
+      background-color: var(--color-grey);
+    }
+
+    &:focus-within::after {
+      transform: none;
+      transition-delay: var(--timing-normal);
+    }
+
+    &:focus-within::before {
+      opacity: var(--layer-base);
+      transition-delay: 0ms;
+      transition-duration: var(--timing-quick);
+    }
+  }
+
+  .strmpr-search-box {
+    @include input-reset;
+    background-color: transparent !important;
+    border: 0 !important;
+    color: var(--color-stone) !important;
+    font-family: var(--font-family-avenir-next) !important;
+    font-size: var(--font-size-3) !important;
+    font-weight: var(--font-weight-demi-bold) !important;
+    letter-spacing: var(--letter-spacing-0) !important;
+    line-height: var(--line-height-normal) !important;
+    min-height: var(--spacing-2xl) !important;
+    padding: 0 !important;
+    text-decoration: none !important;
+    text-indent: var(--text-indent-0) !important;
+    width: 100% !important;
+
+    &::placeholder {
+      color: var(--color-grey) !important;
+    }
+  }
+
+  .strmpr-search-button {
+    background-color: transparent !important;
+    background-size: 50px !important;
+    border: 0 !important;
+    padding: 0 !important;
+    width: 60px !important;
+  }
+
+  .strmpr-search-results {
+    overflow-x: auto;
+  }
+
+  .strmpr-field-bucket-general,
+  .strmpr-map-popup {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: var(--spacing-m) !important;
+  }
+
+  .strmpr-search-result {
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding-block: var(--spacing-m) !important;
+    padding-inline: var(--spacing-m) !important;
+
+    &.strmpr-selected {
+      background-color: transparent !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+    }
+  }
+
+  .strmpr-field-address {
+    color: var(--color-stone) !important;
+    // Below is code from include text-mobile-p-bold + !important
+    font-family: var(--font-family-avenir-next) !important;
+    font-size: var(--font-size-2) !important;
+    font-weight: var(--font-weight-medium) !important;
+    letter-spacing: var(--letter-spacing-0) !important;
+    line-height: var(--line-height-tight) !important;
+    margin: 0 !important;
+    text-decoration: none !important;
+    text-indent: var(--text-indent-0) !important;
+
+    &::before {
+      content: none !important;
+    }
+  }
+
+  .strmpr-field-name {
+    color: var(--color-teal) !important;
+    // Below is code from include text-mobile-p-bold + !important
+    font-family: var(--font-family-avenir-next) !important;
+    font-size: var(--font-size-3) !important;
+    font-weight: var(--font-weight-demi-bold) !important;
+    letter-spacing: var(--letter-spacing-0) !important;
+    line-height: var(--line-height-normal) !important;
+    margin: 0 !important;
+    text-decoration: none !important;
+    text-indent: var(--text-indent-0) !important;
+  }
+
+  .strmpr-field-distance {
+    // Below is code from include text-button-nav + !important
+    font-family: var(--font-family-avenir-next) !important;
+    font-size: var(--font-size-2) !important;
+    font-weight: var(--font-weight-medium) !important;
+    letter-spacing: var(--letter-spacing-0) !important;
+    line-height: var(--line-height-tight) !important;
+    text-decoration: none !important;
+    text-indent: var(--text-indent-0) !important;
+  }
+
+  .strmpr-field-directions {
+    align-items: flex-end !important;
+    border: 0 !important;
+    color: var(--color-stone) !important;
+    display: flex !important;
+    // Below is code from include text-button-nav + !important
+    font-family: var(--font-family-avenir-next) !important;
+    font-size: var(--font-size-0) !important;
+    font-weight: var(--font-weight-demi-bold) !important;
+    gap: var(--spacing-xs) !important;
+    letter-spacing: var(--letter-spacing-2) !important;
+    line-height: var(--line-height-baseline) !important;
+    margin: 0 !important;
+    margin-block-start: var(--spacing-s) !important;
+    padding: 0 !important;
+    text-decoration: none !important;
+    text-indent: var(--text-indent-0) !important;
+    width: fit-content !important;
+
+    &::after {
+      @include transition(left var(--timing-normal) var(--easing-normal));
+      background-image: var(--icon-search);
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      content: '';
+      display: block;
+      height: rem-calc(12px);
+      left: 0;
+      position: relative;
+      width: 50px;
+    }
+
+    &:hover::after {
+      left: var(--spacing-m);
+    }
+
+    &::before {
+      content: none !important;
+    }
+
+    a, a:hover {
+      color: var(--color-stone) !important;
+    }
+  }
+
+  .strmpr-field-show-on-map.storemapper-storelink {
+    background-color: var(--color-bio);
+    border: 0;
+    border-radius: 0;
+    color: var(--color-stone);
+    font-family: var(--font-family-avenir-next);
+    font-size: var(--font-size-2);
+    font-weight: var(--font-weight-demi-bold);
+    letter-spacing: var(--letter-spacing-1);
+    line-height: var(--line-height-normal);
+    overflow: hidden;
+    padding-inline: var(--spacing-5xl);
+    position: relative;
+    text-decoration: none;
+    text-indent: var(--text-indent-0);
+
+    &::before {
+      @include transition(all var(--timing-slow) cubic-bezier(0.65, 0, 0.35, 1));
+      --x-position: 0;
+      background-color: var(--color-clouds);
+      box-shadow: 0 0 20px 10px var(--color-clouds);
+      content: '';
+      display: block;
+      height: var(--spacing-2xl);
+      // Took values from Bioeffect site directly.
+      left: calc(-50px - 50%);
+      opacity: 0.35;
+      pointer-events: none;
+      position: absolute;
+      top: 50%;
+      transform: translate3d(var(--x-position), 0, 0) rotate(60deg);
+      transform-origin: 50% 50%;
+      width: 100%;
+      z-index: 0;
+    }
+
+    &:not([disabled], .is-disabled) {
+      &:hover, &.is-hover {
+        background-color: var(--color-bio);
+        color: var(--color-stone);
+
+        &::before {
+          --x-position: 175%;
+          transition-duration: 875ms;
+        }
+      }
+    }
+  }
+
+  .strmpr-search-result.strmpr-selected .strmpr-field-show-on-map.storemapper-storelink {
+    background-color: var(--color-clouds) !important;
+  }
+
+  .gm-style .gm-style-iw-c {
+    border-radius: 0 !important;
+  }
+
+  .gm-ui-hover-effect.strmpr-iw-close {
+    right: 0 !important;
+    top: 0 !important;
+  }
+
+  .strmpr-product-list {
+    display: none !important;
+  }
+
+  .strmpr-map,
+  .strmpr-search,
+  .strmpr-search-result-filters,
+  .strmpr-search-results {
+    z-index: initial !important;
+  }
+
+  .strmpr-powered-by {
+    display: none !important;
+  }
+
+  .storemapper-loader-marker {
+    fill: var(--color-teal) !important;
+  }
+
+  @include mq($from: l) {
+    padding-block: var(--spacing-8xl) var(--spacing-9xl);
+
+    #storemapper {
+      // Magic number from live site
+      height: max(500px, min(85vh - var(--header-height) * 2, 900px)) !important;
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Section: Main 404 (main-404)
+-----------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.main-404.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign cta_url = section.settings.cta_url | default: routes.root_url
+-%}
+
+<section
+  aria-labelledby="template-title"
+  data-component-handle="main-404"
+>
+  <div
+    class="
+      main-404
+      {% if section.settings.image != blank %}
+        main-404--has-image
+      {% endif %}
+      critical-component-clear
+      liquid
+      grid
+      container
+    "
+  >
+    <div class="main-404__container mb-2xl mt-xl col xs-span l3-13">
+      <div class="main-404__content">
+        <h1
+          id="template-title"
+          class="text-mobile-titles text-h1-desktop main-404__title"
+        >
+          {{ '404.title' | t }}
+        </h1>
+
+        <p class="text-h6 text-h5-desktop main-404__text">
+          {{ '404.text_html'
+            | t
+            | replace: '<a', '<a class="text-body-m-underline text-body-l-underline-desktop"'
+            | newline_to_br
+          }}
+        </p>
+
+        {% if section.settings.cta_text != blank %}
+          {% render 'btn' with
+            class: 'main-404__cta',
+            label: section.settings.cta_text,
+            url: cta_url,
+          %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {% if section.settings.image != blank %}
+    <div class="main-404__image-column">
+      <div class="main-404__image">
+        {% render 'art-direction' with
+          class: 'main-404__image-block',
+          image: section.settings.image,
+          lazyload: false,
+          ratio: '3:2',
+          ratio_desktop: '16:7',
+        %}
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+{% schema 'main-404' %}

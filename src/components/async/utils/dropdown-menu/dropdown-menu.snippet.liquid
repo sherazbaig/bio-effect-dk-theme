@@ -1,0 +1,33 @@
+{% liquid
+  assign label_class = ''
+  assign input_class = ''
+  assign selected_value = selected_value | placeholder | default: ''
+
+  if label
+    assign label_class = 'dropdown-menu__input-area--with-label'
+  endif
+
+  if selected_value
+    assign input_class = 'dropdown-menu__input--selected'
+  endif
+%}
+
+<div class="dropdown-menu liquid">
+  <div class="dropdown-menu__input-area {{ label_class }}">
+
+    {% if label %}
+      <span class="dropdown-menu__label">
+        {{ label }}
+      </span>
+    {% endif %}
+
+    <div class="dropdown-menu__input {{ input_class }}">
+      {{ selected_value }}
+    </div>
+
+    {% render 'icon-directional-navigation' with
+      icon: 'chevron',
+      direction: 'down'
+    %}
+  </div>
+</div>

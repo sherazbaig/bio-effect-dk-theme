@@ -1,0 +1,109 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Pagination (pagination)
+
+  @param {Object} paginate - Paginate Liquid object.
+  @param {String} [class_name] - Extra class name.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  if paginate.parts.size <= 0
+    continue
+  endif
+-%}
+
+<nav
+  class="pagination liquid {{ class_name }}"
+  role="navigation"
+>
+  <span class="visually-hidden">
+    {{ 'general.pagination.label' | t }}
+  </span>
+
+  <ul
+    class="pagination__list"
+    role="list"
+  >
+    <li
+      class="
+        pagination__list-item
+        {% unless paginate.previous %}
+          is-hidden
+        {% endunless %}
+      "
+    >
+      <a
+        class="pagination__button pagination__part"
+        href="{{ paginate.previous.url }}"
+        {% unless paginate.previous %}
+          tabindex="-1"
+        {% endunless %}
+      >
+        <span class="visually-hidden">
+          {{ 'general.pagination.previous' | t }}
+        </span>
+
+        {% render 'icon-directional-navigation' with icon: 'chevron', direction: 'left' %}
+      </a>
+    </li>
+
+    {% for part in paginate.parts %}
+      <li class="pagination__list-item">
+        {% if part.is_link %}
+          <a
+            class="pagination__link pagination__part text-mobile-p-desktop text-button-nav"
+            href="{{ part.url }}"
+          >
+            <span class="visually-hidden">
+              {{ 'general.pagination.page' | t }}
+            </span>
+
+            {{ part.title }}
+          </a>
+
+        {% else %}
+          {% if part.title == paginate.current_page %}
+            <span
+              class="pagination__part is-active text-mobile-p-desktop text-button-nav"
+              aria-current="page"
+            >
+              <span class="visually-hidden">
+                {{ 'general.pagination.page' | t }}
+              </span>
+
+              {{ part.title }}
+            </span>
+
+          {% else %}
+            <span class="pagination__text pagination__part text-mobile-p-desktop text-button-nav">
+              {{ part.title }}
+            </span>
+          {% endif %}
+        {% endif %}
+      </li>
+    {% endfor %}
+
+    <li
+      class="
+        pagination__list-item
+        {% unless paginate.next %}
+          is-hidden
+        {% endunless %}
+      "
+    >
+      <a
+        class="pagination__button pagination__part"
+        href="{{ paginate.next.url }}"
+        {% unless paginate.next %}
+          tabindex="-1"
+        {% endunless %}
+      >
+        <span class="visually-hidden">
+          {{ 'general.pagination.next' | t }}
+        </span>
+
+        {% render 'icon-directional-navigation' with icon: 'chevron', direction: 'right' %}
+      </a>
+    </li>
+  </ul>
+</nav>

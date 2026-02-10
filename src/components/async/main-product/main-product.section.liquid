@@ -1,0 +1,215 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Section: Main product
+-----------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.main-product.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign product_categories = false
+  assign star_rating_id = section.settings.star_rating_id
+
+  if product.metafields.product.categories
+    assign product_categories = product.metafields.product.categories | escape
+  endif
+%}
+
+<section
+  class="page-section container"
+  aria-labelledby="template-title"
+  data-component-handle="main-product"
+  data-component-type="load"
+>
+  <main-product
+    v-if="getComponentVisible('main-product')"
+    v-cloak
+    :liquid="{% render 'format-product' with media: true, product: product %}"
+    :categories="{{ product_categories }}"
+    :product="product"
+    :variant="variant"
+    :star-rating-id="{{ star_rating_id }}"
+    @update-request-object="updateRequestObject"
+  ></main-product>
+
+  {% comment %}
+  ----------------------------------------------------------------------------
+    Loading state.
+  ----------------------------------------------------------------------------
+  {% endcomment %}
+  <div v-if="!getComponentActive('main-product')">
+    <div class="main-product critical-component-clear liquid">
+      <div class="grid">
+        <div
+          id="product-gallery"
+          class="col xs-span l8"
+          data-sign-post-location="main"
+          js-sign-post
+        >
+          {% if product.featured_image != blank %}
+            <div class="main-product__featured-images">
+              {% render 'responsive-image' with
+                image: product.featured_image,
+                lazyload: false,
+                class: 'main-product__main-image',
+                ratio: '7:5',
+                min_max: '343-770'
+              %}
+
+              {% if product.metafields.product.badge.value %}
+                <div
+                  class="main-product__badge"
+                  style="background-color: {{ product.metafields.product.badge_color.value }}"
+                >
+                  {% render 'responsive-image' with
+                    image: product.metafields.product.badge.value,
+                    lazyload: true,
+                    padding: false,
+                    ratio: '1:1',
+                    min_max: '124-124'
+                  %}
+                </div>
+
+              {% elsif product.metafields.product.badge_text.value %}
+                <div
+                  class="main-product__badgeText text-tags"
+                  style="background-color: {{ product.metafields.product.badge_color.value }};"
+                >
+                    {{ product.metafields.product.badge_text.value }}
+                </div>
+              {% endif %}
+
+              <div class="main-product__awards">
+                {%- for award in product.metafields.product.awards.value limit: 5 -%}
+                  <div class="main-product__award">
+                    <img
+                      src="{{ award.src | image_url: width: 80 }}"
+                      width="80"
+                      height="80"
+                      alt="{{ award.alt }}"
+                      loading="lazy"
+                    >
+                  </div>
+                {%- endfor -%}
+            </div>
+            </div>
+          {% endif %}
+
+          <div class="main-product__images mt-m">
+            {% if product.media != blank and product.media.size > 1 %}
+
+              {% for media in product.media %}
+                {% assign class_string = 'main-product__image' %}
+
+                {% if forloop.first %}
+                  {% assign class_string = 'main-product__image main-product__image--active' %}
+                {% endif %}
+
+                {% render 'responsive-image' with
+                  image: product.media[forloop.index0],
+                  lazyload: false,
+                  class: class_string,
+                  ratio: '8:5',
+                  min_max: '70-160',
+                %}
+              {% endfor %}
+
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="col xs-span l5">
+          {% assign breadcrumbs = product.metafields.product.categories.value %}
+
+          {% if product_categories %}
+            {% render 'breadcrumbs' with
+              items: breadcrumbs,
+              title: product.title,
+              additional_class: 'mb-xl mt-xs'
+            %}
+          {% endif %}
+
+          <div class="main-product__details">
+            <h1
+              id="template-title"
+              class="
+                main-product__title
+                text-mobile-titles
+                text-h2-desktop
+              "
+            >
+              {{ product.title }}
+            </h1>
+
+            <div class="main-product__description text-p-desktop text-mobile-p rte">
+              {{ product.description }}
+            </div>
+
+            {% capture product_form %}
+              <div
+                {% if product.has_only_default_variant %}
+                  class="visually-hidden"
+                {% endif %}
+                class="product-form__variants mt-m"
+              >
+                {%- liquid
+                  if loading
+                    assign label = 'accessibility.loading' | t
+
+                    for i in (1..5)
+                      render 'selection-tab' with class: 'product-form__variant', id: forloop.index0, label: label, loading: true, name: 'id', value: forloop.index0
+                    endfor
+
+                  else
+                    for variant in product.variants
+                      assign id = 'variant-' | append: variant.id
+                      assign checked = false
+                      assign disabled = false
+                      assign label = variant.title
+
+                      if variant.id == product.selected_or_first_available_variant.id
+                        assign checked = true
+                      endif
+
+                      unless variant.available
+                        assign disabled = true
+                      endunless
+
+                      if product.gift_card?
+                        assign label = variant.price | money
+                      elsif variant.available == false
+                        assign sold_out_string = 'product.form.sold_out' | t
+                        assign label = label | append: '<span class="visually-hidden">#</span>' | replace: '#', sold_out_string
+                      endif
+
+                      render 'selection-tab' with checked: checked, class: 'product-form__variant', disabled: disabled, id: id, label: label, loading: true, name: 'id', value: variant.id
+                    endfor
+                  endif
+                -%}
+              </div>
+            {% endcapture %}
+
+            {{ product_form }}
+
+            {% render 'product-prices' with
+              available: product.selected_or_first_available_variant.available,
+              class: 'main-product__prices-container',
+              compare_at_price: product.selected_or_first_available_variant.compare_at_price,
+              price: product.selected_or_first_available_variant.price,
+              price_first: false,
+              varies: product.selected_or_first_available_variant.price_varies,
+              class_price: 'text-h4-desktop text-h6',
+              class_compare_at_price: 'text-h4-desktop text-h6 main-product__compare-at-price',
+            %}
+          </div>
+
+          {% render 'product-form' with
+            class: 'main-product__form',
+            product: product
+          %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema 'main-product' %}

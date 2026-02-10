@@ -1,0 +1,72 @@
+// stylelint-disable color-function-notation
+
+/**
+ * Styles: faq-section (faq-section)
+ * -----------------------------------------------------------------------------
+ * Base styles for faq-section component.
+ *
+ */
+.faq-section {
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__block {
+    border-bottom: 1px solid var(--color-border);
+
+    &:not(:first-child) {
+      margin-block-start: var(--spacing-xl);
+    }
+  }
+
+  &__grid {
+    margin-block-end: var(--spacing-3xl);
+    margin-block-start: var(--spacing-5xl);
+  }
+
+  &__question-wrapper {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    padding-block-end: var(--spacing-xl);
+  }
+
+  &__question,
+  &__title {
+    color: var(--color-stone);
+  }
+
+  &__answer {
+    padding-block-end: var(--spacing-xl);
+
+    * {
+      // Rich text styling.
+      @include text-mobile-p;
+      color: var(--color-stone);
+    }
+  }
+
+  @include mq($until: l) {
+    &__grid {
+      gap: var(--spacing-xl);
+    }
+  }
+
+  @include mq($from: l) {
+    &__answer {
+      * {
+        // Rich text styling.
+        @include text-p;
+      }
+    }
+
+    &__grid {
+      margin-block-end: var(--spacing-5xl);
+      margin-block-start: var(--spacing-xl);
+    }
+  }
+}

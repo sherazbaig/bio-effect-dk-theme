@@ -1,0 +1,44 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Form errors
+  - Formats and translates form errors.
+
+  @param {String} [class] - Additional classes to render.
+  @param {String} [class_container] - Container classes to to render.
+  @param {Object} form - Liquid form.
+  @param {String} [form_id] - Address form ID, used for error tracking.
+  @param {String} [namespace] - Used for unique IDs.
+  @param {String} [type] - Type of error message to return.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  capture form_errors
+    for error in form.errors
+      if type != blank and error != type
+        continue
+      endif
+
+      echo '<p class="customers__error#">' | replace: '#', class
+        unless error == 'form'
+          echo form.errors.translated_fields[error] | capitalize | append: ' '
+        endunless
+        echo form.errors.messages[error] | append: ' '
+      echo '</p>'
+    endfor
+  endcapture
+-%}
+
+{% if form_errors != blank %}
+  <div
+    {% if namespace != blank %}
+      id="{{ namespace }}-errors"
+    {% endif %}
+    class="customers__error-container liquid {{ class_container }}"
+    {% if form_id != blank %}
+      data-form-id="{{ form_id }}"
+      js-addresses="error"
+    {% endif %}
+  >
+    {{ form_errors }}
+  </div>
+{% endif %}

@@ -1,0 +1,86 @@
+{
+  "name": "@we-make-websites/basis",
+  "version": "5.3.2",
+  "description": "A modern Webpack and Theme Kit compiler designed to power all themes.",
+  "homepage": "https://we-make-websites.gitbook.io/basis/",
+  "repository": "https://github.com/we-make-websites/basis",
+  "author": "Craig Baldwin <craig@wemakewebsites.com>",
+  "contributors": [
+    "Dan Sutherland <dan.sutherland@wemakewebsites.com>",
+    "James Peilow <james.peilow@wemakewebsites.com>",
+    "Jon Ashcroft <jon.ashcroft@wemakewebsites.com>",
+    "Lewis Needham <lewis.needham@wemakewebsites.com>",
+    "Michael Coombes <michael.coombes@wemakewebsites.com>",
+    "Sebi Secara <sebastian@wemakewebsites.com>"
+  ],
+  "license": "MIT",
+  "bin": {
+    "basis-build": "./basis/commands/build.js",
+    "basis-copy": "./basis/commands/copy.js",
+    "basis-deploy": "./basis/commands/deploy.js",
+    "basis-download": "./basis/commands/download.js",
+    "basis-help": "./basis/commands/help.js",
+    "basis-locales": "./basis/commands/locales.js",
+    "basis-templates": "./basis/commands/templates.js",
+    "basis-watch": "./basis/commands/watch.js"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "17.6.6",
+    "@we-make-websites/branch-naming-check": "file:../branch-naming-check",
+    "@we-make-websites/eslint-config": "file:../eslint-config",
+    "chokidar": "3.5.3",
+    "eslint": "8.43.0",
+    "husky": "8.0.3",
+    "lint-staged": "13.2.3"
+  },
+  "dependencies": {
+    "@babel/core": "7.22.5",
+    "@babel/preset-env": "7.22.5",
+    "@we-make-websites/file-sync": "file:../file-sync",
+    "@we-make-websites/tannoy": "file:../tannoy",
+    "@we-make-websites/themekit": "file:../themekit",
+    "babel-loader": "9.1.2",
+    "browser-sync": "2.29.3",
+    "clipboardy": "2.3.0",
+    "css-loader": "6.8.1",
+    "cssnano": "6.0.1",
+    "enquirer": "2.3.6",
+    "fs-extra": "11.1.1",
+    "graphql": "16.7.1",
+    "graphql-tag": "2.12.6",
+    "js-yaml": "4.1.0",
+    "mini-css-extract-plugin": "2.7.6",
+    "open": "8.4.2",
+    "path": "0.12.7",
+    "portscanner": "2.2.0",
+    "postcss": "8.4.24",
+    "postcss-loader": "7.3.3",
+    "postcss-preset-env": "8.5.1",
+    "run-parallel-limit": "1.1.0",
+    "sass": "1.62.1",
+    "sass-loader": "13.3.2",
+    "style-loader": "3.3.3",
+    "svg64": "2.0.0",
+    "svgo": "3.0.2",
+    "vue": "3.3.4",
+    "vue-loader": "17.2.2",
+    "vue-svg-loader": "0.17.0-beta.2",
+    "webpack": "5.88.0",
+    "webpack-bugsnag-plugins": "1.8.0",
+    "webpack-bundle-analyzer": "4.9.0",
+    "webpack-cli": "5.1.4",
+    "webpack-dev-server": "4.15.1",
+    "webpack-merge": "5.9.0",
+    "yargs": "17.7.2"
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": "^16.17.0"
+  },
+  "lint-staged": {
+    "*.{js,vue}": "eslint"
+  },
+  "scripts": {
+    "debug": "node ./basis/commands/debug.js"
+  }
+}

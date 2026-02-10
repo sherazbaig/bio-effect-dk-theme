@@ -1,0 +1,62 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Breadcrumbs (breadcrumbs)
+
+  @param {Array} items - Array of items to construct breadcrumbs.
+  @param {Boolean} [loading] - Display loading state, set to false when
+  displayed in a static component.
+  @param {String} title - Title displayed for current page.
+  @param {String} [additional_class] - Additional class.
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign animation_delay = 0
+  assign loading = loading | default: true, allow_false: true
+  assign classes = additional_class | default: ''
+-%}
+
+{%- capture separator -%}
+  {% render 'icon-directional-navigation' with icon: 'arrow-head' %}
+{%- endcapture -%}
+
+<nav
+  class="
+    breadcrumbs
+    {% if loading %}
+      is-loading
+    {% endif %}
+    {{ classes }}
+    liquid
+  "
+  aria-label="{{ 'general.breadcrumbs.label' | t }}"
+>
+  <ol class="breadcrumbs__list-element">
+
+    {% for item in items %}
+      <li class="breadcrumbs__list-item">
+        <a
+          class="breadcrumbs__link text-button-nav"
+          href="{{ item.url }}"
+        >
+          {{ item.title }}
+        </a>
+      </li>
+
+      {% unless forloop.last %} {{ separator }} {% endunless %}
+    {% endfor %}
+
+    <li class="breadcrumbs__list-item">
+      {% if items != blank %}
+        {{ separator }}
+      {%endif%}
+
+      <a
+        aria-current="page"
+        class="breadcrumbs__link text-button-nav"
+        href=""
+      >
+        {{ title }}
+      </a>
+    </li>
+  </ol>
+</nav>

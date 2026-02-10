@@ -1,0 +1,123 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Main article (main-article)
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.main-article.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign full_width_image = article.metafields.custom.banner_image_full_width.value.image.value
+  assign share_buttons = article.metafields.custom.share_links.value
+  assign excerpt = article.excerpt
+  assign header_margin_bottom_desktop = '--spacing-4xl'
+  assign header_margin_bottom_mobile = '--spacing-xl'
+
+  if article.content == blank
+    assign header_margin_bottom_desktop = '0'
+    assign header_margin_bottom_mobile = '0'
+  endif
+
+  for link in share_buttons
+    assign show_share_buttons = true | default: false
+    break
+  endfor
+-%}
+
+<article
+  aria-labelledby="template-title"
+  data-component-handle="main-article"
+  data-section-schema
+>
+  <div
+    class="
+      main-article
+      grid
+      critical-component-clear
+      liquid
+    "
+    style="
+      --header-margin-bottom-desktop: var({{ header_margin_bottom_desktop }});
+      --header-margin-bottom-mobile: var({{ header_margin_bottom_mobile }});
+    "
+  >
+    <div
+      class="
+        main-article__header-wrapper
+        grid
+        col
+        l1-14
+      "
+    >
+      <div
+        class="
+          main-article__header
+          col
+          xs-span
+          l3-10
+        "
+      >
+        <h1
+          id="template-title"
+          class="text-mobile-titles text-h1-desktop"
+        >
+          {{ article.title }}
+        </h1>
+
+        <div class="main-article__header-bottom">
+          {% if show_share_buttons %}
+            {% render 'share' with
+              base_class: 'main-article'
+              links_to_show: share_buttons
+            %}
+          {% endif %}
+
+          <p class="text-p text-h6-desktop">
+            {{ excerpt }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {% if full_width_image %}
+      <div class="col xs-span">
+        {% render 'art-direction' with
+          class: 'main-article__image-container',
+          image: full_width_image,
+          ratio: '375:222',
+          ratio_desktop: '1440:587',
+        %}
+      </div>
+    {% else %}
+      <div class="col xs-span main-article__divider l2-13"></div>
+    {% endif %}
+
+    {% unless article.content == blank %}
+      <div
+        class="
+          main-article__content-wrapper
+          grid
+          col
+          l1-14
+        "
+      >
+        <div
+          class="
+            main-article__content
+            rte
+            col
+            xs-span
+            l3-12
+          "
+        >
+          {% render 'rte' with
+            content: article.content,
+            image_width: 1156,
+          %}
+        </div>
+      </div>
+    {% endunless %}
+  </div>
+</article>
+
+{% schema 'main-article' %}

@@ -1,0 +1,146 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Order card (cards)
+  - Used on account overview and orders templates.
+
+  @param {String} [class] - Additional classes to render.
+  @param {Object} order - Order Liquid object to render.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign extra_products_count = order.line_items.size | minus: 1
+  assign order_image = order.line_items.first.image
+  assign order_total_price = order.total_price | money
+
+  if order.total_price == 0
+    assign order_total_price = 'product.prices.free' | t
+  endif
+
+  # Strings
+  assign track_order_string = 'customers.order_card.track_order' | t
+  assign view_details_string = 'customers.order_card.view_details' | t
+
+  # Get status based on combination of financial and fulfilment statuses
+  assign order_status_string = 'customers.order_status.#' | replace: '#', order.financial_status
+
+  if order.financial_status == 'paid'
+    assign order_status_string = 'customers.order_status.#' | replace: '#', order.fulfillment_status
+  endif
+
+  assign order_status = order_status_string | t
+
+  if order.cancelled
+    assign order_status = 'customers.order_status.cancelled' | t
+  endif
+
+  # Get tracking code if it exists and the fulfilment contains all order items
+  for line_item in order.line_items
+    if line_item.fulfillment.tracking_number == blank or line_item.fulfillment.item_count != order.item_count
+      break
+    endif
+
+    assign tracking_url = line_item.fulfillment.tracking_url
+    break
+  endfor
+
+  # Determine if tracking section should be displayed
+  if settings.customer_order_status
+    assign display_status = true
+
+    if order.fulfillment_status == 'complete'
+      assign display_status = false
+    elsif order.fulfillment_status == 'fulfilled' and settings.customer_order_status_threshold > 0
+
+      # If order is complete and last fulfilment was 7 days ago, hide status
+      for line_item in order.line_items
+        assign sorted_dates = sorted_dates | append: line_item.fulfillment.created_at | append: ','
+      endfor
+
+      assign last_fulfillment = sorted_dates | remove_last: ',' | split: ',' | sort | last | date: '%s'
+      assign now = 'now' | date: '%s'
+      assign difference = now | minus: last_fulfillment
+      assign threshold = 60 | times: 60 | times: 24 | times: settings.customer_order_status_threshold
+
+      if difference > threshold
+        assign display_status = false
+      endif
+    endif
+  endif
+
+-%}
+
+<div class="order-card liquid {{ class }}">
+  {% if display_status %}
+    {% render 'order-status' with
+      class: 'order-card__order-status',
+      order: order,
+    %}
+  {% endif %}
+
+  <div class="order-card__image-container">
+    <div class="order-card__image">
+      {% render 'responsive-image' with
+        image: order_image,
+        min_max: '91-273',
+        ratio: '1:1',
+        sizes: '(min-width: 1024px) 151px, 91px'
+      %}
+
+      {% if extra_products_count > 0 %}
+        <div class="order-card__image-overlay">
+          <span class="text-heading-s text-heading-m-desktop">
+            {{ 'customers.order_card.product_count' | t: count: extra_products_count }}
+          </span>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="order-card__details">
+    <p
+      class="order-card__field text-body-m-regular text-body-l-regular-desktop"
+      data-label="{{ 'customers.order_card.labels.order_status' | t }}"
+    >
+      {{ order_status }}
+    </p>
+
+    <p
+      class="order-card__field text-body-m-regular text-body-l-regular-desktop"
+      data-label="{{ 'customers.order_card.labels.order_number' | t }}"
+    >
+      {{ 'customers.order_card.order_number' | t: order_number: order.order_number }}
+    </p>
+
+    <p
+      class="order-card__field text-body-m-regular text-body-l-regular-desktop"
+      data-label="{{ 'customers.order_card.labels.date' | t }}"
+    >
+      {{ order.created_at | date: format: 'day_full_month_year' }}
+    </p>
+
+    <p
+      class="order-card__field text-body-m-regular text-body-l-regular-desktop"
+      data-label="{{ 'customers.order_card.labels.total' | t }}"
+    >
+      {{ 'customers.order_card.total' | t: total: order_total_price }}
+    </p>
+  </div>
+
+  <div class="order-card__footer">
+    {% if order.fulfillment_status != 'complete' and tracking_url != blank %}
+      {% render 'btn' with
+        attributes: 'target="_blank"',
+        class: 'order-card__track',
+        label: track_order_string,
+        modifiers: 'secondary block center',
+        url: tracking_url,
+      %}
+    {% endif %}
+
+    {% render 'btn' with
+      class: 'order-card__view',
+      label: view_details_string,
+      url: order.customer_url,
+    %}
+  </div>
+</div>

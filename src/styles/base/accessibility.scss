@@ -1,0 +1,61 @@
+/**
+ * Base: Accessibility
+ * -----------------------------------------------------------------------------
+ * Handles tabbable state styles and sign post styles.
+ *
+ */
+.accessibility {
+  &__sign-post.button {
+    left: var(--spacing-s);
+    max-width: calc(100vw - (var(--spacing-s) * 2));
+    position: fixed;
+    top: var(--spacing-s);
+    z-index: var(--layer-temporary);
+
+    &:not(:focus) {
+      @include visually-hidden;
+    }
+  }
+
+  &__information.button.is-active {
+    line-height: var(--line-height-normal, 140%);
+
+    .button__label {
+      opacity: unset;
+    }
+  }
+
+  &__sign-post--main.button {
+    top: calc(var(--header-visible-height) + var(--spacing-s));
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: l) {
+    &__information.is-active:focus {
+      max-width: 300px;
+    }
+  }
+}
+
+/**
+ * Reset focus state on tabbable elements.
+ */
+[tabindex],
+[draggable],
+a[href],
+area,
+button:enabled,
+input:not([type=hidden]):enabled,
+object,
+select:enabled,
+textarea:enabled {
+  &:focus-visible {
+    outline: 0;
+  }
+
+  .is-tabbable &:focus-visible {
+    @include focus-ring;
+  }
+}

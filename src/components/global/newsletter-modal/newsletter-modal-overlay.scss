@@ -1,0 +1,49 @@
+/**
+ * Styles: Newsletter modal overlay
+ * -----------------------------------------------------------------------------
+ * Override styles for newsletter modal overlay.
+ *
+ */
+.newsletter-modal-overlay {
+  place-items: center;
+
+  &__container {
+    max-width: 100%;
+    padding: var(--spacing-l);
+    width: 100%;
+  }
+
+  &__close-container {
+    top: var(--spacing-3xl);
+  }
+
+  .modal__container,
+  &__container {
+    width: 100%;
+  }
+
+  &__close {
+    .icon {
+      path {
+        stroke: var(--color-stone);
+      }
+    }
+  }
+
+  @include mq($from: l) {
+    .modal__container,
+    &__container {
+      // According to design.
+      max-width: rem-calc(972px);
+    }
+
+    &__container {
+      padding-block-end: var(--spacing-4xl);
+      padding-block-start: var(--spacing-6xl);
+    }
+
+    &__close-container {
+      top: var(--spacing-l);
+    }
+  }
+}

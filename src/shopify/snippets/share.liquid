@@ -1,0 +1,72 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Share icon list
+  - List of linked icons for the store's associated social media accounts.
+  - Used in article pages.
+
+  @param {String} [base_class] - Used to generate BEM classnames.
+  @param {Array} links_to_show - Array of share links.
+------------------------------------------------------------------------------
+{% endcomment %}
+<div class="{{ base_class }}__social-sharing">
+  {% for link in links_to_show %}
+    {%- liquid
+      assign link_name = link.name | downcase
+      assign copy_button_name = 'copy'
+      assign href = ''
+      assign refined_title = title | escape
+
+      if link_name contains 'twitter'
+        assign href = "//twitter.com/share?url=" | append: canonical_url
+      elsif link_name contains 'facebook'
+        assign href = "//www.facebook.com/sharer.php?u=" | append: canonical_url
+      elsif link_name contains 'pinterest'
+        assign href= "//pinterest.com/pin/create/button/?url=" | append: canonical_url | append: "&amp;description=" | append: refined_title
+      elsif link_name contains 'whatsapp'
+        assign href= "whatsapp://send?text=" | append: canonical_url
+      endif
+    %}
+
+    <div class="{{ base_class }}__sharing-item sharing__item">
+      <a
+        class="{{ base_class }}__sharing-link sharing__link"
+        href="{{ href }}"
+        target="_blank"
+
+        {% if link_name contains copy_button_name %}
+          onclick="copyToClipboard();return false;"
+        {% endif %}
+      >
+        <span class="visually-hidden">
+          {{ link_name }}
+        </span>
+
+        {% if link_name contains copy_button_name %}
+          <span
+            class="{{ base_class }}__copy-link visually-hidden"
+            js-sharing="copy"
+          >
+            {{ canonical_url }}
+          </span>
+        {% endif %}
+
+        <img
+          class="{{ base_class }}__sharing-icon sharing__icon"
+          src="{{ link.icon | img_url: '20x' }}"
+          alt="{{ link_name }}"
+        >
+      </a>
+    </div>
+  {% endfor %}
+</div>
+
+<script>
+  function copyToClipboard() {
+    const range = document.createRange();
+    range.selectNode(document.querySelector('[js-sharing="copy"]'));
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+  }
+</script>

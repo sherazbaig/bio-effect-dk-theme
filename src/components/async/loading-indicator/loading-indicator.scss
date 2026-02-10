@@ -1,0 +1,127 @@
+/**
+ * Styles: Loading Indicator (loading-indicator)
+ * -----------------------------------------------------------------------------
+ * Base styles for loading indicator component.
+ *
+ */
+
+// ease-in
+$ease-in-quad: cubic-bezier(0.11, 0, 0.5, 0);
+$ease-in-cubic: cubic-bezier(0.32, 0, 0.67, 0);
+$ease-in-quart: cubic-bezier(0.5, 0, 0.75, 0);
+$ease-in-quint: cubic-bezier(0.64, 0, 0.78, 0);
+
+// ease-out
+$ease-out-quad: cubic-bezier(0.5, 1, 0.89, 1);
+$ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
+$ease-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+$ease-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+
+// ease-in-out
+$ease-in-out-quad: cubic-bezier(0.45, 0, 0.55, 1);
+$ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+$ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+$ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+
+@keyframes loading {
+  0% {
+    transform: translate3d(100%, 0, 0);
+  }
+
+  30%,
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  80%,
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@mixin line {
+  animation: loading var(--loading-transition-duration, 2s) linear var(--loading-transition-delay, 0s) infinite;
+  background-color: var(--color-bio);
+  content: '';
+  height: 8px;
+  left: 0;
+  position: absolute;
+  transform: translate3d(100%, 0, 0);
+  width: 100%;
+}
+
+.loading-indicator {
+  contain: strict;
+  display: block;
+  height: 50px;
+  overflow: hidden;
+  position: relative;
+
+  // hide loading
+  text-indent: calc(56px + 1ch);
+  white-space: nowrap;
+  width: 56px;
+  z-index: 0;
+
+  @media (prefers-reduced-motion: reduce) {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    overflow: visible;
+    text-indent: 0;
+    width: 100%;
+  }
+
+  &__line {
+    display: block;
+    height: 22px;
+    left: 0;
+    position: absolute;
+    top: 14px;
+    width: 100%;
+  }
+
+  &,
+  > &__line {
+    &::before,
+    &::after {
+      @include line;
+    }
+
+    &::before {
+      top: 0;
+    }
+
+    &::after {
+      bottom: 0;
+    }
+  }
+
+  &::before {
+    // first
+    animation-timing-function: linear;
+  }
+
+  &::after {
+    // last
+    animation-timing-function: $ease-out-cubic;
+  }
+
+  > &__line::before {
+    animation-timing-function: $ease-in-out-cubic;
+  }
+
+  > &__line::after {
+    animation-timing-function: $ease-in-cubic;
+  }
+
+  // static layout for reduced motion
+  @media (prefers-reduced-motion: reduce) {
+    &::before,
+    &::after,
+    > &__line::before,
+    > &__line::after {
+      animation: none;
+    }
+  }
+}

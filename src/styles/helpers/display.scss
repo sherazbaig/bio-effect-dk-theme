@@ -1,0 +1,50 @@
+/**
+ * Helper: Display
+ * -----------------------------------------------------------------------------
+ * Display classes that affect page render.
+ *
+ */
+
+/**
+ * Critical CSS resets.
+ * - These styles are used to override styles set by the critical CSS
+ *   in the `critical.liquid` snippet.
+ */
+.critical-hide,
+.main-content .shopify-section {
+  display: unset;
+}
+
+.critical-clear,
+body:not(.template-index) .main-content {
+  opacity: 1;
+}
+
+body.template-article .site-main-section {
+  background-color: var(--color-clouds);
+
+  /* stylelint-disable-next-line selector-max-compound-selectors */
+  .shopify-section section .critical-component-clear {
+    background-color: var(--color-breeze);
+  }
+}
+
+/**
+ * Only show when JS is not supported.
+ */
+.no-js:not(html) {
+  display: none;
+
+  .no-js & {
+    display: unset;
+  }
+}
+
+/**
+ * Only show when JS is supported.
+ */
+.js {
+  .no-js & {
+    display: none;
+  }
+}

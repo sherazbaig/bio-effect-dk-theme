@@ -1,0 +1,124 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Line item (line-item)
+
+  @param {String} [class] - Additional classes.
+  @param {Boolean} [hide_image] - Don't render image or loading animation.
+  @param {Boolean|Object} [line_item] - Line item in cart response or order.
+  @param {Boolean} [loading_animation] - Force the display of the loading state.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign line_item_image = line_item.image
+
+  if loading_animation or item == false or line_item.id == blank
+    assign line_item_class = 'is-loading'
+    assign line_item_image = false
+  endif
+
+  if hide_image
+    assign line_item_image = false
+  endif
+
+  assign price_class = 'text-mobile-p-bold'
+  assign compare_at_price_class = 'text-p-xs-bold'
+
+  # Get variants with option names
+  assign variant_parts = line_item.variant.title | split: ' / '
+
+  for product_option in line_item.options_with_values
+    # Can't use selected option as it always returns the first variant
+    assign option_title = 'customers.order.item_card.variant' | t: option_name: product_option.name, selected_value: variant_parts[forloop.index0]
+    assign variant_title = variant_title | append: ' / ' | append: option_title
+  endfor
+
+  assign variant_title = variant_title | remove_first: '/' | strip
+
+  if line_item.gift_card
+    assign variant_title = line_item.variant.price | money
+  endif
+
+  # Line item original price
+  assign original_line_price = false
+
+  if line_item.price < line_item.original_line_price
+    assign original_line_price = line_item.original_line_price
+  endif
+
+  # Variant compare at price
+  assign compare_at_price = line_item.variant.compare_at_price | times: line_item.quantity
+
+  unless compare_at_price
+    if line_item.original_price != line_item.final_price
+      assign compare_at_price = line_item.original_price
+    endif
+  endunless
+
+  if line_item.quantity > line_item.variant.inventory_quantity
+    assign notification_text = 'cart.notifications.limited_stock.text' | t: count: line_item.variant.inventory_quantity
+    assign notification_title = 'cart.notifications.limited_stock.title' | t
+  endif
+
+  if line_item.quantity == line_item.variant.inventory_quantity
+    assign notification_text = 'cart.notifications.maximum_quantity.text' | t: count: line_item.variant.inventory_quantity
+    assign notification_title = 'cart.notifications.maximum_quantity.title' | t
+  endif
+-%}
+
+<div class="line-item liquid {{ class }} {{ line_item_class }}">
+  <div class="line-item__grid">
+    <div class="line-item__image-container">
+      {% render 'responsive-image' with
+        class: 'line-item__image',
+        image: line_item_image,
+        lazyload: false,
+        min_max: '95-285',
+        ratio: '1:1',
+        sizes: '(min-width: 1024px) 99px, 95px',
+      %}
+    </div>
+
+    <div class="line-item__details">
+      <div class="line-item__titles">
+        <a
+          class="line-item__title text-p-bold"
+          href="{{ line_item.url }}"
+        >
+          {{ line_item.product.title }}
+        </a>
+
+        {% if line_item.product.has_only_default_variant == false or line_item.gift_card %}
+          <p class="line-item__variant text-tags">
+            {{ variant_title }}
+          </p>
+        {% endif %}
+      </div>
+
+      {% render 'quantity-selector' with
+        class: 'line-item__quantity-selector',
+        id: line_item.key,
+        name: 'updates[]',
+        quantity: line_item.quantity,
+      %}
+    </div>
+
+    {% render 'product-prices' with
+      attributes: 'aria-labelledby="total-title"',
+      class: 'line-item__total',
+      class_price: price_class,
+      class_compare_at_price: compare_at_price_class,
+      compare_at_price: compare_at_price,
+      original_line_price: original_line_price,
+      price: line_item.final_line_price,
+    %}
+
+    <a
+      class="line-item__remove text-p-small"
+      href="{{ line_item.url_to_remove }}"
+    >
+      <span class="text-p-small">
+        {{ 'cart.line_item.remove' | t }}
+      </span>
+    </a>
+  </div>
+</div>

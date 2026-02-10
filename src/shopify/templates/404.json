@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "site-header-offset": {
+      "type": "site-header-offset",
+      "settings": {}
+    },
+    "main": {
+      "type": "main-404",
+      "settings": {
+        "cta_text": "Back to home",
+        "cta_url": ""
+      }
+    }
+  },
+  "order": [
+    "site-header-offset",
+    "main"
+  ]
+}

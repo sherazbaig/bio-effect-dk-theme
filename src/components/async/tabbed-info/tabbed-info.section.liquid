@@ -1,0 +1,220 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Tabbed info (tabbed-info)
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{{ 'component.tabbed-info.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign content_has_proper_blocks = false
+
+    if section.blocks.size > 0
+      for block in section.blocks
+        if block.settings.tab_title != blank and block.settings.tab_content != blank
+          assign content_has_proper_blocks = true
+        endif
+      endfor
+    endif
+%}
+
+<section
+  aria-labelledby="section-title-{{ section.id }}"
+  data-component-handle="tabbed-info"
+  data-component-type="scroll"
+>
+  <tabbed-info
+    v-if="getComponentVisible('tabbed-info')"
+    v-cloak
+    :blocks='[
+      {%- for block in section.blocks -%}
+        {
+          tabTitle: {{ block.settings.tab_title | json | escape }},
+          contentHeading: {{ block.settings.tab_content_heading | json | escape }},
+          tabContent: {{ block.settings.tab_content | json | escape }},
+          beforeImage: {% render 'format-image' with image: block.settings.before_image %},
+          beforeImageText: {{ block.settings.before_image_text | json | escape }},
+          afterImage: {% render 'format-image' with image: block.settings.after_image %},
+          afterImageText: {{ block.settings.after_image_text | json | escape }},
+          tabType: {{ block.type | json | escape }},
+          products: [
+            {% for i in (1..5) %}
+              {% assign product_string = 'product_#' | replace: '#', i %}
+              {% assign product = block.settings[product_string] %}
+
+              {% if product != blank %}
+                {% render 'format-product' with product: product %}
+                {% unless forloop.last %},{% endunless %}
+              {% endif %}
+            {% endfor %}
+          ]
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]'
+    :liquid="{
+      sectionId: {{ section.id | json | escape }}
+    }"
+  ></tabbed-info>
+
+  {% comment %}
+  -----------------------------------------------------------------------------
+    Loading state.
+  -----------------------------------------------------------------------------
+  {% endcomment %}
+  <div v-if="!getComponentActive('tabbed-info')">
+    {% if content_has_proper_blocks %}
+      <div class="tabbed-info is-loading critical-component-clear liquid grid container">
+        <div class="col xs-span l2-13">
+          <ul class="tabbed-info__navigation">
+            {% for block in section.blocks %}
+              {% if block.settings.tab_title != blank and block.settings.tab_content != blank %}
+                <li
+                  class="
+                    tabbed-info__navigation-item
+                    {% if forloop.first %}is-active{% endif %}
+                  "
+                >
+                  <a class="tabbed-info__navigation-link text-button-nav">
+                    {{ block.settings.tab_title }}
+
+                    {% assign tab_title_lowercase = block.settings.tab_title | downcase %}
+
+                    {% if tab_title_lowercase contains 'info sheet' %}
+                      {% render 'icon-general' with icon: 'info-sheet' %}
+                    {% endif %}
+                  </a>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+
+          <div class="tabbed-info__content-area">
+          {% comment %}
+          ------------------------------------------------------------------------------
+          Use first block as loading state hence the tab change wont work.
+          ------------------------------------------------------------------------------
+          {% endcomment %}
+            {% assign first_block = section.blocks[0] %}
+
+            <div
+              class="
+                {% if
+                  first_block[0].type == 'tab-with-before-after' or
+                  first_block[0].type == 'tab-with-products'
+                %}
+                  grid
+                {% endif %}
+              "
+            >
+              {% if first_block.settings.tab_content_heading != blank %}
+                <p class="tabbed-info__content-heading text-h2-desktop text-mobile-titles">
+                  {{ first_block.settings.tab_content_heading }}
+
+                  {% assign tab_title_lowercase = first_block.settings.tab_title | downcase %}
+
+                  {% if tab_title_lowercase contains 'info sheet' %}
+                    {% render 'icon-general' with icon: 'info-sheet' %}
+                  {% endif %}
+                </p>
+              {% endif %}
+
+              {% if
+                first_block.settings.tab_content != blank and
+                first_block.type != 'tab-with-products'
+              %}
+                <div
+                  class="
+                    tabbed-info__content
+                    {% if first_block.type == 'tab-with-before-after' %}
+                      col l1-5 xs-span
+                    {% else %}
+                      column
+                    {% endif %}
+                  "
+                >
+                  {{ first_block.settings.tab_content }}
+                </div>
+              {% endif %}
+
+              {% if
+                first_block.type == 'tab-with-before-after' and
+                first_block.settings.before_image != blank and
+                first_block.settings.after_image != blank
+              %}
+                <div class="tabbed-info__before-after col l6-14 xs-span">
+                        <div class="tabbed-info__before-after-images">
+                          {% render 'responsive-image' with
+                            image: first_block.settings.before_image,
+                            class: 'tabbed-info__before-image',
+                            padding: false,
+                          %}
+
+                          {% render 'responsive-image' with
+                            image: first_block.settings.after_image,
+                            class: 'tabbed-info__after-image',
+                            padding: false,
+                          %}
+
+                          <input
+                            class="tabbed-info__range-input"
+                            type="range"
+                            min="0"
+                            max="100"
+                            value="50"
+                          />
+
+                          <span class="tabbed-info__separator">
+                            <span class="tabbed-info__separator-icon"></span>
+                          </span>
+                        </div>
+
+                        {% if first_block.settings.after_image_text and first_block.settings.before_image_text %}
+                          <div class="tabbed-info__before-after-text text-mobile-p-desktop text-button-nav col xs-span l6-14 mt-xs">
+                            <span class="tabbed-info__before-text">
+                              {{ first_block.settings.before_image_text }}
+                            </span>
+
+                            <span class="tabbed-info__after-text">
+                              {{ first_block.settings.after_image_text }}
+                            </span>
+                          </div>
+                        {% endif %}
+                      </div>
+              {% endif %}
+
+              {% if
+                first_block.type == 'tab-with-products' and
+                first_block.settings.product_1 != blank
+              %}
+                <div class="col xs-span splide">
+                  <div class="splide__track">
+                    <ul class="splide__list">
+                      {% if first_block.settings.tab_content != blank %}
+                        <li class="tabbed-info__content splide__slide">
+                          {{ first_block.settings.tab_content }}
+                        </li>
+                      {% endif %}
+
+                      {% for i in (1..5) %}
+                        {% assign product_string = 'product_#' | replace: '#', i %}
+                        {% assign product = first_block.settings[product_string] %}
+
+                        {% if product != blank %}
+                          <li class="info__content splide__slide">
+                            {% render 'product-card' with product: product %}
+                          </li>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema 'tabbed-info' %}

@@ -1,0 +1,43 @@
+#import "~graphql/fragments/product.gql"
+#import "~graphql/fragments/article.gql"
+
+query search(
+  $query: String!
+  $first: Int
+  $after: String
+  $country: CountryCode!
+  $language: LanguageCode!
+) @inContext(country: $country, language: $language) {
+  search(
+    query: $query
+    after: $after
+    first: $first
+    types: [PRODUCT, ARTICLE, PAGE]
+    unavailableProducts: LAST
+  ) {
+    totalCount
+    edges {
+      node {
+        nodeType: __typename
+        ... on Product {
+          ...product
+        }
+        ... on Article {
+          ...article
+        }
+        ... on Page {
+          excerpt: bodySummary
+          id
+          handle
+          url: onlineStoreUrl
+          title
+        }
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

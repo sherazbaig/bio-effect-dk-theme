@@ -1,0 +1,175 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Quote and image (quote-and-image)
+  - Limited interactivity section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.quote-and-image.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign splide_class = 'splide'
+  assign background_colour = section.settings.background_colour
+  assign has_logo = false
+
+  if section.blocks.size < 2
+    assign splide_class = ''
+  endif
+
+  for block in section.blocks
+    if block.settings.logo_image
+      assign has_logo = true
+    endif
+  endfor
+%}
+
+<section
+  aria-labelledby="section-title-{{ section.id }}"
+  data-component-handle="quote-and-image"
+  data-component-type="load"
+  data-component-animation
+  js-quote-slider="{{ section.id }}"
+  style="
+    background-color: var({{ background_colour }});
+  "
+>
+  <div
+    class="
+      quote-and-image
+      critical-component-clear
+      liquid
+    "
+  >
+    <div class="container grid no-gap">
+      <div
+        class="
+          quote-and-image__main-carousel
+          col
+          xs-span
+          l2-13
+          {% if has_logo %}
+            mb-3xl
+          {% endif %}
+          {{ splide_class }}
+        "
+        js-splide="main-carousel"
+      >
+        <div class="{{ splide_class }}__track">
+          <div
+            class="quote-and-image__main-list {{ splide_class }}__list"
+            js-splide="main-carousel-list"
+          >
+            {% for block in section.blocks %}
+              {% liquid
+                assign quote = block.settings.logo_quote
+
+                if block.type == 'quote-with-image'
+                  assign quote = block.settings.image_quote
+                endif
+              %}
+
+              <div
+                class="{{ splide_class }}__slide"
+                js-splide="main-carousel-slide"
+              >
+                {% if quote != blank %}
+                  <div class="quote-and-image__quote">
+                    <div class="quote-and-image__icon">
+                      {% render 'icon-general' with icon: 'quote' %}
+                    </div>
+
+                    <div class="quote-and-image__quote-text text-quote">
+                      {{ quote }}
+                    </div>
+                  </div>
+                {% endif %}
+
+                {% if block.settings.sub_quote_text != blank %}
+                  <p
+                    class="
+                      quote-and-image__sub-quote
+                      text-mobile-p
+                      text-p-desktop
+                    "
+                  >
+                    {{ block.settings.sub_quote_text }}
+                  </p>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if has_logo %}
+      <div class="container grid no-gap">
+        <div
+          class="quote-and-image__thumbnail-carousel col xs-span l3-12 {{ splide_class }}"
+          js-splide="thumbnails-carousel"
+        >
+          <div class="{{ splide_class }}__track">
+            <ul class="quote-and-image__thumbnails {{ splide_class }}__list">
+              {% for block in section.blocks %}
+                {% liquid
+                  assign image = block.settings.logo_image
+                  assign image_block_class = 'thumbnail'
+                  assign image_class = 'quote-and-image__image-logo'
+                  assign padding = false
+                  assign ratio = '1:1'
+
+                  if block.type == 'quote-with-image'
+                    assign desktop_image = block.settings.desktop_image
+                    assign mobile_image = block.settings.mobile_image
+                    assign image_block_class = 'image-block'
+                    assign image_class = 'quote-and-image__image'
+                    assign padding = true
+                    assign ratio = '16:9'
+                  endif
+                %}
+
+                <li
+                  class="
+                    quote-and-image__{{ image_block_class }}
+                    {{ splide_class }}__slide
+                  "
+                >
+                  {% if mobile_image or desktop_image %}
+                    {% render 'art-direction' with
+                      class: image_class,
+                      image: mobile_image,
+                      image_desktop: desktop_image,
+                      padding: padding,
+                      ratio: ratio,
+                      ratio_desktop: ratio,
+                    %}
+
+                  {% elsif image %}
+                    {% render 'responsive-image' with
+                      class: image_class,
+                      image: image,
+                      padding: padding,
+                      ratio: ratio,
+                    %}
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  {% comment %}
+  -----------------------------------------------------------------------------
+    Load Vue component to initialise JS code.
+  -----------------------------------------------------------------------------
+  {% endcomment %}
+  <quote-and-image
+    v-if="getComponentVisible('quote-and-image')"
+    v-cloak
+    :section-id="{{ section.id | json | escape }}"
+  ></quote-and-image>
+</section>
+
+{% schema 'quote-and-image' %}

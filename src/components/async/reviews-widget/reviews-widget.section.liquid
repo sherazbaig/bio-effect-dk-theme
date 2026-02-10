@@ -1,0 +1,53 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Yotpo reviews widget (reviews-widget)
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.reviews-widget.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign reviews_widget_id = section.settings.reviews_widget_id
+%}
+
+<section
+  aria-labelledby="section-title-{{ section.id }}"
+  data-component-handle="reviews-widget"
+>
+  <div
+    class="
+      reviews-widget
+      critical-component-clear
+      liquid
+      container
+      grid
+    "
+  >
+    <div
+      class="yotpo-widget-instance col xs6 l2-13"
+      data-yotpo-instance-id="{{ reviews_widget_id }}"
+      data-yotpo-product-id="{{product.id}}"
+      data-yotpo-name="{{ product.title | escape }}"
+      data-yotpo-url="{{ shop.url }}{{ product.url }}"
+      data-yotpo-image-url="{{
+        product.featured_image
+          | product_img_url: "large"
+          | prepend: "https:"
+          | replace: '?', '%3F'
+          | replace: '&','%26'
+      }}"
+      data-yotpo-price="{{ product.price | money_without_currency }}"
+      data-yotpo-currency="{{ shop.currency }}"
+      data-yotpo-description="{{ product.description | escape }}"
+    ></div>
+  </div>
+
+  {% comment %}
+  ---------------------------------------------------------------------
+    Make sure review widget is initialized in mounted hook.
+  ---------------------------------------------------------------------
+  {% endcomment %}
+  <reviews-widget />
+</section>
+
+{% schema 'reviews-widget' %}

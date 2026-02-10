@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "site-header-offset": {
+      "type": "site-header-offset",
+      "settings": {}
+    }
+  },
+  "order": [
+    "site-header-offset"
+  ]
+}

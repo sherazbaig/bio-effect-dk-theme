@@ -1,0 +1,70 @@
+{
+  "type": "header",
+  "name": "Site Header Group",
+  "sections": {
+    "promo-banner": {
+      "type": "promo-banner",
+      "blocks": {
+        "4ea152a0-b72e-4f2e-b559-0f096830e0f5": {
+          "type": "promo",
+          "settings": {
+            "title": "Free Standard Shipping on £50+"
+          }
+        },
+        "1d7e93a5-08e2-4751-81d0-857c1e652c28": {
+          "type": "promo",
+          "settings": {
+            "title": "Second promo banner item"
+          }
+        },
+        "1f4f3052-b809-4608-b63c-9a6d262c95ec": {
+          "type": "promo",
+          "settings": {
+            "title": "Third promo banner item"
+          }
+        },
+        "57aa95c6-b8a5-4dfc-909b-5f859669ffb4": {
+          "type": "country",
+          "settings": {
+            "country_code": "UK",
+            "link": "",
+            "flag_image": "shopify:\/\/shop_images\/united-states.svg"
+          }
+        },
+        "adc9156f-6ea2-4885-a69d-5ab92419acc9": {
+          "type": "country",
+          "settings": {
+            "country_code": "US",
+            "link": "https:\/\/www.google.co.uk",
+            "flag_image": "shopify:\/\/shop_images\/united-states.svg"
+          }
+        }
+      },
+      "block_order": [
+        "4ea152a0-b72e-4f2e-b559-0f096830e0f5",
+        "1d7e93a5-08e2-4751-81d0-857c1e652c28",
+        "1f4f3052-b809-4608-b63c-9a6d262c95ec",
+        "57aa95c6-b8a5-4dfc-909b-5f859669ffb4",
+        "adc9156f-6ea2-4885-a69d-5ab92419acc9"
+      ],
+      "settings": {
+        "enable_autoscroll": false,
+        "autoscroll_timing": 5,
+        "collapsed": false,
+        "minimised": false
+      }
+    },
+    "site-header": {
+      "type": "site-header",
+      "settings": {
+        "mobile": "",
+        "collapsed": false,
+        "minimised": true
+      }
+    }
+  },
+  "order": [
+    "promo-banner",
+    "site-header"
+  ]
+}

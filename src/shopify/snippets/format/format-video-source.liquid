@@ -1,0 +1,24 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet / Format: Video Source
+  - Returns video source Liquid object formatted as Vue prop data.
+  - Use as a replacement to storefront API queries.
+  - Can be used in a forloop.
+
+  @param {Object} [forloop] - Forloop Liquid object.
+  @param {Object} video_source - video_source Liquid object to format.
+  @returns {Object}
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- capture data -%}
+  {%- if video_source != blank %}
+    format: {{ video_source.format | json | escape }},
+    height: {{ video_source.height | json | escape }},
+    liquid: {{ true | json | escape }},
+    mimeType: {{ video_source.mime_type | json | escape }},
+    url: {{ video_source.url | json | escape }},
+    width: {{ image.width | json | escape }}
+  {%- endif -%}
+{%- endcapture -%}
+
+{ {{ data | strip | strip_newlines }} }{%- if forloop and forloop.last == false -%},{%- endif -%}

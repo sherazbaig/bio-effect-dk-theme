@@ -1,0 +1,35 @@
+/* stylelint-disable declaration-no-important */
+
+/**
+ * Styles: Yotpo star rating (star-rating)
+ * -----------------------------------------------------------------------------
+ * Base styles for yotpo star rating component.
+ *
+ */
+.star-rating {
+  .yotpo-star-ratings-clickable {
+    margin-block-end: var(--spacing-m) !important;
+  }
+
+  .star-container svg {
+    height: rem-calc(14px) !important;
+    width: rem-calc(14px) !important;
+  }
+
+  .yotpo-sr-bottom-line-text.yotpo-sr-bottom-line-text--right-panel {
+    // Below is code from include text-p-small + !important
+    font-family: var(--font-family-avenir-next) !important;
+    font-size: var(--font-size-1) !important;
+    font-weight: var(--font-weight-medium) !important;
+    letter-spacing: var(--letter-spacing-0) !important;
+    line-height: var(--line-height-normal) !important;
+    text-decoration: none !important;
+    text-indent: var(--text-indent-0) !important;
+  }
+
+  @include mq($from: l) {
+    .yotpo-star-ratings-clickable {
+      margin-block-end: var(--spacing-xl) !important;
+    }
+  }
+}

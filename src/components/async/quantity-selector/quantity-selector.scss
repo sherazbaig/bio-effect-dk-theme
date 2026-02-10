@@ -1,0 +1,85 @@
+/**
+ * Styles: Quantity selector
+ * -----------------------------------------------------------------------------
+ * Base styles for quantity selector component.
+ *
+ */
+.quantity-selector {
+  $parent: &;
+  align-items: center;
+  display: inline-grid;
+  grid-template-columns: auto 1fr auto;
+
+  &__button {
+    @include button-reset;
+    @include transition(background-color, opacity);
+    background-color: var(--color-brand-1-default);
+    border-radius: 50%;
+    line-height: var(--line-height-baseline);
+    padding: 0;
+
+    .icon {
+      height: var(--icon-m);
+      width: var(--icon-m);
+    }
+
+    &:hover {
+      background-color: var(--color-brand-1-dark);
+    }
+
+    &.is-disabled,
+    &[disabled] {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    /**
+     * Accessibility - focus ring.
+     */
+    .is-tabbable &:enabled:focus-visible {
+      @include focus-ring;
+      outline-offset: var(--spacing-2xs);
+    }
+  }
+
+  &__control {
+    &#{&}--input {
+      height: 100%;
+    }
+  }
+
+  // Override form-group styles
+  &__input[type=number][type=number] {
+    @include transition(border-color);
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: var(--color-stone);
+    cursor: default;
+    height: 100%;
+    padding: 0;
+    text-align: center;
+    width: 34px;
+  }
+
+  /**
+   * States.
+   */
+  &.has-error {
+    #{$parent}__input[type=number] {
+      border-color: var(--color-system-error-light-mode);
+    }
+  }
+
+  /**
+   * Modifiers.
+   */
+  &#{&}--large {
+    display: grid;
+    width: 100%;
+
+    #{$parent}__input[type=number] {
+      width: 100%;
+    }
+  }
+}

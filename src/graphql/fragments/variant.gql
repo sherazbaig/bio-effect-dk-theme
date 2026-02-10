@@ -1,0 +1,23 @@
+#import "~graphql/fragments/image.gql"
+
+fragment variant on ProductVariant {
+  available: availableForSale
+  compareAtPrice {
+    amount
+    currencyCode
+  }
+  id
+  image {
+    ...image
+  }
+  price {
+    amount
+    currencyCode
+  }
+  quantityAvailable
+  selectedOptions {
+    name
+    value
+  }
+  title
+}

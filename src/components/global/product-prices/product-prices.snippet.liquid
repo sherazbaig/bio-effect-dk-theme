@@ -1,0 +1,110 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Product prices (product-prices)
+
+  @param {String} [attributes] - Custom attributes to add to element, space
+  separated list.
+  @param {Boolean} available - If the product is available.
+  @param {String} [class] - Additional classes to render.
+  @param {String} [class_compare_at_price] - Comare at price text classes.
+  @param {String} [class_price] - Price text classes.
+  @param {Number|Boolean} compare_at_price - Compare at price, in cents format.
+  @param {Number|Boolean} original_line_price - Line item original price, in cents format.
+  @param {String} [element] - Custom element override.
+  @param {Number} price - Product price, in cents format.
+  @param {Boolean} [price_first] - Display price before compare at price.
+  @param {Boolean} [varies] - Product variants vary in price.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign attributes = attributes | split: ' '
+
+  if compare_at_price != blank and price < compare_at_price
+    assign on_sale = true
+  endif
+
+  # Classes
+  # class="text-body-s-regular text-body-m-regular-desktop text-other-sale-s text-other-sale-l-desktop"
+  assign price_text_classes = class_price | default: 'text-body-s-regular text-body-m-regular-desktop'
+  assign compare_at_price_text_classes = class_compare_at_price | default: 'text-other-sale-s text-other-sale-l-desktop'
+-%}
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Capture templates.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- capture compare_at_price_template -%}
+  {% if on_sale %}
+    <span
+      class="
+        product-prices-compare-at-price
+        {{ compare_at_price_text_classes }}
+      "
+    >
+      {{ original_line_price | default: compare_at_price | money_without_trailing_zeros }}
+    </span>
+  {% endif %}
+{%- endcapture -%}
+
+{%- capture price_template -%}
+  <span
+    class="
+      product-prices__price
+      {{ price_text_classes }}
+      {% if on_sale %}
+        product-prices__price--on-sale
+      {% endif %}
+    "
+  >
+    {%- liquid
+      if price == false
+        echo 'accessibility.loading' | t
+      elsif price <= 0
+        echo 'product.prices.free' | t
+      else
+        echo price | money_without_trailing_zeros
+      endif
+    -%}
+  </span>
+{%- endcapture -%}
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Output.
+-----------------------------------------------------------------------------
+{% endcomment %}
+<{{ element | default: 'p' }}
+  class="
+    product-prices
+    {{ class }}
+    liquid
+  "
+  {% for attribute in attributes %}
+    {{ attribute }}
+  {% endfor %}
+>
+  {% if varies %}
+    <span class="product-prices__varies {{ price_text_classes }}">
+      {{ 'product.prices.from' | t }}
+    </span>
+  {% endif %}
+
+  {%- liquid
+    if available
+      if price_first != false
+        echo price_template
+        echo compare_at_price_template
+      else
+        echo compare_at_price_template
+        echo price_template
+      endif
+    endif
+  -%}
+
+  {% if available == false %}
+    <span class="product-prices__sold-out {{ price_text_classes }}">
+      {{ 'product.prices.sold_out' | t }}
+    </span>
+  {% endif %}
+</{{ element | default: 'p' }}>

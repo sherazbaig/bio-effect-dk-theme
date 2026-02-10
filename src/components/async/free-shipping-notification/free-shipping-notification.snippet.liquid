@@ -1,0 +1,34 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Free shipping notification (free-shipping-notification)
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- liquid
+  assign title = ''
+
+  assign threshold = section.settings.free_shipping_threshold
+  assign amountToSpend = threshold | minus: cart.total_price
+
+  if amountToSpend <= 0
+    assign title = 'cart.free_shipping_notification.title_successful' | t
+  else
+    assign formattedAmount = amountToSpend | divided_by: 100
+    assign amount = amountToSpend | money_without_trailing_zeros
+
+    assign title = 'cart.free_shipping_notification.title_amount_to_spend' | t: amount: amount
+  endif
+-%}
+
+{% if section.settings.free_shipping_enabled %}
+  <div class="free-shipping-notification is-loading liquid">
+    <div class="free-shipping-notification__track">
+      <div class="free-shipping-notification__progress"></div>
+    </div>
+
+    <p class="free-shipping-notification__message text-p">
+      {{ title }}
+    </p>
+
+  </div>
+{% endif%}

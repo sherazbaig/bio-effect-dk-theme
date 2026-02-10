@@ -1,0 +1,10 @@
+/**
+ * Config: Configuration
+ * -----------------------------------------------------------------------------
+ * Master import that's included in all Vue components.
+ * - No code should be output from the configuration files as they're reused.
+ *
+ */
+@import '@/config/variables-sass';
+@import '@/config/classes-mixins';
+@import '@/config/mixins';

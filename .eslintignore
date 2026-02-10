@@ -1,0 +1,12 @@
+# Files for eslint to ignore
+basis/node_modules
+documentation
+dist
+node_modules
+reports
+src/shopify
+src/styles
+storybook
+.eslintrc.js
+.stylelintrc.js
+jsconfig.json

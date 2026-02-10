@@ -1,0 +1,97 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Product recommendations (product-recommendations)
+  - Loading snippet.
+  - Created as a separate file so it can be included in product upsell.
+
+  @param {String} [class] - Additional classes to render.
+  @param {Number} loading_product_count - Loading product count.
+  @param {Object} section - Section object.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign next_string = 'accessibility.carousel.next' | t
+  assign previous_string = 'accessibility.carousel.previous' | t
+
+  capture icon_arrow_left
+    render 'icon-directional-navigation' with icon: 'chevron', direction: 'left'
+  endcapture
+
+  capture icon_arrow_right
+    render 'icon-directional-navigation' with icon: 'chevron', direction: 'right'
+  endcapture
+-%}
+
+<div
+  class="product-recommendations critical-component-hide liquid {{ class }}"
+  js-product-recommendations="{{ section.id }}"
+>
+  <div class="container grid">
+    <div class="col xs6 m6 l2-13">
+      {% if section.settings.title != blank %}
+        <h2
+          id="section-title-{{ section.id }}"
+          class="
+            product-recommendations__title
+            text-mobile-titles text-h2-desktop
+            mb-l mb-3xl-desktop
+          "
+        >
+          {{ section.settings.title }}
+        </h2>
+      {% endif %}
+
+      <div
+        class="splide"
+        js-splide="carousel"
+      >
+        <div class="splide__track">
+          <ul class="product-recommendations__carousel splide__list">
+            {% for i in (1..loading_product_count) %}
+              <li class="product-recommendations__slide splide__slide">
+                {% render 'product-card' with
+                  loading_animation: true,
+                  product: false,
+                %}
+              </li>
+            {% endfor %}
+          </ul>
+
+          <div class="product-recommendations__footer mt-l">
+            <div class="product-recommendations__button-wrapper">
+              {% if section.settings.button_text != blank %}
+                {% render 'btn' with
+                  class: 'articles-slider__button',
+                  label: section.settings.button_text,
+                  url: section.settings.button_url,
+                %}
+              {% endif %}
+            </div>
+
+            <div class="splide__arrows">
+              {% render 'btn' with
+                class: 'splide__arrow splide__arrow--prev',
+                icon: icon_arrow_left,
+                label: previous_string,
+                modifiers: 'light reversed',
+                show_icon: true,
+                type: 'button',
+              %}
+
+              {% render 'btn' with
+                class: 'splide__arrow splide__arrow--next',
+                icon: icon_arrow_right,
+                label: next_string,
+                modifiers: 'light',
+                show_icon: true,
+                type: 'button',
+              %}
+            </div>
+          </div>
+        </div>
+
+        <ul class="splide__pagination"></ul>
+      </div>
+    </div>
+  </div>
+</div>

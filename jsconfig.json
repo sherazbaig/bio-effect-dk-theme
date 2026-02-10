@@ -1,0 +1,27 @@
+{
+  "allowJs": true,
+  "checkJs": false,
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/styles/*"],
+      "~/*": ["src/scripts/*"],
+      "~async/*": ["src/components/async/*"],
+      "~global/*": ["src/components/global/*"],
+      "~graphql/*": ["src/graphql/*"],
+      "~icons/*": ["src/icons/*"],
+      "~stores/*": ["src/stores/*"],
+    }
+  },
+  "exclude": [
+    ".husky",
+    ".vscode",
+    ".themekit",
+    "canvas",
+    "dist",
+    "documentation",
+    "node_modules",
+    "reports",
+    "storybook",
+  ]
+}

@@ -1,0 +1,130 @@
+/**
+ * Styles: Upsell popup (upsell-popup)
+ * -----------------------------------------------------------------------------
+ * Base styles for upsell popup component.
+ *
+ */
+.upsell-popup {
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__header {
+    margin: 0;
+  }
+
+  &__close {
+    color: var(--color-stone);
+  }
+
+  &__add-to-cart.button {
+    margin-block-start: var(--spacing-l);
+    padding: var(--spacing-m);
+    width: rem-calc(220px);
+
+    &.liquid {
+      @include loading;
+      height: rem-calc(50px);
+    }
+  }
+
+  &__image {
+    display: none;
+  }
+
+  &__container {
+    background-color: var(--color-breeze);
+    clip-path: polygon(0% 0, 0 0, 0 100%, 0% 100%);
+    max-height: max(80vh, 100vh - 200px);
+    max-width: unset;
+    padding-block-end: rem-calc(20px);
+    padding-block-start: rem-calc(54px);
+    padding-inline: rem-calc(20px);
+    scrollbar-width: none;
+    transition: clip-path var(--timing-normal);
+
+    &.is-active {
+      clip-path: polygon(100% 0, 0 0, 0 100%, 100% 100%);
+    }
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__description {
+    @include text-mobile-p;
+    color: var(--color-stone);
+    white-space: pre-line;
+
+    &.liquid {
+      @include loading;
+      height: rem-calc(180px);
+      width: 100%;
+    }
+
+    * {
+      @include text-mobile-p;
+      color: var(--color-stone);
+    }
+  }
+
+  &__title {
+    color: var(--color-stone);
+    margin-inline: 0;
+
+    &.liquid {
+      @include loading;
+      height: var(--spacing-2xl);
+      width: 100%;
+    }
+  }
+
+  &__grid {
+    align-items: center;
+    justify-content: center;
+  }
+
+  @include mq($from: l) {
+    &__description {
+      @include text-p;
+
+      * {
+        @include text-p;
+      }
+    }
+
+    &__add-to-cart.button {
+      margin-block-start: var(--spacing-3xl);
+    }
+
+    &__container {
+      padding: rem-calc(54px) rem-calc(30px);
+      width: max(500px, min(80vw, 1100px));
+    }
+
+    &__grid {
+      grid-template-columns: repeat(10, minmax(0, 1fr));
+    }
+
+    &__image {
+      display: block;
+      height: 100%;
+      position: relative;
+
+      .images__image {
+        background-color: var(--color-clouds);
+        object-fit: contain;
+      }
+
+      &.liquid {
+        @include loading;
+        height: rem-calc(400px);
+      }
+    }
+  }
+}

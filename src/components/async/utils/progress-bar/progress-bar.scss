@@ -1,0 +1,29 @@
+.progress-bar {
+  &__bar {
+    background-color: var(--color-cool);
+    border-radius: calc(var(--spacing-2xs) + var(--spacing-3xs));
+    height: calc(var(--spacing-2xs) + var(--spacing-3xs));
+    position: relative;
+    width: 100%;
+  }
+
+  &__progress {
+    @include transition(width);
+    position: absolute;
+  }
+
+  &__information-wrapper {
+    display: flex;
+    gap: var(--spacing-xs);
+  }
+
+  &__value {
+    color: var(--color-stone);
+    font-size: var(--font-size-4);
+  }
+
+  &__text {
+    color: var(--color-grey);
+    font-size: var(--font-size-4);
+  }
+}

@@ -1,0 +1,119 @@
+/**
+ * Styles: Article card (main-blog)
+ * -----------------------------------------------------------------------------
+ * Base styles for article card component.
+ *
+ */
+.article-card {
+  $parent: &;
+  animation: var(--timing-slow) var(--easing-normal) fade-in;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: unset;
+
+  &__image-container {
+    // taken from live site
+    filter: drop-shadow(0 20px 20px rgb(0 0 0 / 6%));
+    margin-block-end: var(--spacing-2xs);
+  }
+
+  &__footer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--spacing-m);
+  }
+
+  &__title, &__excerpt {
+    color: var(--color-stone);
+  }
+
+  &__excerpt {
+    flex: 1;
+    max-width: 570px;
+  }
+
+  &__meta {
+    align-items: center;
+    display: flex;
+    gap: var(--spacing-m);
+    justify-content: space-between;
+  }
+
+  &__tags {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__date {
+    margin-inline-start: auto;
+  }
+
+  &__badges {
+    display: flex;
+    gap: var(--spacing-xs);
+    margin-block-start: var(--spacing-l);
+  }
+
+  &__badge {
+    background-color: var(--color-clouds);
+    border: 1px solid var(--color-cool);
+    border-radius: var(--spacing-2xs);
+    color: var(--color-stone);
+    padding-block: calc(var(--spacing-2xs) + var(--spacing-3xs));
+    padding-inline: var(--spacing-s);
+    text-transform: capitalize;
+  }
+
+  .images__image {
+    transition: scale var(--timing-slow) var(--easing-normal);
+  }
+
+  &:hover {
+    .images__image {
+      scale: 1.1;
+    }
+  }
+
+  html:not(.no-js) &.is-loading {
+    .images__image {
+      visibility: hidden;
+    }
+
+    #{$parent}__image-container {
+      @include loading;
+    }
+
+    #{$parent}__badges {
+      visibility: hidden;
+    }
+
+    #{$parent}__title {
+      @include loading;
+      height: 20px;
+    }
+
+    #{$parent}__excerpt {
+      @include loading;
+      height: 60px;
+    }
+  }
+
+  @include mq($from: l) {
+    &__footer {
+      gap: 0;
+    }
+
+    &__badges {
+      margin-block-end: var(--spacing-m);
+      margin-block-start: var(--spacing-xl);
+    }
+
+    &__title {
+      margin-block-end: var(--spacing-l);
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Social icon list
+  - List of linked icons for the store's associated social media accounts.
+  - Used in the footer.
+
+  @param {String} [base_class] - Used to generate BEM classnames.
+------------------------------------------------------------------------------
+{% endcomment %}
+<ul class="{{ base_class }}__social-list social">
+  {% for social in shop.metaobjects.social_media.values %}
+    <li class="{{ base_class }}__social-item social__item">
+      <a
+        class="{{ base_class }}__social-link social__link"
+        href="{{ social.url }}"
+      >
+        <span class="visually-hidden">{{ social.name }}</span>
+
+        <img
+          class="{{ base_class }}__social-icon social__icon"
+          src="{{ social.icon | img_url: '20x' }}"
+          alt="{{ social.name }} Icon"
+        >
+      </a>
+    </li>
+  {% endfor %}
+</ul>

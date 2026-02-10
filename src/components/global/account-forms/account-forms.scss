@@ -1,0 +1,98 @@
+// stylelint-disable selector-max-compound-selectors
+
+/**
+ * Styles: account forms (account-forms)
+ * -----------------------------------------------------------------------------
+ * Base styles for account forms component.
+ *
+ */
+.account-forms {
+  .form-group {
+    display: grid;
+    gap: var(--spacing-m);
+    grid-template: unset;
+
+    &__footer {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: var(--spacing-s);
+      justify-content: start;
+    }
+
+    .customers__forgot-password {
+      text-decoration: underline;
+      text-decoration-color: var(--color-bio);
+      text-decoration-thickness: 1px;
+      text-transform: capitalize;
+      text-underline-position: under;
+
+      span {
+        color: var(--color-gray-text);
+      }
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    input {
+      color: var(--color-stone);
+
+      &::placeholder {
+        color: var(--color-stone);
+      }
+    }
+
+    label {
+      line-height: initial;
+    }
+  }
+
+  .text-h6,
+  .text-mobile-p {
+    color: var(--color-stone);
+  }
+
+  &__error {
+    background-color: var(--color-blush);
+    display: flex;
+    padding: var(--spacing-m);
+
+    &.is-hidden {
+      display: none;
+    }
+
+    .icon {
+      fill: var(--color-error-red);
+      min-width: var(--icon-m);
+    }
+  }
+
+  &__error-text {
+    color: var(--color-stone);
+  }
+
+  &__logout {
+    display: grid;
+    gap: var(--spacing-m);
+
+    &.is-hidden {
+      display: none;
+    }
+  }
+
+  .checkbox-input__label {
+    display: flex;
+    padding-inline-start: calc(var(--icon-2xs) + var(--spacing-m));
+
+    &::before,
+    &::after {
+      top: var(--spacing-3xs);
+    }
+
+    span {
+      color: var(--color-stone);
+      font-size: var(--font-size-3);
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Checkbox input (checkbox-input)
+
+  @param {Boolean} [checked] - Is checked?
+  @param {Boolean} [disabled] - Input is disabled.
+  @param {Boolean} [required] - Is required?.
+  @param {String} id - ID for input.
+  @param {String} [input] - Input if provided by Liquid.
+  @param {String} label - Input label.
+  @param {Boolean} [loading] - Loading state.
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- liquid
+  if disabled
+    assign disabled_class = 'is-disabled'
+  endif
+
+  if loading
+    assign loading_class = 'is-loading'
+  endif
+
+  # Input replacements
+  assign input_replace = 'class="checkbox-input__input #__input visually-hidden">' | replace: '#', type
+
+  if checked
+    assign input_replace = input_replace | replace: '>', ' checked>'
+  endif
+
+  if disabled
+    assign input_replace = input_replace | replace: '>', ' disabled>'
+  endif
+-%}
+
+<div class="checkbox-input liquid {{ loading_class }}">
+  {% if input != blank %}
+    {{ input | replace: '>', input_replace }}
+
+  {% else %}
+    <input
+      id="{{ id | escape }}"
+      class="checkbox-input__input visually-hidden {{ disabled_class }}"
+      {%- liquid
+        if checked
+          echo 'checked '
+        endif
+        if disabled
+          echo 'disabled '
+        endif
+        if name != blank
+          echo 'name="#"' | replace: '#', name
+        endif
+        if value != blank
+          echo 'value="#"' | replace: '#', value
+        endif
+        if required != blank
+          echo 'required '
+        endif
+      -%}
+      type="checkbox"
+    >
+  {% endif %}
+
+  <label
+    class="checkbox-input__label text-p-small {{ label_class }}"
+    for="{{ id | escape }}"
+  >
+    <span
+      class="text-p-small"
+    >
+      {{ label }}
+    </span>
+  </label>
+</div>

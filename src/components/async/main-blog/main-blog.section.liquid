@@ -1,0 +1,68 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Main blog (main-blog)
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.main-blog.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="page-section main-blog"
+  aria-labelledby="template-title"
+  data-component-handle="main-blog"
+  data-component-type="load"
+  data-section-schema
+>
+  <div class="main-blog__header grid container">
+    <h1
+      id="template-title"
+      class="
+        main-blog__title
+        text-start
+        col
+        xs-span
+        text-h1-desktop
+        text-mobile-titles
+        l2-6
+      "
+    >
+      {{ section.settings.title }}
+    </h1>
+
+    {% if section.settings.description != blank %}
+      <p
+        class="
+          main-blog__description
+          text-start
+          rte
+          col
+          xs-span
+          l7-11
+          text-h5-desktop
+          text-p
+        "
+      >
+        {% render 'rte' with content: section.settings.description %}
+      </p>
+    {% endif %}
+  </div>
+
+  {% render 'blog-tags' with
+    blog: blog,
+    class: 'main-blog__tags',
+  %}
+
+  {% comment %}
+  -----------------------------------------------------------------------------
+    Vue Component Loading
+  -----------------------------------------------------------------------------
+  {% endcomment %}
+  <main-blog
+    v-show="getComponentActive('main-blog')"
+    v-cloak
+    :settings="{{ section.settings | json | escape }}"
+  />
+
+</section>
+
+{% schema 'main-blog' %}

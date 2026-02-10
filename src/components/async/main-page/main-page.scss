@@ -1,0 +1,28 @@
+/**
+ * Styles: Main 404 (main-404)
+ * -----------------------------------------------------------------------------
+ * Base styles for main 404 component.
+ *
+ */
+.main-page {
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__title {
+    color: var(--color-stone);
+    margin-block-end: var(--spacing-m);
+  }
+
+  &__social-sharing {
+    margin-block-start: var(--spacing-l);
+  }
+
+  @include mq($from: l) {
+    margin-block: var(--spacing-l);
+  }
+}

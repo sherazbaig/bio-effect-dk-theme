@@ -1,0 +1,79 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Selection tab (selection-tab)
+
+  @param {String} [attributes] - Custom attributes to add to element, space
+  separated list.
+  @param {Boolean} [checked] - Tab is checked.
+  @param {String} [class] - Additional classes to render.
+  @param {Boolean} [disabled] - Tab is disabled.
+  @param {String} [id] - ID for input, required for input.
+  @param {String} label - Tab label.
+  @param {Boolean} [loading] - Loading state.
+  @param {String} [name] - Radio input group name, required for input.
+  @param {String} [title] - Title attribute.
+  @param {String} [url] - URL to navigate to when clicked, replaces input.
+  @param {Number|String} [value] - Radio input value, required for input.
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign attributes = attributes | split: ' '
+  assign label_element = 'label'
+
+  if loading
+    assign loading_class = 'is-loading'
+  endif
+
+  if url != blank
+    assign label_element = 'a'
+    assign modifier_class = 'selection-tab--button'
+  endif
+-%}
+
+<div
+  class="
+    selection-tab
+    liquid
+    {{ modifier_class }}
+    {{ loading_class }}
+    {{ class }}
+  "
+  {% for attribute in attributes %}
+    {{ attribute }}
+  {% endfor %}
+>
+  {% if url == blank %}
+    <input
+      id="{{ id }}"
+      class="selection-tab__input visually-hidden"
+      {% if checked %}
+        checked
+      {% endif %}
+      {% if disabled %}
+        disabled
+      {% endif %}
+      name="{{ name }}"
+      type="radio"
+      value="{{ value }}"
+    >
+  {% endif %}
+
+  <{{ label_element }}
+    class="
+      selection-tab__label
+      text-body-s-regular
+      text-body-m-regular-desktop
+      text-tags
+    "
+    {% if url == blank %}
+      for="{{ id }}"
+    {% else %}
+      href="{{ url }}"
+    {% endif %}
+    {% if title != blank %}
+      title="{{ title }}"
+    {% endif %}
+  >
+    {{ label }}
+  </{{ label_element }}>
+</div>

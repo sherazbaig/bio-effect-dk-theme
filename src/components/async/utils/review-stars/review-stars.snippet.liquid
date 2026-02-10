@@ -1,0 +1,20 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Review Stars (review-stars)
+
+  @param {Number} total_rating - Total rating.
+  @param {Number} current_rating - Current rating.
+------------------------------------------------------------------------------
+{% endcomment %}
+
+<div class="review-stars liquid">
+  {% for star in (1..total_rating) %}
+    {% if forloop.index <= current_rating %}
+      {% render 'icon-general' with icon: 'star-filled' %}
+
+    {% else %}
+
+      {% render 'icon-general' with icon: 'star' %}
+    {% endif %}
+  {% endfor %}
+</div>

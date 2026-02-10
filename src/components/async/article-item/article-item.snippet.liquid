@@ -1,0 +1,63 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Article item (article-item)
+
+  @param {String} [article] - Article object to render.
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign read_text = 'article.read' | t
+  assign url_parts = article.url | split: '/'
+  assign blog = blogs[url_parts[2]]
+  assign badges = ''
+  for tag in article.tags
+    if tag contains 'badge:'
+      assign badge = tag | split: 'badge:' | last | replace: '-', ' ' | capitalize
+      unless badges == ''
+        assign badges = badges | append: ','
+      endunless
+      assign badges = badges | append: badge
+    endif
+  endfor
+  assign badges = badges | split: ','
+-%}
+
+<div class="article-item">
+  <a href="{{ article.url }}">
+    <div class="article-item__image mb-l mb-xl-desktop">
+      {% render 'responsive-image' with
+        image: article.image,
+        ratio: '10:11',
+      %}
+    </div>
+  </a>
+
+  {% if badges.size > 0 %}
+    <ul class="article-item__badges">
+      {% for badge in badges %}
+        {% assign tag = badge | prepend: 'badge:' %}
+        <li>
+          <a
+            class="article-item__badge text-tags"
+            href="{{ tag | handleize | prepend: '/tagged/' | within: blog }}"
+          >
+            {{ badge }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <a
+    class="article-item__title mt-m"
+    href="{{ article.url }}"
+  >
+    <h3 class="text-h6 text-h5-desktop">
+      {{ article.title }}
+    </h3>
+
+    <div class="article-item__excerpt text-mobile-p text-p-desktop mt-m mt-l-desktop">
+      {{ article.excerpt }}
+    </div>
+  </a>
+</div>

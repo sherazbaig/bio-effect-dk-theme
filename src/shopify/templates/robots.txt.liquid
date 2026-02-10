@@ -1,0 +1,25 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Template: Robots.txt
+  - Used to generate robots.txt for SEO.
+  - https://help.shopify.com/en/manual/promoting-marketing/seo/editing-robots-txt
+  - Don't use Liquid tag to preserve whitespace and readability.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{% for group in robots.default_groups %}
+  {{- group.user_agent -}}
+
+  {%- # Default rules -%}
+  {% for rule in group.rules %}
+    {{- rule -}}
+  {% endfor %}
+
+  {%- # Prevent vendors collection spam -%}
+  {{- 'Disallow: /collections/vendors*' }}
+  {{- 'Disallow: /*/collections/vendors*' }}
+
+  {%- # Sitemap -%}
+  {%- if group.sitemap != blank -%}
+    {{ group.sitemap }}
+  {%- endif -%}
+{% endfor %}

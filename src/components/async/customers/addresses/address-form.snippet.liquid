@@ -1,0 +1,536 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Snippet: Address form
+  - Used to output all address fields in the addresses template.
+
+  @param {Object} address - Liquid form address.
+  @param {Boolean} [default_address] - Is the address the default?
+  @param {String} form_id - Form ID.
+----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign edit_address = true
+  assign cancel_string = 'customers.addresses.#.cancel' | replace: '#', 'edit'
+  assign confirm_string = 'customers.addresses.#.confirm' | replace: '#', 'edit'
+  assign set_as_default_string = 'customers.addresses.#.set_as_default' | replace: '#', 'edit'
+  assign text_setting = 'customers.addresses.#.text_html' | replace: '#', 'edit'
+  assign title_setting = 'customers.addresses.#.title' | replace: '#', 'edit'
+
+  if form_id == 'new'
+    assign edit_address = false
+    assign cancel_string = cancel_string | replace: 'edit', 'new'
+    assign confirm_string = confirm_string | replace: 'edit', 'new'
+    assign set_as_default_string = set_as_default_string | replace: 'edit', 'new'
+    assign text_setting = text_setting | replace: 'edit', 'new'
+    assign title_setting = title_setting | replace: 'edit', 'new'
+  endif
+
+  # Strings
+  assign confirm_string_cta = confirm_string | t
+  assign cancel_string_cta = cancel_string | t
+  assign error_namespace_string = 'address-#-errors-form' | replace: 'form', form_id
+  assign set_as_default_string = set_as_default_string | t
+  assign text_string = text_setting | t
+
+  # Set as default
+  assign set_as_default_id = 'address_default_address_' | append: form_id
+
+  if default_address
+    assign set_as_default_checked = true
+    assign set_as_default_disabled = true
+  endif
+
+  # Cancel icon
+  capture cancel_icon
+    render 'icon-directional-navigation' with icon: 'arrow', direction: 'left'
+  endcapture
+-%}
+
+<div
+  class="customers-addresses__form is-hidden"
+  data-form-id="{{ form_id }}"
+  js-addresses="forms"
+>
+  {% # Used to format address when shown in default/delete modals %}
+  <div
+    class="customers-addresses__form-address"
+    js-addresses="address"
+  >
+    {% render 'address-block'
+      address: address,
+      address_only: true,
+    %}
+  </div>
+
+  {% render 'form-errors' with
+    class: 'is-hidden',
+    form: form,
+    form_id: form_id,
+  %}
+
+  {% form 'customer_address', address, js-addresses: 'form', return_to: routes.account_url %}
+    <div class="form-group">
+      <div class="form-group__field">
+        {%- liquid
+          assign error_type = 'first_name'
+          assign error_namespace = error_namespace_string | replace: '#', error_type
+        -%}
+
+        <input
+          id="first-name-{{ form_id }}"
+          {% if form.errors contains error_type %}
+            class="has-error"
+          {% endif %}
+          autocapitalize="words"
+          autocomplete="given-name"
+          autocorrect="off"
+          placeholder="{{ 'customers.fields.first_name.placeholder' | t }}"
+          name="address[first_name]"
+          required
+          type="text"
+          {% if edit_address %}
+            value="{{ form.first_name }}"
+          {% endif %}
+          {% if form.errors contains error_type %}
+            aria-describedby="{{ error_namespace }}-errors"
+            aria-invalid="true"
+          {% endif %}
+        >
+
+        <label
+          class="form-group__label text-tags"
+          for="first-name-{{ form_id }}"
+        >
+          {{ 'customers.fields.first_name.label' | t }}
+
+          <abbr title="{{ 'customers.fields.required.label' | t }}">
+            {{ 'customers.fields.required.symbol' | t }}
+          </abbr>
+        </label>
+
+        {% render 'form-errors' with
+          class: 'form-group__note',
+          form: form,
+          namespace: namespace,
+          type: error_type,
+        %}
+      </div>
+
+      <div class="form-group__field">
+        {%- liquid
+          assign error_type = 'last_name'
+          assign error_namespace = error_namespace_string | replace: '#', error_type
+        -%}
+
+        <input
+          id="last-name-{{ form_id }}"
+          {% if form.errors contains error_type %}
+            class="has-error"
+          {% endif %}
+          autocapitalize="words"
+          autocomplete="family-name"
+          autocorrect="off"
+          name="address[last_name]"
+          placeholder="{{ 'customers.fields.last_name.placeholder' | t }}"
+          required
+          type="text"
+          {% if edit_address %}
+            value="{{ form.last_name }}"
+          {% endif %}
+          {% if form.errors contains error_type %}
+            aria-describedby="{{ error_namespace }}-errors"
+            aria-invalid="true"
+          {% endif %}
+        >
+
+        <label
+          class="form-group__label text-tags"
+          for="last-name-{{ form_id }}"
+        >
+          {{ 'customers.fields.last_name.label' | t }}
+
+          <abbr title="{{ 'customers.fields.required.label' | t }}">
+            {{ 'customers.fields.required.symbol' | t }}
+          </abbr>
+        </label>
+
+        {% render 'form-errors' with
+          class: 'form-group__note',
+          form: form,
+          namespace: namespace,
+          type: error_type,
+        %}
+      </div>
+
+      <div class="form-group__field">
+        {%- liquid
+          assign error_type = 'company'
+          assign error_namespace = error_namespace_string | replace: '#', error_type
+        -%}
+
+        <input
+          id="company-{{ form_id }}"
+          {% if form.errors contains error_type %}
+            class="has-error"
+          {% endif %}
+          autocomplete="organization"
+          autocorrect="off"
+          name="address[company]"
+          placeholder="{{ 'customers.fields.company.placeholder' | t }}"
+          type="text"
+          {% if edit_address %}
+            value="{{ form.company }}"
+          {% endif %}
+          {% if form.errors contains error_type %}
+            aria-describedby="{{ error_namespace }}-errors"
+            aria-invalid="true"
+          {% endif %}
+        >
+
+        <label
+          class="form-group__label text-tags"
+          for="company-{{ form_id }}"
+        >
+          {{ 'customers.fields.company.label' | t }}
+        </label>
+
+        {% render 'form-errors' with
+          class: 'form-group__note',
+          form: form,
+          namespace: namespace,
+          type: error_type,
+        %}
+      </div>
+
+  <div class="form-group__field">
+        {%- liquid
+          assign error_type = 'phone'
+          assign error_namespace = error_namespace_string | replace: '#', error_type
+        -%}
+
+        <input
+          id="phone-{{ form_id }}"
+          {% if form.errors contains error_type %}
+            class="has-error"
+          {% endif %}
+          autocomplete="tel"
+          name="address[phone]"
+          required
+          pattern="[0-9\-\+\s]*"
+          placeholder="{{ 'customers.fields.phone.placeholder' | t }}"
+          type="tel"
+          {% if edit_address %}
+            value="{{ form.phone }}"
+          {% endif %}
+          {% if form.errors contains error_type %}
+            aria-describedby="{{ error_namespace }}-errors"
+            aria-invalid="true"
+          {% endif %}
+        >
+
+        <label
+          class="form-group__label text-tags"
+          for="phone-{{ form_id }}"
+        >
+          {{ 'customers.fields.phone.label' | t }}
+
+          <abbr title="{{ 'customers.fields.required.label' | t }}">
+            {{ 'customers.fields.required.symbol' | t }}
+          </abbr>
+        </label>
+
+        {% render 'form-errors' with
+          class: 'form-group__note',
+          form: form,
+          namespace: namespace,
+          type: error_type,
+        %}
+      </div>
+
+      <div class="form-group__field">
+        {%- liquid
+          assign error_type = 'address1'
+          assign error_namespace = error_namespace_string | replace: '#', error_type
+        -%}
+
+        <input
+          id="address-1-{{ form_id }}"
+          {% if form.errors contains error_type %}
+            class="has-error"
+          {% endif %}
+          autocapitalize="words"
+          autocomplete="address-line1"
+          name="address[address1]"
+          placeholder="{{ 'customers.fields.address1.placeholder' | t }}"
+          required
+          type="text"
+          {% if edit_address %}
+            value="{{ form.address1 }}"
+          {% endif %}
+          {% if form.errors contains error_type %}
+            aria-describedby="{{ error_namespace }}-errors"
+            aria-invalid="true"
+          {% endif %}
+        >
+
+        <label
+          class="form-group__label text-tags"
+          for="address-1-{{ form_id }}"
+        >
+          {{ 'customers.fields.address1.label' | t }}
+
+          <abbr title="{{ 'customers.fields.required.label' | t }}">
+            {{ 'customers.fields.required.symbol' | t }}
+          </abbr>
+        </label>
+
+        {% render 'form-errors' with
+          class: 'form-group__note',
+          form: form,
+          namespace: namespace,
+          type: error_type,
+        %}
+      </div>
+
+      <div class="form-group__field">
+        {%- liquid
+          assign error_type = 'address2'
+          assign error_namespace = error_namespace_string | replace: '#', error_type
+        -%}
+
+        <input
+          id="address-2-{{ form_id }}"
+          {% if form.errors contains error_type %}
+            class="has-error"
+          {% endif %}
+          autocapitalize="words"
+          autocomplete="address-line2"
+          name="address[address2]"
+          placeholder="{{ 'customers.fields.address2.placeholder' | t }}"
+          type="text"
+          {% if edit_address %}
+            value="{{ form.address2 }}"
+          {% endif %}
+          {% if form.errors contains error_type %}
+            aria-describedby="{{ error_namespace }}-errors"
+            aria-invalid="true"
+          {% endif %}
+        >
+
+        <label
+          class="form-group__label text-tags"
+          for="address-2-{{ form_id }}"
+        >
+          {{ 'customers.fields.address2.label' | t }}
+        </label>
+
+        {% render 'form-errors' with
+          class: 'form-group__note',
+          form: form,
+          namespace: namespace,
+          type: error_type,
+        %}
+      </div>
+
+      <div class="form-group__field">
+        {%- liquid
+          assign error_type = 'city'
+          assign error_namespace = error_namespace_string | replace: '#', error_type
+        -%}
+
+        <input
+          id="city-{{ form_id }}"
+          {% if form.errors contains error_type %}
+            class="has-error"
+          {% endif %}
+          autocapitalize="words"
+          autocomplete="address-line3"
+          name="address[city]"
+          placeholder="{{ 'customers.fields.city.placeholder' | t }}"
+          required
+          type="text"
+          {% if edit_address %}
+            value="{{ form.city }}"
+          {% endif %}
+          {% if form.errors contains error_type %}
+            aria-describedby="{{ error_namespace }}-errors"
+            aria-invalid="true"
+          {% endif %}
+        >
+
+        <label
+          class="form-group__label text-tags"
+          for="city-{{ form_id }}"
+        >
+          {{ 'customers.fields.city.label' | t }}
+
+          <abbr title="{{ 'customers.fields.required.label' | t }}">
+            {{ 'customers.fields.required.symbol' | t }}
+          </abbr>
+        </label>
+
+        {% render 'form-errors' with
+          class: 'form-group__note',
+          form: form,
+          namespace: namespace,
+          type: error_type,
+        %}
+      </div>
+
+      <div class="form-group__field">
+        {%- liquid
+          assign error_type = 'country'
+          assign error_namespace = error_namespace_string | replace: '#', error_type
+        -%}
+
+        <select
+          id="country-{{ form_id }}"
+          {% if form.errors contains error_type %}
+            class="has-error"
+          {% endif %}
+          autocomplete="country-name"
+          name="address[country]"
+          required
+          {% if form.errors contains error_type %}
+            aria-describedby="address-errors-{{ form.id }}"
+            aria-invalid="true"
+          {% endif %}
+          data-default="{{ form.country }}"
+          data-form-id="{{ form_id }}"
+          js-addresses="country"
+        >
+          {{ country_option_tags }}
+        </select>
+
+        <label
+          class="form-group__label text-tags"
+          for="country-{{ form_id }}"
+        >
+          {{ 'customers.fields.country.label' | t }}
+
+          <abbr title="{{ 'customers.fields.required.label' | t }}">
+            {{ 'customers.fields.required.symbol' | t }}
+          </abbr>
+        </label>
+
+        {% render 'form-errors' with
+          class: 'form-group__note',
+          form: form,
+          namespace: namespace,
+          type: error_type,
+        %}
+      </div>
+
+      <div
+        class="form-group__field is-hidden"
+        js-addresses="provinceContainer"
+      >
+        {%- liquid
+          assign error_type = 'province'
+          assign error_namespace = error_namespace_string | replace: '#', error_type
+        -%}
+
+        <select
+          id="province-{{ form_id }}"
+          {% if form.errors contains error_type %}
+            class="has-error"
+          {% endif %}
+          name="address[province]"
+          {% if form.errors contains error_type %}
+            aria-describedby="{{ error_namespace }}-errors"
+            aria-invalid="true"
+          {% endif %}
+          data-default="{{ form.province }}"
+          js-addresses="province"
+        ></select>
+
+        <label
+          class="form-group__label"
+          for="province-{{ form_id }}"
+        >
+          {{ 'customers.fields.province.label' | t }}
+        </label>
+
+        {% render 'form-errors' with
+          class: 'form-group__note',
+          form: form,
+          namespace: namespace,
+          type: error_type,
+        %}
+      </div>
+
+      <div class="form-group__field">
+        {%- liquid
+          assign error_type = 'zip'
+          assign error_namespace = error_namespace_string | replace: '#', error_type
+        -%}
+
+        <input
+          id="zip-{{ form_id }}"
+          {% if form.errors contains error_type %}
+            class="has-error"
+          {% endif %}
+          autocapitalize="characters"
+          autocomplete="postal-code"
+          name="address[zip]"
+          placeholder="{{ 'customers.fields.zip.placeholder' | t }}"
+          required
+          type="text"
+          {% if edit_address %}
+            value="{{ form.zip }}"
+          {% endif %}
+          {% if form.errors contains error_type %}
+            aria-describedby="{{ error_namespace }}-errors"
+            aria-invalid="true"
+          {% endif %}
+        >
+
+        <label
+          class="form-group__label text-tags"
+          for="zip-{{ form_id }}"
+        >
+          {{ 'customers.fields.zip.label' | t }}
+
+          <abbr title="{{ 'customers.fields.required.label' | t }}">
+            {{ 'customers.fields.required.symbol' | t }}
+          </abbr>
+        </label>
+
+        {% render 'form-errors' with
+          class: 'form-group__note',
+          form: form,
+          namespace: namespace,
+          type: error_type,
+        %}
+      </div>
+
+      <div class="form-group__field form-group__field-default">
+        {% render 'checkbox-input' with
+          checked: set_as_default_checked,
+          disabled: set_as_default_disabled,
+          id: set_as_default_id,
+          input: form.set_as_default_checkbox,
+          label: set_as_default_string,
+        %}
+      </div>
+    </div>
+
+    <div class="form-group__footer mt-xl">
+      {% render 'btn'
+        attributes: 'js-addresses="cancel"',
+        class: 'customers-addresses__cancel',
+        icon: cancel_icon,
+        label: cancel_string_cta,
+        modifiers: 'secondary center',
+        type: 'button',
+      %}
+
+      {% render 'btn' with
+        class: 'customers-addresses__submit',
+        label: confirm_string_cta,
+        type: 'submit',
+        modifiers: 'primary center'
+      %}
+    </div>
+  {% endform %}
+</div>

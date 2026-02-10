@@ -1,0 +1,52 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet / Site: Favicon
+  - Generate supported favicon sizes.
+  - Will also set the application colour and name.
+------------------------------------------------------------------------------
+{% endcomment %}
+<meta
+  content="{{ settings.site_colour }}"
+  name="theme-color"
+>
+
+<link
+  href="{{ 'site.webmanifest' | asset_url }}"
+  rel="manifest"
+>
+
+{%- liquid
+  if settings.favicon == blank
+    continue
+  endif
+-%}
+
+<link
+  href="{{ settings.favicon | image_url: width: 180, height: 180, crop: 'center' }}"
+  rel="apple-touch-icon"
+  sizes="180x180"
+>
+
+<link
+  href="{{ settings.favicon | image_url: width: 32, height: 32, crop: 'center', format: 'jpg' }}"
+  rel="icon"
+  sizes="32x32"
+  type="image/jpg"
+>
+
+<link
+  href="{{ settings.favicon | image_url: width: 16, height: 16, crop: 'center', format: 'jpg' }}"
+  rel="icon"
+  sizes="16x16"
+  type="image/jpg"
+>
+
+<meta
+  content="{{ settings.site_colour }}"
+  name="msapplication-TileColor"
+>
+
+<meta
+  content="{{ settings.favicon | image_url: width: 150, height: 150, crop: 'center' }}"
+  name="msapplication-TileImage"
+>

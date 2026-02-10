@@ -1,0 +1,39 @@
+// stylelint-disable color-function-notation, alpha-value-notation
+
+/**
+ * Styles: Account forms overlay (overlay)
+ * -----------------------------------------------------------------------------
+ * Base styles for account forms.
+ *
+ */
+.account-forms-overlay {
+  align-items: start;
+  background-color: var(--color-overlay, rgba(29, 29, 29, 0.8));
+  justify-items: end;
+  z-index: var(--layer-temporary);
+
+  &__container {
+    background-color: var(--color-breeze);
+    margin-block-start: calc(var(--header-height) - var(--spacing-m));
+    max-width: 25rem;
+    padding: var(--spacing-l);
+    position: absolute;
+  }
+
+  @include mq($until: l) {
+    &__container {
+      margin-block-start: var(--spacing-m);
+      margin-inline-end: var(--spacing-xl);
+      padding-block-start: 0;
+    }
+  }
+
+  @include mq($until: m) {
+    justify-items: center;
+
+    &__container {
+      margin-block-start: var(--spacing-m);
+      margin-inline-end: 0;
+    }
+  }
+}

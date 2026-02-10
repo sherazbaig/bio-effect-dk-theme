@@ -1,0 +1,27 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Menu drawer
+  - Statically rendered navigation list for SEO purposes.
+  - Hidden on the front-end.
+-----------------------------------------------------------------------------
+{% endcomment %}
+<div
+  class="menu-drawer visually-hidden critical-component-hide liquid"
+  js-menu-drawer="container"
+>
+  <div class="menu-drawer__header">
+    <span class="menu-drawer__account">
+      {% render 'icon-general' with icon: 'account' %}
+
+      <span class="text-button-nav menu-drawer__account-label">
+        {{ 'general.site_header.account' | t }}
+      </span>
+    </span>
+    <div class="menu-drawer__close" >
+      {% render 'icon-directional-navigation' with icon: 'close' %}
+    </div>
+  </div>
+  <div class="menu-drawer__navigation">
+
+  </div>
+</div>

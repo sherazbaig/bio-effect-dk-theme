@@ -1,0 +1,15 @@
+/**
+ * Styles: multi-store-settings (multi-store-settings)
+ * -----------------------------------------------------------------------------
+ * Base styles for multi-store-settings component.
+ *
+ */
+.multi-store-settings {
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,58 @@
+/**
+ * Layout: Theme
+ * -----------------------------------------------------------------------------
+ * Core entry file for all styling in the theme layout.
+ *
+ */
+@charset 'UTF-8';
+
+/**
+ * Import base.
+ * - Add in alphabetical order.
+ * - Base styles not imported here are in `critical/theme.scss`.
+ */
+@import '@/base/accessibility';
+@import '@/base/classes';
+@import '@/base/forms';
+@import '@/base/preview-bar';
+
+/**
+ * Import helpers.
+ * - Add in alphabetical order.
+ * - Helper styles not imported here are in `critical/theme.scss`.
+ */
+@import '@/helpers/display';
+@import '@/helpers/grid';
+@import '@/helpers/rte';
+@import '@/helpers/spacing';
+@import '@/helpers/text';
+@import '@/helpers/transitions';
+
+/**
+ * Import pages.
+ */
+@import '@/pages/shopify-challenge';
+@import '@/pages/shopify-policy';
+
+/**
+ * Import global components.
+ * - Global components not imported here are in `critical/theme.scss`.
+ */
+// canvas-global-stylesheets-start
+@import '~global/account-forms/account-forms';
+@import '~global/btn/btn';
+@import '~global/country-select/country-select';
+@import '~global/images/images';
+@import '~global/mega-nav/mega-nav';
+@import '~global/multi-store-settings/multi-store-settings';
+@import '~global/newsletter-modal/newsletter-modal';
+@import '~global/overlay/overlay';
+@import '~global/product-card/product-card';
+@import '~global/product-prices/product-prices';
+// canvas-global-stylesheets-end
+
+/**
+ * Import other components.
+ */
+@import '@/components/form-group';
+@import '@/components/splide';

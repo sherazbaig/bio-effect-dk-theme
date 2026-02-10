@@ -1,0 +1,23 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet / Format: Video
+  - Returns video Liquid object formatted as Vue prop data.
+  - Designed for video type metafields and theme settings.
+  - Use as a replacement to storefront API queries.
+
+  @param {Object} video - Video Liquid object to format.
+  @returns {Object}
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- capture data -%}
+  {%- if video.sources != blank %}
+    alt: {{ video.alt | json | escape }},
+    aspectRatio: {{ video.aspect_ratio | json | escape }},
+    duration: {{ video.duration | json | escape }},
+    id: {{ video.id | json | escape }},
+    liquid: {{ true | json | escape }},
+    sources: [{% render 'format-video-source' for video.sources as video_source %}]
+  {%- endif -%}
+{%- endcapture -%}
+
+{ {{ data | strip | strip_newlines }} }

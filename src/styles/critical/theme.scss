@@ -1,0 +1,28 @@
+/*
+ * Critical: Theme
+ * -----------------------------------------------------------------------------
+ * Critical styles for the theme layout.
+ * - Compiles into `critical-theme.liquid`.
+ *
+ */
+@charset 'UTF-8';
+
+/**
+ * Import base.
+ * - Import order is important.
+ */
+@import '@/base/reset';
+@import '@/base/critical';
+@import '@/base/icon';
+@import '@/base/keyframes';
+
+/**
+ * Import helpers.
+ */
+@import '@/helpers/layout';
+
+/**
+ * Import components.
+ */
+@import '~global/site-header-group/site-header-group';
+@import '~global/promo-banner/promo-banner';

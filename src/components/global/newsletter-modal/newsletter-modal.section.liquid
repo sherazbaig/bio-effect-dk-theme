@@ -1,0 +1,42 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Newsletter modal (newsletter-modal)
+------------------------------------------------------------------------------
+{% endcomment %}
+{% assign overlay_namespace = 'newsletterModal' %}
+{% assign time = section.settings.time_to_show_modal | times: 1000 | json | escape %}
+
+<section>
+  <overlay
+    v-cloak
+    :key="{{ overlay_namespace | json | escape }}"
+    block-class="newsletter-modal-overlay"
+    direction="fade"
+    :namespace="{{ overlay_namespace | json | escape }}"
+    type="modal"
+  >
+    <template #body="overlay">
+      <newsletter-modal
+        :button="{{ section.settings.button | json | escape }}"
+        :disclaimer="{{ section.settings.disclaimer | json | escape }}"
+        :liquid="{
+          {% if section.settings.image %}
+            image: {
+              alt: {{ section.settings.image.alt | json | escape }},
+              src: {{ section.settings.image | image_url | json | escape }}
+            },
+          {% endif %}
+          sectionId: {{ section.id | json | escape }}
+        }"
+        :overlay="overlay"
+        :title="{{ section.settings.title | json | escape }}"
+        :privacy-policy="{{ section.settings.privacy_policy | json | escape }}"
+        :list="{{ section.settings.list | json | escape }}"
+        :time-to-show-modal="{{ time }}"
+        :design-mode="{{ request.design_mode | json | escape }}"
+      />
+    </template>
+  </overlay>
+</section>
+
+{% schema 'newsletter-modal' %}

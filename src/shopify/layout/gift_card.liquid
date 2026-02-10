@@ -1,0 +1,111 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Layout: Gift card
+  - Gift card page layout.
+  - templates/gift_card.liquid is passed into {{ content_for_layout }}
+  - https://shopify.dev/themes/architecture/templates/gift-card-liquid
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign not_production = true
+  assign theme_name = theme.name | downcase
+
+  if theme_name contains 'production'
+    assign not_production = false
+  endif
+
+  # RTL languages based on https://en.wikipedia.org/wiki/Right-to-left_script
+  assign rtl_languages = 'ar,dv,fa,ff,he,ks,ku,ur,wo,yi' | split: ','
+  assign direction = 'ltr'
+
+  if rtl_languages contains localization.language.iso_code
+    assign direction = 'rtl'
+  endif
+-%}
+
+<!doctype html>
+<html
+  class="no-js"
+  dir="{{ direction }}"
+  lang="{{ localization.language.iso_code }}"
+>
+  <head>
+    {% render 'critical-gift_card' %}
+
+    {% comment %}
+    -----------------------------------------------------------------------------
+      Site snippets.
+    -----------------------------------------------------------------------------
+    {% endcomment %}
+    {%- liquid
+      render 'site-meta'
+      render 'site-hreflang'
+      render 'site-favicon'
+      render 'site-social-tags'
+    -%}
+
+    {% comment %}
+    -----------------------------------------------------------------------------
+      Theme snippets.
+    -----------------------------------------------------------------------------
+    {% endcomment %}
+    {%- liquid
+      render 'theme-fonts'
+      render 'theme-variables'
+    -%}
+
+    <!-- BEGIN content_for_header -->
+    {% capture shopify_header_content %}
+      {{ content_for_header }}
+    {% endcapture %}
+
+    {% if settings.remove_preview_bar and not_production %}
+      {{ shopify_header_content | remove: 'previewBarInjector.init();' }}
+    {% else %}
+      {{ shopify_header_content }}
+    {% endif %}
+    <!-- END content_for_header -->
+
+    {% comment %}
+    ----------------------------------------------------------------------------
+      Theme styles.
+      - Must be placed here so dynamically loaded component styles override.
+    ----------------------------------------------------------------------------
+    {% endcomment %}
+    {% unless settings.disable_theme_styles and not_production %}
+      {% render 'theme-styles' with layout: 'gift_card' %}
+    {% endunless %}
+  </head>
+
+  <body
+    id="{{ page_title | handle }}"
+    class="
+      page-type-{{ request.page_type }}
+      template-{{ template.name | handle }}
+    "
+  >
+    <main
+      id="main-content"
+      class="main-content"
+    >
+      <!-- BEGIN content_for_layout -->
+        {{ content_for_layout }}
+      <!-- END content_for_layout -->
+    </main>
+
+    {% comment %}
+    -----------------------------------------------------------------------------
+      Custom preview bar.
+    -----------------------------------------------------------------------------
+    {% endcomment %}
+    {% render 'theme-preview-bar' %}
+  </body>
+
+  {% comment %}
+  ----------------------------------------------------------------------------
+    Theme scripts.
+  ----------------------------------------------------------------------------
+  {% endcomment %}
+  <script defer src="{{ 'vendor/qrcode.js' | shopify_asset_url }}"></script>
+  {% render 'theme-scripts' with layout: 'gift_card' %}
+</html>

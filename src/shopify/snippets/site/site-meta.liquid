@@ -1,0 +1,100 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet / Site: Meta
+  - Contains meta information for SEO purposes.
+  - General, title, description, indexing.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign not_production = true
+  assign theme_name = theme.name | downcase
+
+  if theme_name contains 'production'
+    assign not_production = false
+  endif
+-%}
+
+{% comment %}
+-----------------------------------------------------------------------------
+  General.
+-----------------------------------------------------------------------------
+{% endcomment %}
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1, height=device-height, minimum-scale=1" name="viewport">
+
+{% if settings.no_index and not_production -%}
+  <meta content="noindex, nofollow" name="robots">
+{%- endif %}
+
+<link href="{{ canonical_url }}" rel="canonical">
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Title.
+  - Overrides page title for customers templates.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  capture seo_title
+    case request.page_type
+      when 'customers/account'
+        if template.suffix == 'orders'
+          echo 'customers.orders.title' | t
+        else
+          echo 'customers.account.title' | t
+        endif
+      when 'customers/activate_account'
+        echo 'customers.activate_account.title' | t
+      when 'customers/addresses'
+        echo 'customers.addresses.title' | t
+      when 'customers/login'
+        echo 'customers.login.title' | t
+      when 'customers/order'
+        echo 'customers.order.title' | t: number: order.order_number
+      when 'customers/register'
+        echo 'customers.register.title' | t
+      when 'customers/reset_password'
+        echo 'customers.reset_password.title' | t
+      when 'list-collections'
+        echo 'list_collections.title' | t
+      when 'password'
+        echo 'password_page.title' | t
+      else
+        echo page_title
+    endcase
+
+    if current_tags
+      assign meta_tags = current_tags | join: ', '
+      echo 'general.meta.tags' | t: tags: meta_tags | prepend: ' &ndash; '
+    endif
+
+    if current_page != 1
+      echo 'general.meta.page' | t: page: current_page | prepend: ' &ndash; '
+    endif
+
+    assign escaped_page_title = page_title | escape
+    assign escaped_shop_name = shop.name | escape
+
+    unless escaped_page_title contains escaped_shop_name
+      echo shop.name | prepend: ' &ndash; '
+    endunless
+  endcapture
+-%}
+
+<title>{{ seo_title | strip }}</title>
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Description.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{% if page_description -%}
+  <meta content="{{ page_description | escape }}" name="description">
+{%- endif %}
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Optimisations.
+-----------------------------------------------------------------------------
+{% endcomment %}
+<link href="https://cdn.shopify.com" rel="preconnect">

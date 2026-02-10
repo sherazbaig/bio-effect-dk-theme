@@ -1,0 +1,119 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Section: Main search (main-search)
+-----------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.main-search.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign search_placeholder = 'search.placeholder' | t
+  assign search_submit = 'search.submit' | t
+-%}
+
+
+<section
+  class="main-search page-section container grid"
+  aria-labelledby="template-title"
+  data-component-handle="main-search"
+  data-component-type="load"
+  js-main-search="{{ section.id }}"
+>
+  <div class="col xs6 l3-12" v-if="!getComponentActive('main-search')">
+    <div class="main-search__header">
+      <form
+        action="{{ routes.search_url }}"
+        method="get"
+        role="search"
+        class="main-search__form"
+      >
+        <label
+          class="visually-hidden"
+          for="search-input"
+        >
+          {{ search_placeholder }}
+        </label>
+
+        <input
+          id="search-input"
+          class="main-search__input text-h2-desktop text-h6"
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ search_placeholder }}"
+          required
+          js-main-search="search-input"
+        >
+
+        <input name="options[prefix]" type="hidden" value="last">
+
+        <button type="submit" class="main-search__submit">
+          <span class="main-search__submit--label text-p-small">
+            {{ search_submit }}
+          </span>
+          {% render 'icon-directional-navigation' with icon: 'link-arrow' %}
+        </button>
+      </form>
+    </div>
+
+    {% paginate search.results by section.settings.products_per_page %}
+      <div class="main-search__body">
+        <div class="main-search__results">
+          {% for result in search.results %}
+            {%- liquid
+              case result.object_type
+                when 'article', 'product', 'page'
+                  render 'inline-card' with data: result
+              endcase
+            -%}
+          {% endfor %}
+        </div>
+
+        {% if search.performed and section.settings.up_sell_products.count > 0 %}
+          <div class="main-search__upsell">
+            {% for up_sell_product in section.settings.up_sell_products %}
+              {% if up_sell_product.metafields.seo.hidden == 1 %}
+                {% continue %}
+              {% endif %}
+
+              {% render 'product-card' with product: false, loading_animation: true %}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% if paginate.pages > 1 and paginate.next.url %}
+          <div class="main-search__load-more-wrapper">
+            <a
+              class="button button--primary is-loading main-search__load-more"
+              href="{{ paginate.next.url }}"
+              js-main-search="load-more"
+            >
+              <span class="button__label text-other-button-s text-other-button-l-desktop">Load More</span>
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    {% endpaginate %}
+  </div>
+
+  <div class="col xs6 l3-12">
+    <main-search
+      v-cloak
+      :liquid="{
+        {% if section.settings.up_sell_products != blank %}
+          upSellProducts: [
+            {% for product in section.settings.up_sell_products %}
+              {% if product.metafields.seo.hidden == 1 %}
+                {% continue %}
+              {% endif %}
+
+              {% render 'format-product' with product: product %}
+              {% unless forloop.last %},{% endunless %}
+            {% endfor %}
+          ]
+        {% endif %}
+      }"
+    ></main-search>
+  </div>
+</section>
+
+{% schema 'main-search' %}

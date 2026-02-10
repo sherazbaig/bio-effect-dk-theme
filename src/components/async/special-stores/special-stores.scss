@@ -1,0 +1,49 @@
+/**
+ * Styles: Special stores (special-stores)
+ * -----------------------------------------------------------------------------
+ * Base styles for special stores component.
+ *
+ */
+.special-stores {
+  padding-block-end: var(--spacing-7xl);
+
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__title {
+    color: var(--color-stone);
+    font-weight: var(--font-weight-demi-bold);
+    margin-block-end: var(--spacing-3xl);
+  }
+
+  &__store {
+    align-items: center;
+    display: grid;
+    gap: var(--spacing-s);
+  }
+
+  &__store-title {
+    color: var(--color-stone);
+  }
+
+  &__cta {
+    // Double selector to add weigh specificity.
+    &#{&} {
+      width: fit-content;
+    }
+  }
+
+  @include mq($from: l) {
+    padding-block-end: var(--spacing-10xl);
+
+    &__store {
+      gap: 0;
+      grid-template-columns: 1fr auto;
+    }
+  }
+}

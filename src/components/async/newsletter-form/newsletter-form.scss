@@ -1,0 +1,87 @@
+/**
+ * Styles: Newsletter form (newsletter-form)
+ * -----------------------------------------------------------------------------
+ * Base styles for newsletter form component.
+ *
+ */
+.newsletter-form {
+  $parent: &;
+
+  &.liquid {
+    #{$parent}__submit {
+      @include button-reset;
+    }
+  }
+
+  &__email {
+    display: flex;
+    margin-block-end: var(--spacing-2xs);
+    position: relative;
+
+    &::after,
+    &::before {
+      bottom: 0;
+      content: '';
+      height: var(--spacing-4xs);
+      left: 0;
+      position: absolute;
+      width: 100%;
+    }
+
+    &::after {
+      background-color: var(--color-bio);
+      transform: scaleX(0);
+      transform-origin: 0 0;
+      transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+      z-index: 0;
+    }
+
+    &::before {
+      background-color: var(--color-clouds-80);
+      transition: opacity 0.3s cubic-bezier(0.65, 0, 0.35, 1) 0.3s;
+    }
+
+    &:focus-within::after {
+      transform: none;
+      transition-delay: 0.3s;
+    }
+
+    &:focus-within::before {
+      opacity: var(--layer-base);
+      transition-delay: 0ms;
+      transition-duration: 0.15s;
+    }
+
+    &.has-success {
+      display: none;
+    }
+  }
+
+  &__email-input {
+    @include input-reset;
+    color: var(--color-clouds);
+    min-height: calc(var(--spacing-4xl) - calc(var(--spacing-3xs) * 3));
+    width: 100%;
+  }
+
+  .icon {
+    width: var(--spacing-4xl);
+
+    path {
+      fill: var(--color-clouds);
+    }
+  }
+
+  &__error {
+    color: var(--color-error-red);
+    font-size: var(--font-size-0);
+  }
+
+  &__success {
+    color: var(--color-clouds);
+  }
+
+  &__subtitle {
+    color: var(--color-clouds);
+  }
+}

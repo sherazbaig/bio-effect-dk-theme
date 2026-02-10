@@ -1,0 +1,132 @@
+/**
+ * Styles: info-stamps (info-stamps)
+ * -----------------------------------------------------------------------------
+ * Base styles for info-stamps component.
+ *
+ */
+.info-stamps {
+  --image-container-max-width: 150px;
+  $parent: &;
+  align-items: flex-start;
+  margin-block: var(--spacing-3xl);
+
+  &__title {
+    color: var(--color-stone);
+    margin-block-end: var(--spacing-2xl);
+  }
+
+  &__subtext {
+    color: var(--color-stone);
+    margin-inline-end: var(--spacing-l);
+  }
+
+  &__image-list {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__image {
+    align-items: center;
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: center;
+    max-width: var(--image-container-max-width);
+
+    .images__image, .images {
+      // max values for image sizes in order to fit current website design
+      max-height: 117.5px;
+      max-width: 110px;
+    }
+  }
+
+  &__arrow-icon {
+    display: inline-block;
+    transition: transform var(--timing-normal) var(--easing-normal);
+
+    .icon {
+      width: calc(var(--icon-l) + var(--icon-2xs));
+    }
+  }
+
+  &__link {
+    color: var(--color-stone);
+    text-decoration: none;
+
+    &:hover {
+      #{$parent}__arrow-icon {
+        transform: translateX(10px);
+      }
+    }
+  }
+
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  @include mq($until: l) {
+    --image-container-max-width: 128px;
+    display: flex;
+    flex-direction: column-reverse;
+    margin-block-end: var(--spacing-5xl);
+
+    &__header {
+      margin-block-end: var(--spacing-2xl);
+    }
+
+    &__image-list {
+      justify-content: flex-start;
+      width: 100%;
+    }
+
+    &__image {
+      justify-content: flex-start;
+      padding-inline: var(--spacing-2xs);
+    }
+
+    .images__image, .images {
+      // max values for image sizes in order to fit current website design
+      max-height: 100px;
+      max-width: 94px;
+    }
+  }
+
+  @include mq($from: l) {
+    --image-container-max-width: 130px;
+    margin-block-end: var(--spacing-5xl);
+    margin-block-start: var(--spacing-8xl);
+
+    &__title {
+      margin-block-end: var(--spacing-xl);
+    }
+
+    &__image {
+      max-width: var(--image-container-max-width);
+      padding-inline: var(--spacing-xs);
+    }
+
+    &__centered {
+      justify-content: center;
+    }
+  }
+
+  @include mq($from: xl) {
+    --image-container-max-width: 150px;
+
+    &__image {
+      margin-block-end: calc(var(--spacing-m) + var(--spacing-2xs));
+      max-width: var(--image-container-max-width);
+    }
+
+    &__image-list {
+      margin-inline-end: var(--spacing-7xl);
+    }
+
+    &__centered {
+      margin: 0;
+    }
+  }
+}

@@ -1,0 +1,102 @@
+/**
+ * Styles: Full width promo (full-width-promo)
+ * -----------------------------------------------------------------------------
+ * Base styles for full width promo component.
+ *
+ */
+.full-width-promo {
+  $parent: &;
+  position: relative;
+
+  &:hover {
+    box-shadow: 0 0 30px 0 var(--color-hover);
+  }
+
+  &__copy {
+    background-color: var(--color-clouds);
+    color: var(--color-stone);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: var(--spacing-l);
+    padding-inline: var(--spacing-l);
+    z-index: var(--layer-flat);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &__title {
+    margin-block-end: var(--spacing-l);
+  }
+
+  &__description {
+    margin-block-end: var(--spacing-2xl);
+    // Magic number to match design - 23.125rem = 379px
+    max-width: 23.125rem;
+  }
+
+  &__cta {
+    // Magic number to match design - 13.813rem = 221px
+    max-width: 13.813rem;
+  }
+
+  /**
+   * Loading state.
+   */
+  html:not(.no-js) &.is-loading {
+    pointer-events: none;
+
+    .images,
+    #{$parent}__title,
+    #{$parent}__description,
+    #{$parent}__cta {
+      @include loading;
+    }
+
+    #{$parent}__title {
+      height: 40px;
+      width: 80%;
+    }
+
+    #{$parent}__description {
+      height: 90px;
+    }
+
+    #{$parent}__cta {
+      height: 50px;
+    }
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: l) {
+    &__copy {
+      background-color: transparent;
+      bottom: 0;
+      padding-block: 0;
+      padding-inline: var(--spacing-8xl);
+      position: absolute;
+      top: 0;
+
+      &.right {
+        right: 0;
+      }
+
+      &.light {
+        color: var(--color-clouds);
+      }
+    }
+
+    /**
+     * Loading state.
+     */
+    html:not(.no-js) &.is-loading {
+      #{$parent}__copy {
+        display: none;
+      }
+    }
+  }
+}

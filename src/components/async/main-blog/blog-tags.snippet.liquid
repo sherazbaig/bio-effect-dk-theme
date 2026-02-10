@@ -1,0 +1,76 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Blog tags (main-blog)
+  - Renders list of blog tag/category links.
+
+  @param {Object} blog - Liquid blog.
+  @param {String} [class] - Additional classes to render.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  if blog.all_tags.size < 1
+    continue
+  endif
+
+  assign all_category_string = 'blog.all_category' | t
+
+  if current_tags == blank
+    assign all_category_attribute = 'js-blog-tags="active"'
+    assign all_category_class = 'is-active'
+  endif
+-%}
+
+<div class="blog-tags container grid">
+  <ul
+    class="
+      blog-tags__wrapper
+      {{ class }}
+      col
+      l2-13
+    "
+    js-blog-tags="container"
+  >
+    <li class="blog-tags__item">
+      {% render 'selection-tab' with
+        attributes: all_category_attribute,
+        class: all_category_class,
+        label: all_category_string,
+        url: blog.url,
+      %}
+    </li>
+
+    {% for tag in blog.all_tags %}
+      {%- liquid
+        assign tag_handle = tag | handle
+        assign tag_label = tag
+        assign title_string = 'blog.show_articles' | t: tag: tag
+        assign url = blog.url | append: '/tagged/' | append: tag_handle
+
+        assign active_class = ''
+        assign attributes = ''
+
+        if forloop.last
+          assign attributes = attributes | append: ' data-last="true"'
+        endif
+
+        if current_tags contains tag
+          assign active_class = 'is-active'
+          assign attributes = attributes | append: ' js-blog-tags="active"'
+        endif
+
+        if tag contains 'badge:'
+          assign tag_label = tag | split: 'badge:' | last | replace: '-', ' ' | capitalize
+        endif
+      -%}
+
+      <li class="blog-tags__item">
+        {% render 'selection-tab' with
+          attributes: attributes,
+          class: active_class,
+          label: tag_label,
+          url: url,
+        %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>

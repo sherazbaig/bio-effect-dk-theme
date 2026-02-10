@@ -1,0 +1,35 @@
+/* stylelint-disable selector-class-pattern */
+
+/**
+ * Styles: Window overlay (overlay)
+ * -----------------------------------------------------------------------------
+ * Base styles for window overlay.
+ *
+ */
+.window-overlay {
+  @include button-reset;
+  background-color: var(--color-overlay, rgb(29 29 29 / 80%));
+  cursor: default;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: var(--layer-window-overlay);
+
+  /**
+   * Liquid state.
+   */
+  &.liquid {
+    animation: fade-in var(--timing-normal) var(--easing-normal);
+  }
+
+  &.megaNav {
+    top: var(--header-height);
+  }
+
+  &.accountForms {
+    background-color: var(--color-overlay);
+    z-index: var(--layer-overlay);
+  }
+}

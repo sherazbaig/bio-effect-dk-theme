@@ -1,0 +1,47 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet / Format: Media
+  - Returns media Liquid object formatted as Vue prop data.
+  - Designed for product.media.
+  - Use as a replacement to storefront API queries.
+  - Can be used in a forloop.
+
+  @param {Object} [forloop] - Forloop Liquid object.
+  @param {Object} media - Media Liquid object to format.
+  @returns {Object}
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- capture data -%}
+  alt: {{ media.alt | json | escape }},
+  id: {{ media.id | json | escape }},
+  {% if forloop %}
+    index: {{ forloop.index0 | json | escape }},
+  {% endif %}
+  liquid: {{ true | json | escape }},
+  mediaType: {{ media.media_type | json | escape }},
+  {%- case media.media_type -%}
+    {%- when 'external_video' -%}
+      embedUrl: {{ media | external_video_url | json | escape }},
+      host: {{ media.host | json | escape }},
+      previewImage: {% render 'format-image' with image: media.preview_image %}
+    {%- when 'image' -%}
+      image: {% render 'format-image' with image: media.image %}
+    {%- when 'model' -%}
+      previewImage: {% render 'format-image' with image: media.preview_image %},
+      sources: [
+        {%- for model_source in media.sources -%}
+          {
+            format: {{ model_source.format | json | escape }},
+            liquid: {{ true | json | escape }},
+            mimeType: {{ model_source.mime_type | json | escape }},
+            url: {{ model_source.url | json | escape }}
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    {%- when 'video' -%}
+      previewImage: {% render 'format-image' with image: media.preview_image %},
+      sources: [{% render 'format-video-source' for media.sources as video_source %}]
+  {% endcase %}
+{%- endcapture -%}
+
+{ {{ data | strip | strip_newlines }} }{%- if forloop and forloop.last == false -%},{%- endif -%}

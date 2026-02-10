@@ -1,0 +1,142 @@
+/**
+ * Styles: Main article (main-article)
+ * -----------------------------------------------------------------------------
+ * Base styles for main article component.
+ *
+ */
+.main-article {
+  background-color: var(--color-clouds);
+  margin-block-end: 0;
+  padding-block-end: 0;
+
+  > div:last-child {
+    padding-block-end: var(--header-margin-bottom-mobile);
+  }
+
+  &__header-bottom {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-l);
+  }
+
+  &__header-wrapper, &__content-wrapper {
+    color: var(--color-stone);
+    padding-inline: var(--layout-mobile-gutter);
+  }
+
+  &__content-wrapper {
+    background-color: var(--color-breeze);
+  }
+
+  &__header {
+    display: grid;
+    gap: var(--spacing-xl);
+  }
+
+  &__social-sharing {
+    align-items: center;
+    display: flex;
+    gap: var(--spacing-xl);
+    justify-content: center;
+  }
+
+  &__sharing-icon {
+    // matching design
+    max-width: var(--icon-m);
+  }
+
+  &__divider {
+    background-color: var(--color-bio);
+    height: 1px;
+    margin-inline: var(--layout-mobile-gutter);
+  }
+
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  @include mq($until: l) {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+
+    &__header {
+      margin-block-end: var(--spacing-l);
+      margin-block-start: var(--spacing-l);
+    }
+
+    &__image-container {
+      margin-block-end: 0;
+    }
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: l) {
+    --container-width: calc(100vw - (var(--layout-margin) * 2));
+    --total-gutter-width: calc(var(--layout-gutter) * (var(--layout-column) - 1));
+    --column-width: calc((var(--container-width) - var(--total-gutter-width)) / var(--layout-column));
+    // Update 10 to desired number of columns that image should span, gutter value should be 1 less
+    --image-width: calc(var(--column-width) * 10 + (var(--layout-gutter) * 9));
+    // Update 2 to difference in columns between image and text divided by 2
+    // E.g. if image is 8 and text is 6 cols it should be 1 (8 - 6 / 2)
+    --image-offset: calc((var(--column-width) * 2) + (var(--layout-gutter) * 2));
+    padding-block-end: 0;
+    padding-block-start: var(--spacing-4xl);
+    row-gap: 0;
+
+    &__header-wrapper, &__content-wrapper {
+      color: var(--color-stone);
+      padding-block: var(--spacing-xl);
+      padding-inline: var(--layout-desktop-gutter);
+    }
+
+    > div:last-child {
+      padding-block-end: var(--header-margin-bottom-desktop);
+    }
+
+    &__header {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__header-bottom {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: row;
+      gap: var(--spacing-xl);
+      // Matching design
+      min-height: 120px;
+    }
+
+    &__social-sharing {
+      // Matching design
+      height: 52px;
+      padding-block-start: var(--spacing-4xs);
+    }
+
+    &__divider {
+      margin-inline: var(--layout-desktop-gutter);
+    }
+
+    &__content {
+      img {
+        margin-inline-start: calc(var(--image-offset) * -1);
+        max-width: unset;
+        width: var(--image-width);
+      }
+    }
+  }
+
+  // stylelint-disable-next-line
+  @media screen and (min-width: $max-content-width) {
+    --container-width: calc(var(--max-content-width) - (var(--layout-margin) * 2));
+  }
+}

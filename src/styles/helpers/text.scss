@@ -1,0 +1,19 @@
+/**
+ * Helpers: Text
+ * -----------------------------------------------------------------------------
+ * Utility classes to format and align text.
+ *
+ */
+.text-left,
+.text-start {
+  text-align: flex-start;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right,
+.text-end {
+  text-align: flex-end;
+}

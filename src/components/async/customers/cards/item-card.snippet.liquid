@@ -1,0 +1,75 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Item card (cards)
+
+  @param {String} [class] - Additional classes to render.
+  @param {Object} line_item - Liquid line item.
+  @param {Number} [line_quantity] - Quantity in fulfillment.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign item_discount = line_item.total_discount | money_without_trailing_zeros
+
+  # Get variants with option names
+  assign variant_parts = line_item.variant.title | split: ' / '
+
+  for product_option in line_item.options_with_values
+    # Can't use selected option as it always returns the first variant
+    assign option_title = 'customers.order.item_card.variant' | t: selected_value: variant_parts[forloop.index0]
+    assign variant_title = variant_title | append: ' / ' | append: option_title
+  endfor
+
+  assign variant_title = variant_title | remove_first: '/' | strip
+
+  if line_item.gift_card
+    assign variant_title = line_item.variant.price | money_without_trailing_zeros
+  endif
+
+  # Line item quantity
+  assign quantity = line_item.quantity
+
+  if line_quantity
+    assign quantity = line_quantity
+  endif
+
+  # Line item total
+  assign item_total = line_item.final_price | times: quantity | money_without_trailing_zeros
+
+  if line_item.final_line_price == 0
+    assign item_total = 'customers.order.item_card.free' | t | money_without_trailing_zeros
+  endif
+-%}
+
+<div class="item-card liquid {{ class }}">
+  <div class="item-card__image-container">
+    {% render 'responsive-image' with
+      image: line_item.image,
+      ratio: '1:1',
+      min_max: '93-279',
+      sizes: '(min-width: 1024px) 115px, 93px',
+    %}
+  </div>
+
+  <div class="item-card__details ml-xl-desktop ml-l">
+    <p class="item-card__field text-p-desktop text-mobile-p">
+      {{ line_item.product.title }}
+    </p>
+
+    <p class="item-card__field item-card__field-total text-p-desktop text-mobile-p">
+      {{ 'customers.order.item_card.total' | t: total: item_total }}
+    </p>
+
+    <p class="item-card__field item-card__field-quantity text-button-nav mt-2xs">
+      {% unless line_item.product.has_only_default_variant %}
+        <span>{{ variant_title }}</span>
+      {% endunless %}
+      {{ 'customers.order.item_card.quantity' | t: quantity: quantity }}
+    </p>
+
+    {% if line_item.total_discount > 0 %}
+      <p class="item-card__field text-p-desktop text-mobile-p">
+        {{ 'customers.order.item_card.discount' | t: discount: item_discount }}
+      </p>
+    {% endif %}
+  </div>
+</div>

@@ -1,0 +1,109 @@
+/**
+ * Style: Radio input (radio-input)
+ * -----------------------------------------------------------------------------
+ * Base styles for radio input component.
+ *
+ */
+// stylelint-disable max-nesting-depth
+
+.radio-input {
+  $parent: &;
+  align-items: center;
+  display: flex;
+
+  &__label {
+    cursor: pointer;
+    margin: 0;
+    min-height: var(--icon-m);
+    // Offset so text appears on the same baseline when aligned with normal text
+    padding-block-start: var(--spacing-3xs);
+    // Radio width + desired padding
+    padding-inline-start: calc(var(--icon-m) + var(--spacing-xs));
+    position: relative;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+    }
+
+    /**
+     * Pseudo input styling.
+     */
+    &::before {
+      @include transition(background-color, border-color);
+      background-color: var(--color-neutral-6);
+      border: 1px solid var(--color-brand-1-default);
+      border-radius: 100%;
+      height: var(--icon-m);
+      left: 0;
+      top: 0;
+      width: var(--icon-m);
+    }
+
+    /**
+     * Circle styling.
+     */
+    &::after {
+      @include transition(background-color, opacity);
+      background-color: transparent;
+      border-radius: 100%;
+      content: '';
+      height: var(--icon-2xs);
+      left: calc((var(--icon-m) - var(--icon-2xs)) / 2);
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      top: calc((var(--icon-m) - var(--icon-2xs)) / 2);
+      width: var(--icon-2xs);
+    }
+  }
+
+  /**
+   * Active state.
+   */
+  &__input:checked + #{$parent}__label::after {
+    background-color: var(--color-brand-1-default);
+    opacity: 1;
+  }
+
+  /**
+   * Hover state.
+   */
+  &:hover,
+  &.is-hover {
+    #{$parent}__input + #{$parent}__label::before {
+      border-color: var(--color-brand-1-dark);
+    }
+
+    #{$parent}__input:not([disabled], .is-disabled) + #{$parent}__label::after {
+      background-color: var(--color-neutral-4);
+      opacity: 1;
+    }
+
+    #{$parent}__input:checked:not([disabled], .is-disabled) + #{$parent}__label::after {
+      background-color: var(--color-brand-1-dark);
+    }
+  }
+
+  /**
+   * Disabled state.
+   */
+  &__input[disabled],
+  &__input.is-disabled {
+    + #{$parent}__label {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+  }
+
+  /**
+   * Focus state.
+   */
+  .is-tabbable & {
+    #{$parent}__input:focus + #{$parent}__label::before,
+    &.is-focus #{$parent}__label::before {
+      @include focus-ring;
+    }
+  }
+}

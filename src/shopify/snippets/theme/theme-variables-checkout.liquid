@@ -1,0 +1,19 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet / Theme: Variables for checkout
+  - Assign global variables for use in JavaScript.
+  - Only used on the checkout.liquid layout.
+  - Bare minimum of variables included by default, add as required.
+-----------------------------------------------------------------------------
+{% endcomment %}
+<script>
+  window.cnvs = window.cnvs || {}
+
+  {% # Do not edit %}
+  window.cnvs.environment = {
+    bugsnagApiKey: 'CANVAS_BUGSNAG_API_KEY',
+    canvas: 'CANVAS_VERSION',
+    mode: 'CANVAS_WEBPACK_MODE',
+    release: 'CANVAS_RELEASE_VERSION',
+  },
+</script>

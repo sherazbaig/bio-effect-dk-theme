@@ -1,0 +1,66 @@
+.dropdown-menu {
+  $parent: &;
+
+  &__input-area {
+    align-items: center;
+    border: 1px solid var(--color-gray-text);
+    cursor: pointer;
+    display: flex;
+    font-size: var(--font-size-2);
+    justify-content: space-between;
+    position: relative;
+
+    &--with-label {
+      color: var(--color-gray-text);
+      font-size: var(--font-size-0);
+
+      #{$parent}__input {
+        padding-block-end: calc(var(--spacing-2xs) + var(--spacing-3xs));
+        padding-block-start: var(--spacing-l);
+      }
+    }
+  }
+
+  &__active {
+    rotate: 180deg;
+  }
+
+  .icon__chevron {
+    fill: var(--color-clouds);
+    height: unset;
+    padding: var(--spacing-m);
+    width: unset;
+  }
+
+  &__input {
+    color: var(--color-stone);
+    padding: var(--spacing-m);
+  }
+
+  &__label {
+    padding-inline: var(--spacing-m);
+    position: absolute;
+    top: 6px;
+  }
+
+  &__option-area {
+    background-color: var(--color-clouds);
+    border: 1px solid var(--color-cool);
+    margin-block-start: var(--spacing-xs);
+  }
+
+  &__option--selected {
+    background-color: var(--color-breeze);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  &__option-text {
+    color: var(--color-stone);
+    cursor: pointer;
+    font-size: var(--font-size-2);
+    font-weight: var(--font-weight-medium);
+    padding-block-end: var(--spacing-m);
+    padding-block-start: calc(var(--spacing-m) + var(--spacing-2xs));
+    padding-inline: calc(var(--spacing-s) + var(--spacing-3xs));
+  }
+}

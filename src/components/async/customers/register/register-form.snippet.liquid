@@ -1,0 +1,197 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Register form (customers-register)
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign register_cta_string = 'customers.register.cta' | t
+  assign login_cta_string = 'customers.login.cta' | t
+  assign accepts_marketing_string = 'customers.register.accepts_marketing_html' | t | replace: '<a', '<a class="text-body-m-underline text-body-l-underline-desktop"' | newline_to_br
+  assign privacy_string = 'customers.register.privacy_text' | t
+-%}
+
+<p
+  class="text-mobile-p account-forms__error is-hidden mb-m"
+  js-account="register-error"
+>
+  {% render 'icon-general' with icon: 'info-circle' %}
+  <span class="account-forms__error-text ml-s"></span>
+</p>
+
+{% form 'create_customer' %}
+  <div class="form-group">
+    <div class="form-group__field">
+
+      <input
+        id="first-name"
+        autocapitalize="words"
+        autocomplete="given-name"
+        autocorrect="off"
+        name="customer[first_name]"
+        placeholder="{{ 'customers.fields.first_name.placeholder' | t }}"
+        required
+        type="text"
+        {% if form.first_name %}
+          value="{{ form.first_name }}"
+        {% endif %}
+      >
+
+      <label
+        class="form-group__label text-body-m-regular"
+        for="first-name"
+      >
+        {{ 'customers.fields.first_name.label' | t }}
+
+        <abbr title="{{ 'customers.fields.required.label' | t }}">
+          {{ 'customers.fields.required.symbol' | t }}
+        </abbr>
+      </label>
+    </div>
+
+    <div class="form-group__field">
+
+      <input
+        id="last-name"
+        autocapitalize="words"
+        autocomplete="family-name"
+        autocorrect="off"
+        name="customer[last_name]"
+        placeholder="{{ 'customers.fields.last_name.placeholder' | t }}"
+        required
+        type="text"
+        {% if form.last_name %}
+          value="{{ form.last_name }}"
+        {% endif %}
+      >
+
+      <label
+        class="form-group__label text-body-m-regular"
+        for="last-name"
+      >
+        {{ 'customers.fields.last_name.label' | t }}
+
+        <abbr title="{{ 'customers.fields.required.label' | t }}">
+          {{ 'customers.fields.required.symbol' | t }}
+        </abbr>
+      </label>
+    </div>
+
+    <div class="form-group__field">
+
+      <input
+        id="email"
+        {% if form.errors contains 'email' %}
+          class="has-error"
+        {% endif %}
+        autocapitalize="off"
+        autocomplete="email"
+        autocorrect="off"
+        name="customer[email]"
+        placeholder="{{ 'customers.fields.email.placeholder' | t }}"
+        required
+        spellcheck="false"
+        type="email"
+        {% if form.email %}
+          value="{{ form.email }}"
+        {% endif %}
+        {% if form.errors contains 'email' %}
+          aria-describedby="register-email-errors"
+          aria-invalid="true"
+        {% endif %}
+      >
+
+      <label
+        class="form-group__label text-body-m-regular"
+        for="email"
+      >
+        {{ 'customers.fields.email.label' | t }}
+
+        <abbr title="{{ 'customers.fields.required.label' | t }}">
+          {{ 'customers.fields.required.symbol' | t }}
+        </abbr>
+      </label>
+
+      {% render 'form-errors' with
+        class: 'form-group__note',
+        form: form,
+        namespace: 'register-email',
+        type: 'email',
+      %}
+    </div>
+
+    <div class="form-group__field">
+
+      <input
+        id="password"
+        {% if form.errors contains 'password' %}
+          class="has-error"
+        {% endif %}
+        autocomplete="new-password"
+        name="customer[password]"
+        placeholder="{{ 'customers.fields.password.placeholder' | t }}"
+        required
+        type="password"
+        {% if form.errors contains 'password' %}
+          aria-describedby="register-password-errors"
+          aria-invalid="true"
+        {% endif %}
+      >
+
+      <label
+        class="form-group__label text-body-m-regular"
+        for="password"
+      >
+        {{ 'customers.fields.password.label' | t }}
+
+        <abbr title="{{ 'customers.fields.required.label' | t }}">
+          {{ 'customers.fields.required.symbol' | t }}
+        </abbr>
+      </label>
+
+      {% render 'form-errors' with
+        class: 'form-group__note',
+        form: form,
+        namespace: 'register-password',
+        type: 'password',
+      %}
+    </div>
+
+    <div class="form-group__field">
+      {% render 'checkbox-input' with
+        id: 'accepts-marketing',
+        checked: true,
+        label: accepts_marketing_string,
+        name: 'customer[accepts_marketing]',
+        type: 'checkbox'
+      %}
+    </div>
+
+    <div class="form-group__field">
+      {% render 'checkbox-input' with
+        id: 'accept-privacy',
+        label: privacy_string,
+        checked: true,
+        required: true,
+        name: 'acceptPrivacy',
+        type: 'checkbox'
+      %}
+    </div>
+
+    <div class="customers__onboarding-form-footer form-group__footer">
+      {% render 'btn' with
+        attributes: 'js-register="submit"',
+        class: 'customers__button',
+        label: register_cta_string,
+        type: 'submit',
+      %}
+
+      {% render 'btn' with
+        attributes: 'js-register="login-toggle"',
+        class: 'customers__button',
+        modifiers: 'secondary block center'
+        label: login_cta_string,
+      %}
+
+    </div>
+  </div>
+{% endform %}

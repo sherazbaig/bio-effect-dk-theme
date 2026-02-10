@@ -1,0 +1,25 @@
+/**
+ * Base: Preview bar
+ * -----------------------------------------------------------------------------
+ * Base styling for replacement preview bar.
+ *
+ */
+.preview-bar {
+  @include text-reset($font-family: sans-serif, $font-size: 10px);
+  background-color: rgb(0 0 0);
+  bottom: 16px;
+  color: rgb(255 255 255);
+  padding-block-end: 8px;
+  padding-block-start: 8px;
+  padding-inline-end: 12px;
+  padding-inline-start: 12px;
+  position: fixed;
+  right: 16px;
+  // One below browsersync notification
+  z-index: 9998;
+
+  &:hover {
+    color: rgb(255 255 255);
+    text-decoration: none;
+  }
+}

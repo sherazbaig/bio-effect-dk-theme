@@ -1,0 +1,41 @@
+/**
+ * Styles: Site header group (site-header-group)
+ * -----------------------------------------------------------------------------
+ * Site header state styles and sub-component styles.
+ *
+ */
+@import '~global/site-header-group/navigation/navigation';
+@import '~global/site-header-group/site-header/site-header';
+@import '~global/site-header-group/site-header-offset/site-header-offset';
+// Promo banner is loaded as an async component
+
+.site-header-group-section {
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: var(--layer-overlay);
+}
+
+.site-header-group {
+  @include transition(translate);
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+
+  // Scroll down
+  &.is-collapsed {
+    translate: 0 var(--header-collapsed-translate);
+
+    .is-tabbable &:focus,
+    .is-tabbable &:focus-within {
+      translate: 0;
+    }
+  }
+
+  // Scroll up but not at top
+  &.is-minimised {
+    translate: 0 var(--header-minimised-translate);
+  }
+}

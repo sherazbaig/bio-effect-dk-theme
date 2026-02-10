@@ -1,0 +1,51 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Checkbox input (checkbox-input)
+
+  @param {String} [type] - Input type.
+  @param {String} placeholder - Placeholder text.
+  @param {Boolean} [disabled] - Input is disabled.
+  @param {String} id - ID for input.
+  @param {String} name - Name for input.
+  @param {String} [value] - Input value.
+  @param {String} label - Input label.
+  @param {String} [errorMessage] - Message to display for error.
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign type = type | default: 'text'
+-%}
+
+<div class="general-input liquid">
+  <div class="general-input__wrapper">
+    <input
+      class="general-input__input"
+      type="{{ type }}"
+      {%- if placeholder -%}
+        placeholder="{{ placeholder }}"
+      {%- endif -%}
+      {%- if disabled -%}
+        disabled
+      {%- endif -%}
+      {%- if id -%}
+        id="{{ id }}"
+      {%- endif -%}
+      {%- if value -%}
+        value="{{ value }}"
+      {%- endif -%}
+    />
+
+    <label
+      class="general-input__label"
+      {%- if id -%}
+        for="{{ id }}"
+      {%- endif -%}
+    ></label>
+  </div>
+
+  {% if error_message != blank %}
+    <div class="general-input__state-message">
+      {{ error_message }}
+    </div>
+  {% endif %}
+</div>

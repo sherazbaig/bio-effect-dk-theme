@@ -1,0 +1,179 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Section: Site footer (site-footer-group)
+-----------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.site-footer.css' | asset_url | stylesheet_tag }}
+
+{% comment %}
+----------------------------------------------------------------------------
+  Capture the markup for the link lists
+----------------------------------------------------------------------------
+{% endcomment %}
+{% capture link_lists %}
+  <ul class="site-footer__link-list-wrapper">
+    {% unless section.blocks.size == 0 %}
+      {% for block in section.blocks %}
+        {% render 'site-footer-links' with
+          links: block.settings.link_list
+          link_text_class: 'text-p'
+        %}
+      {% endfor %}
+    {% endunless %}
+  </ul>
+{% endcapture %}
+
+{% comment %}
+----------------------------------------------------------------------------
+  Capture the social icon markup
+----------------------------------------------------------------------------
+{% endcomment %}
+{% capture social_icons %}
+  {% render 'social' with
+    base_class: 'site-footer'
+  %}
+{% endcapture %}
+
+{% comment %}
+----------------------------------------------------------------------------
+  Capture the current year, for use in the copyright notice and the text.
+----------------------------------------------------------------------------
+{% endcomment %}
+{% capture current_year %}
+  {{ 'now' | date: "%Y" }}
+{% endcapture %}
+
+{% capture copyright %}
+  {{ 'general.site_footer.copyright' | t: year: current_year }}
+{% endcapture %}
+
+<footer
+  aria-labelledby="site-footer-title"
+  data-component-handle="site-footer"
+  data-component-type="scroll"
+>
+  <site-footer
+    v-if="getComponentVisible('site-footer')"
+    :liquid="{
+      {% if section.settings.footer_logo %}
+        image: {
+          alt: {{ section.settings.footer_logo.alt | json | escape }},
+          src: {{ section.settings.footer_logo | image_url | json | escape }}
+        },
+      {% endif %}
+      subtext: {{ section.settings.subtext | json | escape }},
+      disclaimerText: {{ section.settings.disclaimer_text | json | escape }},
+      showSocialMediaIcons: {{ section.settings.social_media_icons | json | escape }},
+      socialMediaTitle: {{ section.settings.social_media_title | json | escape }},
+      socialIcons: {{ social_icons | json | escape }},
+      enableNewsletterForm: {{ section.settings.newsletter_form | json | escape }},
+      newsletterListId: {{ section.settings.newsletter_list_id | json | escape }},
+      newsletterFormTitle: {{ section.settings.newsletter_form_title | json | escape }},
+      linkLists: {{ link_lists | json | escape }},
+      copyright: {{ copyright | json | escape }},
+    }"
+    v-cloak
+  ></site-footer>
+
+  {% comment %}
+  ----------------------------------------------------------------------------
+    Loading state.
+  ----------------------------------------------------------------------------
+  {% endcomment %}
+  <div v-if="!getComponentActive('site-footer')">
+    <div class="site-footer is-loading critical-component-clear liquid">
+      <div class="site-footer__top-container mb-3xl">
+        <div class="container grid site-footer__grid">
+          <div class="site-footer__content-cell col xs6 l10">
+            {% if section.settings.newsletter_form_title != blank %}
+              <h3
+                class="
+                  site-footer__newsletter-title
+                  text-mobile-titles
+                  text-h2-desktop
+                "
+              >
+                {{ section.settings.newsletter_form_title }}
+              </h3>
+            {% endif %}
+
+            {% if section.settings.newsletter_form %}
+              <div class="site-footer__newsletter">
+                {% render 'newsletter-form' with
+                  block_class: 'site-footer',
+                  list: section.settings.newsletter_list_id,
+                %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="site-footer__content-cell col xs6 l4">
+            {% if section.settings.social_media_title != blank %}
+              <p class="site-footer__impact-text">
+                {{ section.settings.social_media_title }}
+              </p>
+            {% endif %}
+
+            {% if section.settings.social_media_icons %}
+              <div class="site-footer__social">
+                {{ social_icons }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="site-footer__middle-container">
+        <div class="grid site-footer__grid">
+          <div class="site-footer__content-cell col xs6 l7">
+            {% if section.settings.footer_logo != blank %}
+              <a
+                href="{{ routes.root_url }}"
+                class="site-footer__logo"
+                aria-label="{{ 'general.site_footer.return_home' | t }}"
+              >
+                {% render 'responsive-image' with
+                  image: footer_logo,
+                  alt: footer_logo.alt,
+                  ratio: 1:1
+                %}
+              </a>
+            {% endif %}
+
+            {% if section.settings.subtext != blank %}
+              <div class="site-footer__subtext">
+                {{ section.settings.subtext }}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="site-footer__content-cell col xs6 l7">
+            <div class="site-footer__nav">
+              {{ link_lists }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="site-footer__bottom-container">
+        <div class="container grid site-footer__grid">
+          <div class="site-footer__content-cell col xs6 l14">
+              <p class="site-footer__copyright text-p-small">
+                {{ copyright }}
+              </p>
+          </div>
+
+          <div class="site-footer__content-cell col xs6 l14">
+            {% if section.settings.disclaimer_text != blank %}
+              <div class="site-footer__disclaimer-text text-p-small">
+                {{ section.settings.disclaimer_text }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema 'site-footer' %}

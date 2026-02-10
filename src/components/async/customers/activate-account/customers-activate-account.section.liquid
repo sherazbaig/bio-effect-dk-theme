@@ -1,0 +1,35 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Customers activate account (customers-activate-account)
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.customers-activate-account.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="customers critical-customers-clear"
+  aria-labelledby="template-title"
+  data-component-handle="customers-activate-account"
+>
+  <div
+    class="
+      customers-activate-account
+      customers__onboarding
+      {% if settings.customers_onboarding_image != blank %}
+        customers__onboarding--has-image
+      {% endif %}
+      critical-component-clear
+      liquid
+    "
+  >
+    {% render 'customers-onboarding-image'%}
+
+    <div class="customers__onboarding-content grid container">
+      <div class="customers__onboarding-forms col xs-span l4-9">
+        {% render 'activate-account-form' %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema 'customers-activate-account' %}

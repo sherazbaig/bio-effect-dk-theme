@@ -1,0 +1,17 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Section: Site header offset (site-header-offset)
+  - Component uses CSS variables to match height of site header group.
+  - The initial height values are set in styles/base/critical.scss before
+    being updated by the site-header-group.vue component.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  unless section.settings.enable
+    continue
+  endunless
+-%}
+
+<section class="site-header-offset"></section>
+
+{% schema 'site-header-offset' %}

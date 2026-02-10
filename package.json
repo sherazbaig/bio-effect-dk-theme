@@ -1,0 +1,87 @@
+{
+  "name": "@we-make-websites/canvas",
+  "version": "5.2.0",
+  "description": "A next generation theme built using dynamic Vue components and compiled by Basis.",
+  "homepage": "https://we-make-websites.gitbook.io/canvas/",
+  "repository": "https://github.com/we-make-websites/canvas",
+  "author": "Craig Baldwin <craig@wemakewebsites.com>",
+  "contributors": [
+    "Adam Chipperfield <adam.chipperfield@wemakewebsites.com>",
+    "Andrew Amistad <andrew.amistad@wemakewebsites.com>",
+    "Billy Noyes <billy.noyes@wemakewebsites.com>",
+    "Don Cooper <don.cooper@wemakewebsites.com>",
+    "Drew Garratt <drew.garratt@wemakewebsites.com>",
+    "James Peilow <james.peilow@wemakewebsites.com>",
+    "Jenny Liu <jenny.liu@wemakewebsites.com>",
+    "Michael Coombes <michael.coombes@wemakewebsites.com>",
+    "Seth Beer <seth@wemakewebsites.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@commitlint/cli": "17.6.3",
+    "@we-make-websites/basis": "file:./local_modules/@we-make-websites/basis",
+    "@we-make-websites/basis-schema-docs": "file:./local_modules/@we-make-websites/basis-schema-docs",
+    "@we-make-websites/branch-naming-check": "file:./local_modules/@we-make-websites/branch-naming-check",
+    "@we-make-websites/canvas-component-tools": "file:./local_modules/@we-make-websites/canvas-component-tools",
+    "@we-make-websites/canvas-design-tools": "file:./local_modules/@we-make-websites/canvas-design-tools",
+    "@we-make-websites/canvas-storybook-tools": "file:./local_modules/@we-make-websites/canvas-storybook-tools",
+    "@we-make-websites/eslint-config": "file:./local_modules/@we-make-websites/eslint-config",
+    "@we-make-websites/stylelint-config": "file:./local_modules/@we-make-websites/stylelint-config",
+    "eslint": "8.41.0",
+    "eslint-import-resolver-webpack": "0.13.2",
+    "eslint-plugin-storybook": "0.6.12",
+    "graphql-config": "5.0.1",
+    "husky": "8.0.3",
+    "lint-staged": "13.2.2",
+    "postcss-loader": "7.3.3",
+    "storybook-addon-rtl-direction": "0.0.19",
+    "stylelint": "15.6.2"
+  },
+  "peerDependencies": {
+    "graphql": "16.6.0",
+    "graphql-tag": "2.12.6"
+  },
+  "dependencies": {
+    "@bugsnag/js": "7.20.2",
+    "@bugsnag/plugin-vue": "7.19.0",
+    "@shopify/theme-cart": "4.1.1",
+    "@splidejs/vue-splide": "0.6.12",
+    "@we-make-websites/click-outside": "file:./local_modules/@we-make-websites/click-outside",
+    "@we-make-websites/theme-currency": "file:./local_modules/@we-make-websites/theme-currency",
+    "body-scroll-lock": "3.1.5",
+    "sass-mq": "6.0.0",
+    "vue": "3.3.4",
+    "vuex": "4.1.0",
+    "vuex-persistedstate": "4.1.0"
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": "^16.17.0"
+  },
+  "imports": {
+    "#fragments/*": "./src/schemas/fragments/*.js"
+  },
+  "lint-staged": {
+    "*.scss": "stylelint",
+    "*.{js,vue}": "eslint"
+  },
+  "scripts": {
+    "build": "basis-build",
+    "component": "component-create",
+    "copy": "basis-copy",
+    "deploy": "basis-build && basis-deploy",
+    "design": "design-convert",
+    "docs": "basis-schema-docs",
+    "download": "basis-download",
+    "helpme": "basis-help",
+    "hot": "basis-watch --hot",
+    "locales": "basis-locales",
+    "postinstall": "node ./canvas/postinstall.js",
+    "start": "yarn run watch",
+    "storybook-build": "storybook-build",
+    "storybook": "storybook-watch",
+    "templates": "basis-templates",
+    "watch": "basis-watch"
+  }
+}

@@ -1,0 +1,67 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: faq-section (faq-section)
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.faq-section.css' | asset_url | stylesheet_tag }}
+
+<section
+  data-component-handle="faq-section"
+  data-component-type="scroll"
+>
+  <faq-section
+    v-if="getComponentVisible('faq-section')"
+    v-cloak
+    :liquid="{
+      sectionId: {{ section.id | json | escape }}
+    }"
+    :title='{{ section.settings.title | json | escape }}'
+    :blocks='[
+      {%- for block in section.blocks -%}
+        {
+          question: {{ block.settings.question | json | escape }},
+          answer: {{ block.settings.answer | json | escape }},
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]'
+  ></faq-section>
+
+  {% comment %}
+  -----------------------------------------------------------------------------
+    Loading state.
+  -----------------------------------------------------------------------------
+  {% endcomment %}
+  <div v-if="!getComponentActive('faq-section')">
+    <div class="faq-section is-loading critical-component-clear liquid container">
+      <div class="faq-section__grid grid">
+        {% if section.seettings.title != blank %}
+          <h2 class="faq-section__title text-h2 col l2-5 xs-span">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
+
+        <div class="faq-section__body col l7-13 xs-span">
+          {%- for block in section.blocks -%}
+            <div class="faq-section__block">
+              <div
+                class="faq-section__question-wrapper"
+                role="button"
+                tabindex="0"
+                aria-label="{{ 'general.faq.show_answer' | t }}"
+              >
+                <div class="faq-section__question text-p-desktop text-mobile-p">
+                  {{ block.settings.question }}
+                </div>
+
+                {% render 'icon-directional-navigation' with icon: 'outlined-plus' %}
+              </div>
+            </div>
+
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema 'faq-section' %}

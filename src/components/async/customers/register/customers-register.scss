@@ -1,0 +1,15 @@
+/**
+ * Styles: Customers register (customers-register)
+ * -----------------------------------------------------------------------------
+ * Base styles for customers register component.
+ *
+ */
+.customers-register {
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+}

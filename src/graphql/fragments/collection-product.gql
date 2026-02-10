@@ -1,0 +1,37 @@
+#import "~graphql/fragments/image.gql"
+
+fragment collectionProduct on Product {
+  available: availableForSale
+  compareAtPriceRange {
+    minVariantPrice {
+      amount
+      currencyCode
+    }
+    maxVariantPrice {
+      amount
+      currencyCode
+    }
+  }
+  handle
+  images(first: 1) {
+    edges {
+      node {
+        ...image
+      }
+    }
+  }
+  onlineStoreUrl
+  priceRange {
+    minVariantPrice {
+      amount
+      currencyCode
+    }
+    maxVariantPrice {
+      amount
+      currencyCode
+    }
+  }
+  tags
+  title
+  type: productType
+}

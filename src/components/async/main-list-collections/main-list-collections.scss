@@ -1,0 +1,40 @@
+/**
+ * Styles: Main list collections (main-list-collections)
+ * -----------------------------------------------------------------------------
+ * Base styles for main list collections component.
+ *
+ */
+.main-list-collections {
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__title {
+    margin-block-end: var(--spacing-xl);
+  }
+
+  /**
+   * Collection card.
+   */
+  &__card {
+    display: block;
+    text-decoration: unset;
+  }
+
+  &__image-container {
+    margin-block-end: var(--spacing-m);
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: l) {
+    &__grid {
+      gap: var(--spacing-xl);
+    }
+  }
+}

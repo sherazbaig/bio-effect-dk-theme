@@ -1,0 +1,199 @@
+/**
+ * Styles: Line item (line-item)
+ * -----------------------------------------------------------------------------
+ * Base styles for line item component.
+ *
+ */
+.line-item {
+  @include transition(opacity);
+  $parent: &;
+  margin-block-end: var(--spacing-xl);
+
+  &__grid {
+    background-color: var(--color-clouds);
+    border-radius: 1px;
+    display: grid;
+    gap: var(--spacing-m);
+    grid: auto 1fr / minmax(40px, 60px) 1fr auto;
+    // matches designs
+    min-height: 130px;
+    padding: var(--spacing-m);
+  }
+
+  &__image-container {
+    grid-column: 1;
+    grid-row: 1/-1;
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    grid-column: 2/3;
+    grid-row: 1/-1;
+  }
+
+  &__title {
+    color: var(--color-stone);
+  }
+
+  &__variant {
+    color: var(--color-gray-text);
+    margin-block-start: var(--spacing-xs);
+  }
+
+  &__quantity-selector {
+    margin-block-start: auto;
+    width: fit-content;
+  }
+
+  &__total {
+    display: grid;
+    gap: var(--spacing-3xs);
+    grid-column: 3/-1;
+    grid-row: 1;
+    text-align: right;
+  }
+
+  &__free-tag {
+    text-align: end;
+    text-transform: uppercase;
+  }
+
+  &__free-tag-total {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  &__fgwp {
+    background-color: var(--color-bio);
+    border-radius: 20px;
+    margin-block: var(--spacing-m);
+    padding-block: calc(var(--spacing-2xs) + var(--spacing-3xs));
+    padding-inline: var(--spacing-s);
+    text-align: center;
+  }
+
+  &__remove {
+    @include button-reset($font: false);
+    @include transition(opacity);
+    color: var(--color-gray-text);
+    font-size: var(--font-size-2);
+    grid-column: 3;
+    grid-row: 2;
+    margin-block-start: auto;
+
+    &.is-disabled {
+      pointer-events: none;
+    }
+
+    /**
+     * Accessibility - focus ring.
+     */
+    .is-tabbable &:enabled:focus-visible {
+      @include focus-ring;
+      outline-offset: var(--spacing-xs);
+    }
+  }
+
+  /**
+   * States.
+   */
+  html:not(.no-js) &.is-loading {
+    #{$parent}__image,
+    #{$parent}__title,
+    #{$parent}__variant,
+    #{$parent}__price-container,
+    #{$parent}__total {
+      @include loading;
+    }
+
+    #{$parent}__image .images__image {
+      display: none;
+    }
+
+    #{$parent}__title,
+    #{$parent}__variant,
+    #{$parent}__price-container,
+    #{$parent}__total {
+      height: 17px;
+    }
+
+    #{$parent}__title {
+      width: 200px;
+    }
+
+    #{$parent}__variant {
+      width: 150px;
+    }
+
+    #{$parent}__price-container {
+      width: 100px;
+    }
+
+    #{$parent}__quantity-selector,
+    #{$parent}__remove {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    #{$parent}__total {
+      width: 75px;
+    }
+  }
+
+  html:not(.no-js) &.liquid {
+    #{$parent}__remove {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
+  &.is-updating {
+    opacity: 0.5;
+  }
+
+  /**
+   * RTL.
+   */
+  [dir=rtl] & {
+    &__remove {
+      left: 0;
+      right: unset;
+    }
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: s) {
+    &__grid {
+      gap: var(--spacing-m);
+      grid-template-columns: minmax(70px, 120px) 1fr auto;
+    }
+  }
+
+  @include mq($from: l) {
+    .is-loading {
+      #{$parent}__title,
+      #{$parent}__variant,
+      #{$parent}__price-container,
+      #{$parent}__total {
+        height: 21px;
+      }
+
+      #{$parent}__title {
+        width: 250px;
+      }
+
+      #{$parent}__variant {
+        width: 200px;
+      }
+
+      #{$parent}__price-container {
+        width: 100px;
+      }
+    }
+  }
+}

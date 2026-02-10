@@ -1,0 +1,53 @@
+/**
+ * Styles: Text&Subtext (text-subtext)
+ * -----------------------------------------------------------------------------
+ * Base styles for text&subtext component.
+ *
+ */
+.text-subtext {
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__cell {
+    &:not(:first-child) {
+      margin-block-start: 0;
+    }
+  }
+
+  &__title {
+    color: var(--color-stone);
+    margin-block-end: calc(var(--spacing-m) + var(--spacing-2xs));
+  }
+
+  &__subtext {
+    p {
+      color: var(--color-stone);
+    }
+
+    a {
+      color: var(--color-teal);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+        text-underline-position: under;
+      }
+    }
+  }
+
+  @include mq($from: l) {
+    &__cell {
+      margin-block-end: var(--spacing-10xl);
+      margin-block-start: var(--spacing-9xl);
+    }
+
+    &__subtext p {
+      @include text-p;
+    }
+  }
+}

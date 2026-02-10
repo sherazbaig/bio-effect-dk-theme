@@ -1,0 +1,59 @@
+/**
+ * Styles: Customers addresses (customers-addresses)
+ * -----------------------------------------------------------------------------
+ * Base styles for address block component.
+ * - Non-Vue component.
+ *
+ */
+.address-block {
+  color: var(--color-stone);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  &__actions {
+    align-items: center;
+    display: flex;
+    gap: var(--spacing-m);
+  }
+
+  .text-p-xs-bold {
+    font-weight: 400;
+  }
+
+  .button {
+    background-color: var(--color-clouds);
+    border-radius: var(--spacing-2xs);
+    height: var(--spacing-l);
+    padding-inline: calc(var(--spacing-s) + var(--spacing-3xs));
+    text-transform: capitalize;
+
+    &:hover {
+      background-color: var(--color-bio);
+    }
+  }
+
+  p {
+    color: var(--color-stone);
+  }
+
+  &__default-address {
+    .button {
+      background-color: var(--color-bio);
+
+      &:hover {
+        background-color: var(--color-clouds);
+      }
+    }
+  }
+
+  /**
+   * RTL.
+   */
+  [dir=rtl] & {
+    &__edit-icon.button {
+      left: 0;
+      right: unset;
+    }
+  }
+}

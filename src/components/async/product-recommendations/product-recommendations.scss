@@ -1,0 +1,110 @@
+/**
+ * Styles: Product recommendations (product-recommendations)
+ * -----------------------------------------------------------------------------
+ * Base styles for product recommendations component.
+ *
+ */
+.product-recommendations {
+  $parent: &;
+  background-color: var(--color-breeze);
+  color: var(--color-stone);
+  padding-block: var(--spacing-4xl);
+
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  /**
+   * Carousel styles.
+   */
+  .splide__track {
+    overflow: unset;
+  }
+
+  .splide__arrows {
+    gap: var(--spacing-m);
+    justify-content: flex-end;
+    padding: 0;
+    position: unset;
+    top: unset;
+    translate: unset;
+    width: auto;
+  }
+
+  .splide__arrow {
+    background-color: var(--color-clouds);
+    border-radius: 100%;
+    color: var(--color-stone);
+    // Magic number to match design
+    height: 50px;
+    justify-content: center;
+    // Magic number to match design
+    width: 50px;
+
+    .button__label {
+      @include visually-hidden;
+    }
+
+    .icon {
+      height: var(--icon-2xs);
+      width: var(--icon-2xs);
+    }
+  }
+
+  &__footer {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /**
+   * Loading state styles.
+   */
+  .splide:not(.is-active) {
+    #{$parent}__carousel {
+      display: grid;
+      gap: var(--gutter-mobile);
+      grid-template-columns: repeat(2, minmax(10px, 1fr));
+    }
+
+    #{$parent}__slide {
+      flex-shrink: unset;
+    }
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: m) {
+    .splide:not(.is-active) {
+      #{$parent}__carousel {
+        gap: var(--gutter-tablet);
+      }
+    }
+  }
+
+  @include mq($until: l) {
+    .splide:not(.is-active) {
+      #{$parent}__slide:nth-child(n + 3) {
+        display: none;
+      }
+    }
+  }
+
+  @include mq($from: l) {
+    .splide:not(.is-active) {
+      #{$parent}__carousel {
+        gap: var(--gutter-desktop);
+        grid-template-columns: repeat(4, minmax(10px, 1fr));
+      }
+
+      #{$parent}__slide:nth-child(n + 5) {
+        display: none;
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+/**
+ * Styles: Contact us (contact-us)
+ * -----------------------------------------------------------------------------
+ * Base styles for contact us component.
+ *
+ */
+.contact-us {
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__container {
+    gap: var(--layout-mobile-page-spacing);
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    color: var(--color-stone);
+  }
+
+  &__text {
+    color: var(--color-stone);
+  }
+}

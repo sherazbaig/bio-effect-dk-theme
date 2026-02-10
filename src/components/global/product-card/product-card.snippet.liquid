@@ -1,0 +1,158 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Product card
+
+  @param {Boolean} [hide_image] - Don't render image or loading animation.
+  @param {Boolean} [loading_animation] - Force the display of the loading state.
+  @param {Boolean} [non_JS_loading_animation] - Display loading state for non-JS version.
+  @param {String} [class] - Additional classes.
+  @param {Boolean|Object} product - Liquid object, false shows loading state.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign product_element = 'a'
+  assign firstVariant = product.variants | first
+  assign firstAvailableVariant = product.first_available_variant | default: firstVariant
+  assign product_primary_image = firstAvailableVariant.image | default: product.featured_image
+  assign multiple_variants = false
+  assign non_JS_loading_animation = non_JS_loading_animation | default: false
+
+  if product.variants.size > 1
+    assign multiple_variants = true
+  endif
+
+  if non_JS_loading_animation
+    assign non_JS_loading_class = 'non-js-loading-animation'
+  endif
+
+  if loading_animation or product == false or product.handle == blank
+    assign loading_class = 'is-loading'
+    assign product_primary_image = false
+    assign product_secondary_image = false
+  endif
+
+  if hide_image
+    assign product_primary_image = false
+    assign product_secondary_image = false
+  endif
+
+  if product.handle == blank
+    assign product_element = 'div'
+  endif
+-%}
+
+<section
+  class="product-card-section"
+  data-component-type="product-card"
+  data-component-type="load"
+>
+  <product-card
+    v-cloak
+    :product="{% render 'format-product' with product: product %}"
+  ></product-card>
+
+  {% comment %}
+  ----------------------------------------------------------------------------
+    Loading state.
+  ----------------------------------------------------------------------------
+  {% endcomment %}
+  <{{ product_element }}
+    class="product-card critical-component-hide liquid {{ class }} {{ loading_class }} {{ non_JS_loading_class }}"
+    {% if product.handle != blank %}
+      href="{{ product.url | within: collection }}"
+    {% endif %}
+    v-if="!getComponentActive('product-card')"
+  >
+    <div class="product-card__header">
+      <p class="product-card__title text-h6 text-h5-desktop">
+        {{ product.title }}
+      </p>
+    </div>
+    <div class="product-card__image-container">
+      {% render 'responsive-image' with
+        class: 'product-card__primary-image',
+        image: product_primary_image,
+        min_max: '100-600',
+        ratio: '100:85',
+      %}
+
+      <div class="product-card__awards">
+        {%- for award in product.metafields.product.awards.value -%}
+          <div class="product-card__award">
+            <img
+              src="{{ award.src | image_url: width: 120 }}"
+              width="120"
+              height="60"
+              alt=""
+              loading="lazy"
+            >
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <div class="product-card__footer">
+      <div class="
+        product-card__variant-selector
+        {% unless multiple_variants %}
+          is-hidden
+        {% endunless %}"
+      >
+        {% for variant in product.variants %}
+          <div
+            class="
+              product-card__variant-choice
+              {% if variant.id == firstAvailableVariant.id %}
+                active
+              {% endif %}
+            "
+          >
+            {{ variant.title }}
+          </div>
+        {% endfor %}
+      </div>
+      {% if product.available %}
+        <button
+          class="product-card__add-button button button--secondary"
+          type="button"
+        >
+          <div class="product-card__button-label button__label">
+            <p class="text-button">{{ 'product.cta.add_to_cart' | t }}</p>
+
+            <div class="product-card__price">
+              {% render 'product-prices' with
+                available: firstAvailableVariant.available
+                class: 'product-card__prices',
+                compare_at_price: firstAvailableVariant.compare_at_price,
+                price: firstAvailableVariant.price,
+              %}
+            </div>
+          </div>
+        </button>
+
+      {% else %}
+        <button
+          class="
+            button
+            {% comment %}
+              Only add secondary modifier if product is set.
+              - Otherwise, secondary styling messes with `::after` styling on
+                loading state.
+            {% endcomment %}
+            {% if product %}
+              button--secondary
+            {% endif %}
+            is-disabled
+            product-card__add-button
+          "
+          type="button"
+        >
+          <div class="product-card__button-label button__label text-center">
+            <p class="text-button">{{ 'product.form.sold_out' | t }}</p>
+          </div>
+        </button>
+      {% endif %}
+
+    </div>
+  </{{ product_element }}>
+</section>

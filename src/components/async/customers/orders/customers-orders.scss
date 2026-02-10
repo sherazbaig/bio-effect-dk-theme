@@ -1,0 +1,20 @@
+/**
+ * Styles: Customers orders (customers-orders)
+ * -----------------------------------------------------------------------------
+ * Base styles for customers orders component.
+ *
+ */
+.customers-orders {
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__content {
+    display: grid;
+    gap: var(--layout-page-spacing);
+  }
+}

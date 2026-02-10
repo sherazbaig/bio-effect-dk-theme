@@ -1,0 +1,49 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet / Format: PLP Full Width Promos
+
+  @param {Numder} product_index - product index within the forloop.
+  @param {Number} in_grid_promos_count - Image Liquid object to format.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- capture formatted_full_width_promos -%}
+  {% assign promo_index = product_index | plus: in_grid_promos_count %}
+  {% for promo in promos %}
+    {% assign position_index = promo.settings.row_index | times: 3 %}
+    {% if position_index == promo_index %}
+      {% render 'full-width-promo' with
+        cardData: promo.settings,
+        loading_animation: loading_animation
+      %}
+
+      {% assign in_grid_promos_count = in_grid_promos_count | plus: 3 %}
+
+      {% capture formatted_full_width_promos_content %}
+        {%
+          render 'format-full-width-promos' with
+          promos: promos,
+          product_index: product_index,
+          in_grid_promos_count: in_grid_promos_count
+          loading_animation: loading_animation
+        %}
+      {% endcapture %}
+
+      {% assign nested_full_width_promos = formatted_full_width_promos_content
+        | split: '#########'
+        | first
+      %}
+
+      {% assign in_grid_promos_count = formatted_full_width_promos_content
+        | split: '#########'
+        | last
+      %}
+
+      {{ nested_full_width_promos }}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{%- endcapture -%}
+
+{{ formatted_full_width_promos }}
+#########
+{{ in_grid_promos_count }}

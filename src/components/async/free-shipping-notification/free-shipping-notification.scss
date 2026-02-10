@@ -1,0 +1,50 @@
+/**
+ * Styles: Free shipping notification (free-shipping-notification)
+ * -----------------------------------------------------------------------------
+ * Base styles for free shipping notification component.
+ *
+ */
+.free-shipping-notification {
+  --border-radius-normal: calc(var(--spacing-2xs) + var(--spacing-3xs));
+  $parent: &;
+  background-color: var(--color-background-white);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--border-radius-normal);
+  display: flex;
+  flex-direction: column;
+
+  &__message {
+    color: var(--color-gray-text);
+    margin-block-start: var(--spacing-xs);
+  }
+
+  &__track {
+    background-color: var(--color-cool);
+    border-radius: var(--border-radius-normal);
+    // Magic number used to meet design spec
+    height: 4px;
+    position: relative;
+    width: 100%;
+  }
+
+  &__progress {
+    background-color: var(--color-teal);
+    border-radius: var(--border-radius-normal);
+    height: 100%;
+    transition: width var(--timing-slow) var(--easing-normal);
+    width: 0;
+  }
+
+  /**
+   * Loading state.
+   */
+  html:not(.no-js) &.is-loading {
+    #{$parent}__track {
+      @include loading;
+    }
+
+    #{$parent}__progress {
+      display: none;
+    }
+  }
+}

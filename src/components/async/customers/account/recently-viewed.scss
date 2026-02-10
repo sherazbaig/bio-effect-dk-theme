@@ -1,0 +1,93 @@
+/**
+ * Styles: Recently viewed (recently-viewed)
+ * -----------------------------------------------------------------------------
+ * Base styles for recently viewed.
+ *
+ */
+
+.customers-account {
+  &__carousel {
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+  }
+
+  &__product-title {
+    padding-block-start: var(--spacing-xs);
+    padding-inline: var(--spacing-xs);
+    white-space: normal;
+  }
+
+  &__view-image-wrapper {
+    padding-inline: var(--spacing-m);
+  }
+
+  &__slide-wrapper {
+    align-items: center;
+    display: grid;
+    grid-template-rows: min-content 1fr;
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  &__view-image {
+    max-height: 300px;
+    object-fit: contain;
+    vertical-align: center;
+    width: 100%;
+  }
+
+  &__slide {
+    background-color: var(--color-clouds);
+    display: inline-block;
+    max-height: none;
+    max-width: 18.75rem;
+
+    &:hover {
+      box-shadow: 0 0 30px 0 var(--color-hover);
+    }
+  }
+
+  &__track {
+    overflow: visible;
+  }
+
+  .splide__arrow.button {
+    opacity: unset;
+  }
+
+  .splide__arrow.button[disabled] {
+    opacity: 0.5;
+  }
+
+  &__footer {
+    align-items: center;
+    display: none;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  @include mq($until: m) {
+    .splide__slide:last-child {
+      max-width: 150px;
+    }
+  }
+
+  @include mq($from: l) {
+    &__slide {
+      max-height: 26.25rem;
+      max-width: 25.375rem;
+    }
+
+    &__product-title {
+      padding-block-start: var(--spacing-m);
+      padding-inline: var(--spacing-m);
+    }
+
+    &__footer {
+      display: flex;
+    }
+  }
+}

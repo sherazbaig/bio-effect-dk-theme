@@ -1,0 +1,42 @@
+{% comment %} 
+  ------------------------------------------------------------------------------
+  Snippet: main-collection-filter-sidebar (main-collection-filter-sidebar)
+  ------------------------------------------------------------------------------ 
+{% endcomment %}
+<div class="main-collection-filter-sidebar is-loading liquid">
+  <div class="main-collection__sidebar col xs6 l1-2">
+    {% if featured_collections.list.value.count > 0 %}
+      <div class="main-collection__filters {% if settings.collection_columns == '4' %}main-collection__filters--horizontal{% endif %}">
+        <ul class="main-collection__filters--list">
+          {%- for featured_collection in featured_collections.list.value -%}
+            <li class="main-collection__filters--item">
+              {{ featured_collection.title }}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {% endif %}
+
+    {% if product_type_filter_values.size > 0 %}
+      <div class="main-collection__filters {% if settings.collection_columns == '4' %}main-collection__filters--horizontal main-collection__filters--four-columns{% endif %}">
+        <fieldset class="{% if settings.collection_columns == '4' %}fieldset-four-columns{% endif %}">
+          <legend class=" {% if settings.collection_columns == '4' %}legend-four-columns{% endif %} main-collection__filters--legend text-p-xs-bold">
+            {{ 'collection.filter_label' | t }}
+          </legend>
+          <ul class="main-collection__filters--list {% if settings.collection_columns == '4' %}main-collection__filters--horizontal-list{% endif %}">
+            {%- for value in product_type_filter_values -%}
+              <li class="main-collection__filters--item">
+                <input
+                  type='checkbox'
+                  id='filter-{{ forloop.index0 }}'
+                  name='filter-{{ forloop.index0 }}'
+                  value='{{ value.value | escape }}'>
+                <label for='filter-{{ forloop.index0 }}'>{{ value.label }}</label>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </fieldset>
+      </div>
+    {% endif %}
+  </div>
+</div>

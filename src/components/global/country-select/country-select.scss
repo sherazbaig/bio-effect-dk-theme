@@ -1,0 +1,71 @@
+/**
+ * Styles: country-select (country-select)
+ * -----------------------------------------------------------------------------
+ * Base styles for country-select component.
+ *
+ */
+.country-select {
+  $parent: &;
+  background-color: rgb(65 65 65 / 30%);
+  border-radius: calc((var(--spacing-xl)) - (var(--spacing-3xs)));
+  height: var(--spacing-xl);
+  position: relative;
+  width: max-content;
+
+  &__flag {
+    &#{&} {
+      background-color: transparent;
+      height: var(--spacing-m);
+      left: var(--spacing-xs);
+      position: absolute;
+      top: var(--spacing-xs);
+      width: var(--spacing-m);
+    }
+  }
+
+  &__select {
+    @include button-reset;
+    border: 0;
+    color: var(--color-clouds);
+    height: 100%;
+    margin-inline-end: var(--spacing-l);
+    padding-block-start: var(--spacing-2xs);
+    padding-inline-start: var(--spacing-xl);
+    text-align: start;
+    width: 100%;
+  }
+
+  .icon.icon__chevron.icon__chevron--down,
+  .country-select__chevron {
+    color: var(--color-clouds);
+    height: var(--spacing-m);
+    position: absolute;
+    right: var(--spacing-xs);
+    top: var(--spacing-xs);
+    width: var(--spacing-xs);
+  }
+
+  /**
+   * Loading state.
+   */
+  html:not(.no-js) &.is-loading {
+    #{$parent}__flag,
+    #{$parent}__select {
+      @include loading;
+      opacity: 0.5;
+    }
+
+    #{$parent}__select {
+      border-radius: var(--spacing-xs);
+      height: 1rem;
+      margin-inline-start: var(--spacing-xl);
+      padding: 0;
+      top: var(--spacing-xs);
+      width: 55px;
+    }
+
+    #{$parent}__flag {
+      position: absolute;
+    }
+  }
+}

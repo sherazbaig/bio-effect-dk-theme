@@ -1,0 +1,198 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Editorial split (editorial-split)
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.editorial-split.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign background_colour = section.settings.background_colour
+  assign layout_options = section.settings.layout_options
+  assign play_label = 'accessibility.video.play' | t
+  assign pause_label = 'accessibility.video.pause' | t
+  assign is_autoplay = false
+
+  capture play_icon
+    render 'icon-general' with icon: 'play'
+  endcapture
+
+  capture pause_icon
+    render 'icon-general' with icon: 'pause'
+  endcapture
+%}
+
+<section
+  {% for block in section.blocks %}
+    {% if block.settings.title != blank %}
+      aria-labelledby="section-title-{{ section.id }}"
+    {% endif %}
+  {% endfor %}
+  data-section-id="{{ section.id }}"
+  data-component-handle="editorial-split"
+  data-component-type="load"
+  data-component-animation
+>
+  {% for block in section.blocks %}
+    {% assign show_block = false %}
+
+    {% if
+      block.settings.video != blank or
+      block.settings.content_image or
+      block.settings.main_video != blank or
+      block.settings.main_image != blank
+    %}
+      {% assign show_block = true %}
+    {% endif %}
+
+    {% if block and show_block %}
+      <div
+        class="
+          {% unless section.settings.enable_section_padding %}
+            no-padding
+          {% endunless %}
+          editorial-split
+          critical-component-clear
+          liquid
+          editorial-split--{{ layout_options | prepend: 'text-' }}
+        "
+        style="
+          --editorial-split-bg-colour: var({{ background_colour }});
+        "
+      >
+        <div class="container grid">
+          {% assign has_media = false %}
+
+          {% if block.settings.video != nil or block.settings.content_image %}
+            {% assign has_media = true %}
+
+            <div class="editorial-split__media-content col xs6 l6">
+              {% if block.settings.video != nil %}
+                {% if block.settings.video_option == 'autoplay' %}
+                  {% assign is_autoplay = true %}
+                {% endif %}
+
+                {{ block.settings.video | video_tag:
+                  class: 'editorial-split__video',
+                  js-video: 'video',
+                  autoplay: is_autoplay,
+                  image_size: '400x',
+                  loop: true,
+                  muted: true,
+                  playsinline: true
+                }}
+
+                {% if block.settings.video_option == 'click' %}
+                  <button
+                    class="editorial-split__play-button"
+                    aria-label="{{ play_label }}/{{ pause_label }}"
+                    js-video="toggle"
+                  >
+                    <span class="editorial-split__play-button-inner"></span>
+                  </button>
+                {% endif %}
+
+              {% elsif block.settings.content_image %}
+                {% render 'responsive-image' with
+                  image: block.settings.content_image,
+                  alt: block.settings.content_image.alt,
+                  padding: false,
+                  min_max: '350-900',
+                  sizes: '(min-width: 1024px) 900px, 350px',
+                %}
+              {% endif %}
+            </div>
+          {%endif%}
+
+          <div class="
+            editorial-split__image-block
+            col xs6 l8
+            {% if block.settings.main_image_fit and has_media == false %}
+              fitted
+            {% endif %}
+          ">
+            {% if block.settings.main_video != nil %}
+              {{ block.settings.main_video | video_tag:
+                class: 'editorial-split__main-video',
+                autoplay: true,
+                image_size: '900x',
+                loop: true,
+                muted: true,
+                playsinline: true
+              }}
+
+            {% elsif block.settings.main_image %}
+              {% render 'responsive-image' with
+                image: block.settings.main_image,
+                alt: block.settings.main_image.alt,
+                padding: false,
+                min_max: '350-1200',
+                sizes: '(min-width: 1024px) 1200px, 350px',
+              %}
+            {% endif %}
+          </div>
+
+          <div class="
+            editorial-split__text col
+            {% if has_media %}
+              has-margin
+            {% endif %}
+          ">
+            <div class="editorial-split__text-content">
+              {% if block.settings.title != blank %}
+                <h2
+                  class="
+                  editorial-split__title
+                  text-mobile-titles
+                  text-h2-desktop
+                "
+                  id="section-title-{{ section.id }}"
+                >
+                  {{ block.settings.title }}
+                </h2>
+              {% endif %}
+
+              {% if block.settings.content_text != blank %}
+                <div
+                  class="
+                  editorial-split__body-text
+                  text-mobile-p
+                  text-p-desktop
+                "
+                >
+                  {{ block.settings.content_text }}
+                </div>
+              {% endif %}
+
+              {% if
+                block.settings.cta_text != blank and
+                block.settings.cta_url != blank
+              %}
+                {% render 'btn' with
+                  class: 'editorial-split__button',
+                  label: block.settings.cta_text,
+                  url: block.settings.cta_url,
+                  modifiers: 'primary',
+                  show_icon: false,
+                %}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+
+  {% comment %}
+  -----------------------------------------------------------------------------
+  Load Vue component to initialise JS code.
+  -----------------------------------------------------------------------------
+  {% endcomment %}
+  <editorial-split
+    v-if="getComponentVisible('editorial-split')"
+    :section-id="{{ section.id | json | escape }}"
+    v-cloak
+  ></editorial-split>
+</section>
+
+{% schema 'editorial-split' %}

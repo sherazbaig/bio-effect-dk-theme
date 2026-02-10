@@ -1,0 +1,143 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Login form (customers-login)
+  - Includes guest login.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  # Strings
+  assign forgot_password_string = 'customers.login.forgot_password_link' | t
+  assign guest_cta_string = 'customers.login.guest.cta' | t
+  assign login_cta_string = 'customers.login.cta' | t
+  assign register_cta_string = 'customers.register.cta' | t
+-%}
+
+<p
+  class="text-mobile-p account-forms__error is-hidden mb-m"
+  js-account="login-error"
+>
+  {% render 'icon-general' with icon: 'info-circle' %}
+  <span class="account-forms__error-text ml-s"></span>
+</p>
+
+{% form 'customer_login' %}
+  <div class="form-group{% if form.errors %} has-error{% endif %}">
+    <div class="form-group__field">
+      <input
+        id="customerEmail"
+        autocapitalize="off"
+        autocomplete="email"
+        autocorrect="off"
+        name="customer[email]"
+        placeholder="{{ 'customers.fields.email.placeholder' | t }}"
+        required
+        spellcheck="false"
+        type="email"
+          {% if form.errors  %}
+            aria-describedby="login-errors"
+            aria-invalid="true"
+          {% endif %}
+      >
+
+      <label
+        class="form-group__label text-body-m-regular"
+        for="customerEmail"
+      >
+        {{ 'customers.fields.email.label' | t }}
+
+        <abbr title="{{ 'customers.fields.required.label' | t }}">
+          {{ 'customers.fields.required.symbol' | t }}
+        </abbr>
+      </label>
+    </div>
+
+  {% if form.password_needed %}
+    <div class="form-group__field">
+      <input
+        id="customerPassword"
+        autocomplete="current-password"
+        name="customer[password]"
+        placeholder="{{ 'customers.fields.password.placeholder' | t }}"
+        required
+        type="password"
+          {% if form.errors %}
+            aria-describedby="login-errors"
+            aria-invalid="true"
+          {% endif %}
+      >
+
+      <label
+        class="form-group__label text-body-m-regular"
+        for="customerPassword"
+      >
+        {{ 'customers.fields.password.label' | t }}
+
+        <abbr title="{{ 'customers.fields.required.label' | t }}">
+          {{ 'customers.fields.required.symbol' | t }}
+        </abbr>
+      </label>
+    </div>
+  {% endif %}
+
+  <div class="customers__onboarding-form-footer form-group__footer">
+    {% render 'form-errors' with
+      form: form,
+      namespace: 'login',
+    %}
+
+    {% render 'btn'
+      attributes: 'js-forgot-password="toggle"',
+      class: 'customers__forgot-password',
+      class_label: 'text-mobile-p',
+      label: forgot_password_string,
+      modifiers: 'text',
+      type: 'button',
+    %}
+
+    {% render 'btn'
+      attributes: 'js-login="toggle"',
+      class: 'customers__cta',
+      label: login_cta_string,
+      type: 'submit',
+    %}
+
+    {% render 'btn'
+      attributes: 'js-register="toggle"',
+      class: 'customers-register__cta',
+      modifiers: 'secondary block center'
+      label: register_cta_string,
+    %}
+  </div>
+</div>
+{% endform %}
+
+{% comment %}
+----------------------------------------------------------------------------
+  Guest login form.
+----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  unless shop.checkout.guest_login
+    continue
+  endunless
+-%}
+
+<div class="customers-login__guest">
+  <h2
+    class="
+      customers__onboarding-title
+      text-heading-xl
+      text-heading-2xl-desktop
+    "
+  >
+    {{ 'customers.login.guest.title' | t }}
+  </h2>
+
+  {% form 'guest_login', class: 'customers-login__guest-form' %}
+    {% render 'btn' with
+      class: 'customers__button',
+      label: guest_cta_string,
+      type: 'submit',
+    %}
+  {% endform %}
+</div>

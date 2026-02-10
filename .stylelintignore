@@ -1,0 +1,9 @@
+# Files for stylelint to ignore
+documentation
+dist
+node_modules
+reports
+src/schemas
+src/scripts
+src/shopify
+storybook

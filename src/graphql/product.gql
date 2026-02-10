@@ -1,0 +1,11 @@
+#import "~graphql/fragments/product.gql"
+
+query product(
+  $country: CountryCode!,
+  $handle: String!,
+  $language: LanguageCode!
+) @inContext(country: $country, language: $language) {
+  product(handle: $handle) {
+    ...product
+  }
+}

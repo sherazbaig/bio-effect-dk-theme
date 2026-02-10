@@ -1,0 +1,27 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet / Format: Price
+  - Returns product price Liquid formatted as Vue prop data.
+  - Use as a replacement to storefront API queries.
+
+  @param {String} price - Either 'price' or 'compare_at_price'.
+  @param {Object} object - Liquid object to find prices on.
+  @returns {Object}
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- capture data -%}
+  {%- liquid
+    assign amount_property = price
+    assign max_property = '#_max' | replace: '#', price
+    assign min_property = '#_min' | replace: '#', price
+    assign varies_property = '#_varies' | replace: '#', price
+  -%}
+  amount: {{ object[amount_property] | default: false | json | escape }},
+  currencyCode: {{ localization.country.currency.iso_code | json | escape }},
+  liquid: {{ true | json | escape }},
+  max: {{ object[max_property] | default: false | json | escape }},
+  min: {{ object[min_property] | default: false | json | escape }},
+  varies: {{ object[varies_property] | json | escape }}
+{%- endcapture -%}
+
+{ {{ data | strip | strip_newlines }} }

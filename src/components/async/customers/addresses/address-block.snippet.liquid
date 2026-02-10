@@ -1,0 +1,79 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Address block
+  - Snippet to format an address object to match the designs.
+  - Uses replace to add a line break before the zipcode if one is set.
+
+  @param {Object} address - Address to be formatted.
+  @param {Boolean} [address_only] - Only render the address.
+  @param {String} [class] - Additional classes to render.
+  @param {String} [form_id] - Form ID, hides actions if not provided.
+  @param {Boolean} [overview] - Block is being rendered on account overview.
+  @param {Boolean} [set_default_address] - Display default address checkbox.
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  # Capture address
+  if address.zip == blank
+    capture address_block
+      echo address | format_address | replace: '<p', '<p class="address-block__address text-mobile-p-desktop text-p-xs-bold"'
+    endcapture
+
+  else
+    assign zip_with_leading_space = ' ' | append: address.zip
+    assign zip_with_leading_line_break = '<br>' | append: address.zip
+
+    capture address_block
+      echo address | format_address | replace: zip_with_leading_space, zip_with_leading_line_break | replace: '<p', '<p class="address-block__address text-mobile-p-desktop text-p-xs-bold"'
+
+      if address.phone
+        assign tel_string = 'customers.addresses.address_block.tel' | t | append: ' '
+        echo '<p class="text-mobile-p-desktop text-p-xs-bold">'
+        echo tel_string
+        echo address.phone
+        echo '</p>'
+      endif
+    endcapture
+  endif
+
+  if address_only
+    echo address_block
+    continue
+  endif
+
+  # Action strings
+  if form_id != blank
+    assign default_address_string = 'customers.addresses.address_block.set_as_default' | t
+    assign default_attributes = 'data-form-id="#" js-addresses="default"' | replace: '#', form_id
+    assign delete_address_string = 'customers.addresses.address_block.delete' | t
+    assign delete_attributes = 'data-form-id="#" js-addresses="delete"' | replace: '#', form_id
+    assign edit_address_string = 'customers.addresses.address_block.edit' | t
+    assign edit_attributes = 'data-form-id="#" js-addresses="edit"' | replace: '#', form_id
+
+    capture edit_icon
+      render 'icon-general' with icon: 'edit'
+    endcapture
+  endif
+
+  # Action URLs on account overview
+  assign default_address_url = routes.account_addresses_url | append: '?default=' | append: form_id
+  assign delete_address_url = routes.account_addresses_url | append: '?delete=' | append: form_id
+  assign edit_address_url = routes.account_addresses_url | append: '?edit=' | append: form_id
+-%}
+
+<div class="address-block {{ class }}">
+  {{ address_block }}
+
+  {% if form_id != blank %}
+    <div class="address-block__actions mt-m">
+      {%- liquid
+        render 'btn' with attributes: edit_attributes, label: edit_address_string, modifiers: 'text', type: 'button', url: edit_address_url, class_label: 'text-tags'
+
+        unless overview
+          render 'btn' with attributes: default_attributes, label: default_address_string, modifiers: 'text', type: 'button', class_label: 'text-tags'
+          render 'btn' with attributes: delete_attributes, label: delete_address_string, modifiers: 'text', type: 'button', class_label: 'text-tags'
+        endunless
+      -%}
+    </div>
+  {% endif %}
+</div>

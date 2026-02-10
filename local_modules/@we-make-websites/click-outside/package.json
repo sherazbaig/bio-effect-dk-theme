@@ -1,0 +1,17 @@
+{
+  "name": "@we-make-websites/click-outside",
+  "version": "2.0.0",
+  "description": "Allows you to run a method when a user clicks outside the element that you attach the directive to.",
+  "author": "James Peilow <james.peilow@wemakewebsites.com>",
+  "contributors": [
+    "Craig Baldwin <craig@wemakewebsites.com>"
+  ],
+  "main": "index.js",
+  "dependencies": {},
+  "config": {
+    "emoji": "🖱️",
+    "import": [],
+    "manualInstall": true,
+    "remove": []
+  }
+}

@@ -1,0 +1,120 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Activate account form (customers-activate-account)
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign activate_account_cta_string = 'customers.activate_account.cta' | t
+  assign decline_cta_string = 'customers.activate_account.decline_cta' | t
+-%}
+
+<h1
+  id="template-title"
+  class="
+    customers__onboarding-title
+    text-heading-xl
+    text-heading-2xl-desktop
+  "
+>
+  {{ 'customers.activate_account.title' | t }}
+</h1>
+
+<p
+  class="
+    customers__onboarding-text
+    text-body-m-regular
+    text-body-l-regular-desktop
+  "
+>
+  {{ 'customers.activate_account.text_html' | t | replace: '<a', '<a class="text-body-m-underline text-body-l-underline-desktop"' | newline_to_br }}
+</p>
+
+{% form 'activate_customer_password' %}
+  <div class="form-group">
+    <div class="form-group__field">
+      <label
+        class="form-group__label text-body-m-regular"
+        for="password"
+      >
+        {{ 'customers.fields.password.label' | t }}
+      </label>
+
+      <input
+        id="password"
+        {% if form.errors contains 'password' %}
+          class="has-error"
+        {% endif %}
+        autocomplete="new-password"
+        name="customer[password]"
+        placeholder="{{ 'customers.fields.password.placeholder' | t }}"
+        required
+        type="password"
+        {% if form.errors contains 'password' %}
+          aria-describedby="activate-account-password-errors"
+          aria-invalid="true"
+        {% endif %}
+      >
+
+      {% render 'form-errors' with
+        class: 'form-group__note',
+        form: form,
+        namespace: 'activate-account-password',
+        type: 'password',
+      %}
+    </div>
+
+    <div class="form-group__field">
+      <label
+        class="form-group__label text-body-m-regular"
+        for="password-confirmation"
+      >
+        {{ 'customers.fields.password_confirmation.label' | t }}
+      </label>
+
+      <input
+        id="password-confirmation"
+        {% if form.errors contains 'password_confirmation' %}
+          class="has-error"
+        {% endif %}
+        autocomplete="new-password"
+        name="customer[password_confirmation]"
+        placeholder="{{ 'customers.fields.password_confirmation.placeholder' | t }}"
+        required
+        type="password"
+        {% if form.errors contains 'password_confirmation' %}
+          aria-describedby="activate-account-confirm-password-errors"
+          aria-invalid="true"
+        {% endif %}
+      >
+
+      {% render 'form-errors' with
+        class: 'form-group__note',
+        form: form,
+        namespace: 'activate-account-confirm-password',
+        type: 'password_confirmation',
+      %}
+    </div>
+
+    <div
+      class="
+        customers__onboarding-form-footer
+        customers__onboarding-form-footer--small-gap
+        form-group__footer
+      "
+    >
+      {% render 'btn' with
+        class: 'customers__activate',
+        label: activate_account_cta_string,
+        type: submit,
+      %}
+
+      {% render 'btn'
+        attributes: 'name="decline"'
+        class: 'customers__decline',
+        label: decline_cta_string,
+        modifiers: 'secondary block center',
+        type: submit
+      %}
+    </div>
+  </div>
+{% endform %}

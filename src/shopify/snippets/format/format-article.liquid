@@ -1,0 +1,25 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet / Format article:
+  - Returns article Liquid object formatted as Vue prop data.
+  - Can be used in a forloop.
+
+  @param {Object} article - Article Liquid object to format.
+  @param {Object} [forloop] - Forloop Liquid object.
+  @returns {Object}
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- capture data -%}
+  author: {{ article.author | json | escape }},
+  content: {{ article.content | strip_html | strip_newlines | json | escape }},
+  excerpt: {{ article.excerpt_or_content | strip_html | newline_to_br | truncatewords: 16, '...' | json | escape }},
+  handle: {{ article.handle | json | escape }},
+  image: {% render 'format-image' with image: article.image %},
+  liquid: {{ true | json | escape }},
+  tags: {{ article.tags | json | escape }},
+  publishedAt: {{ article.published_at | date: format: 'day_month_shortened_year' | json | escape }},
+  title: {{ article.title | json | escape }},
+  url: {{ article.url | json | escape }}
+{%- endcapture -%}
+
+{ {{ data | strip | strip_newlines }} }{%- if forloop and forloop.last == false -%},{%- endif -%}

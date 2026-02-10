@@ -1,0 +1,103 @@
+/**
+ * Styles: Cart summary (cart-summary)
+ * -----------------------------------------------------------------------------
+ * Base styles for cart summary component.
+ *
+ */
+.cart-summary {
+  $parent: &;
+  display: grid;
+  gap: var(--spacing-xs);
+
+  &.is-loading {
+    #{$parent}__discountLabel,
+    #{$parent}__totalPrice,
+    #{$parent}__discountPrice,
+    #{$parent}__totalLabel,
+    #{$parent}__additionalInfo,
+    #{$parent}__terms-and-conditions {
+      opacity: 0.4;
+      transition: none;
+    }
+  }
+
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__discount,
+  &__total {
+    align-items: center;
+    color: var(--color-stone);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__total {
+    // Desired margin - grid gap
+    margin-block-end: calc(var(--layout-page-spacing) - var(--spacing-xs));
+  }
+
+  &__discountLabel {
+    align-items: center;
+    display: flex;
+    gap: var(--spacing-3xs);
+  }
+
+  &__totalLabel {
+    align-items: center;
+    display: flex;
+    flex: 1 1;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+
+  &__additionalInfo {
+    color: var(--color-gray-text);
+    display: block;
+    font-weight: var(--font-weight-medium);
+  }
+
+  &__terms-and-conditions {
+    border-top: 1px solid var(--color-cool);
+    padding-block-end: var(--spacing-xs);
+    padding-block-start: var(--spacing-m);
+
+    a {
+      transition: color var(--timing-normal) var(--easing-normal);
+
+      &:hover {
+        color: var(--color-teal);
+      }
+    }
+
+    .checkbox-input {
+      &__label {
+        margin-inline-end: auto;
+        margin-inline-start: auto;
+      }
+    }
+  }
+
+  &__submit {
+    // Double selector to add weigh specificity.
+    &#{&} {
+      font-weight: var(--font-weight-demi-bold);
+      height: 50px;
+      margin-block-start: var(--spacing-m);
+      padding: 0;
+    }
+
+    /**
+     * Accessibility - focus ring.
+     */
+    .is-tabbable &:enabled:focus-visible {
+      @include focus-ring;
+      outline-offset: var(--spacing-xs);
+    }
+  }
+}

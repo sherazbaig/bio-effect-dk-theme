@@ -1,0 +1,121 @@
+/**
+ * Styles: Articles slider (articles-slider)
+ * -----------------------------------------------------------------------------
+ * Base styles for articles slider component.
+ *
+ */
+.articles-slider {
+  $parent: &;
+  background-color: var(--color-breeze);
+  color: var(--color-stone);
+  padding-block: var(--spacing-4xl);
+
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  /**
+   * Carousel styles.
+   */
+  .splide__track {
+    overflow: unset;
+  }
+
+  .splide__arrows {
+    gap: var(--spacing-m);
+    justify-content: flex-end;
+    padding: 0;
+    position: unset;
+    top: unset;
+    translate: unset;
+    width: auto;
+  }
+
+  .splide__arrow {
+    color: var(--color-teal);
+
+    .button__label {
+      @include visually-hidden;
+    }
+
+    .button__icon {
+      align-items: center;
+      background-color: var(--color-black42);
+      border-radius: 50%;
+      height: calc(var(--spacing-3xl) + var(--spacing-3xs));
+      justify-content: center;
+      opacity: 0.7;
+      width: calc(var(--spacing-3xl) + var(--spacing-3xs));
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+
+    .icon {
+      height: var(--spacing-m);
+      width: var(--spacing-xs);
+    }
+
+    path {
+      fill: var(--color-clouds);
+    }
+  }
+
+  &__footer {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /**
+   * Loading state styles.
+   */
+  .splide:not(.is-active) {
+    #{$parent}__carousel {
+      display: grid;
+      gap: var(--gutter-mobile);
+      grid-template-columns: repeat(2, minmax(10px, 1fr));
+    }
+
+    #{$parent}__slide {
+      flex-shrink: unset;
+    }
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: m) {
+    .splide:not(.is-active) {
+      #{$parent}__carousel {
+        gap: var(--gutter-tablet);
+      }
+    }
+  }
+
+  @include mq($until: l) {
+    .splide:not(.is-active) {
+      #{$parent}__slide:nth-child(n + 3) {
+        display: none;
+      }
+    }
+  }
+
+  @include mq($from: l) {
+    .splide:not(.is-active) {
+      #{$parent}__carousel {
+        gap: var(--gutter-desktop);
+        grid-template-columns: repeat(4, minmax(10px, 1fr));
+      }
+
+      #{$parent}__slide:nth-child(n + 5) {
+        display: none;
+      }
+    }
+  }
+}

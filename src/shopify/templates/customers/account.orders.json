@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "site-header-offset": {
+      "type": "site-header-offset",
+      "settings": {}
+    },
+    "main": {
+      "type": "customers-orders",
+      "settings": {}
+    }
+  },
+  "order": [
+    "site-header-offset",
+    "main"
+  ]
+}

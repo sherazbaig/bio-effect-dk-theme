@@ -1,0 +1,16 @@
+/**
+ * Styles: Predictive Search overlay (predictive-search)
+ * -----------------------------------------------------------------------------
+ * Override styles for Predictive Search overlay.
+ *
+ */
+.predictive-search-overlay {
+  background-color: var(--color-breeze);
+
+  &__container {
+    height: 100%;
+    max-width: unset;
+    padding: 0;
+    width: 100%;
+  }
+}

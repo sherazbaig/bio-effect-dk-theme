@@ -1,0 +1,18 @@
+/**
+ * Styles: mega-nav overlay (mega-nav)
+ * -----------------------------------------------------------------------------
+ * Base styles for mega-nav overlay.
+ *
+ */
+.mega-nav-overlay {
+  height: fit-content;
+  top: var(--header-height);
+
+  &__container {
+    &#{&} {
+      max-width: unset;
+      overflow: hidden;
+      padding: 0;
+    }
+  }
+}

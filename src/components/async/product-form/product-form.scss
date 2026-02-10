@@ -1,0 +1,56 @@
+/**
+ * Styles: Product form (product-form)
+ * -----------------------------------------------------------------------------
+ * Base styles for product form component.
+ *
+ */
+.product-form {
+  $parent: &;
+
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__add-to-cart {
+    max-width: calc(var(--spacing-9xl) + var(--spacing-10xl));
+    min-height: var(--spacing-3xl);
+  }
+
+  &__form {
+    display: grid;
+    gap: calc(var(--spacing-2xs) + var(--spacing-m));
+  }
+
+  &__variants {
+    display: flex;
+    gap: var(--spacing-s);
+  }
+
+  &__error {
+    color: var(--color-system-error-light-mode);
+    margin-block-start: var(--spacing-l);
+  }
+
+  /**
+   * Loading state.
+   */
+  html:not(.no-js) &.is-loading {
+    #{$parent}__add-to-cart {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: l) {
+    &__form {
+      gap: var(--spacing-xl);
+    }
+  }
+}

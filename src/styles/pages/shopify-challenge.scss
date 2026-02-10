@@ -1,0 +1,45 @@
+/**
+ * Page: Shopify challenge
+ * -----------------------------------------------------------------------------
+ * Styles for reCaptcha page shown on sign-up.
+ * - Has no template, but does have a page type.
+ *
+ */
+.shopify-challenge {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-block-end: var(--layout-padding-bottom);
+    margin-block-start: var(--layout-padding-top);
+    padding-inline-end: var(--layout-margin);
+    padding-inline-start: var(--layout-margin);
+
+    .g-recaptcha {
+      margin-block-end: var(--spacing-l);
+    }
+  }
+
+  &__message {
+    margin-block-end: var(--spacing-l);
+  }
+
+  &__button {
+    @include button-reset;
+    @include defaults-button;
+    @include transition(background-color);
+    align-items: center;
+    background-color: var(--color-brand-1-default);
+    border: 1px solid var(--color-neutral-1);
+    color: var(--color-neutral-1);
+    display: inline-flex;
+    justify-content: space-between;
+    padding: var(--spacing-s) var(--spacing-m);
+
+    &:not([disabled], .is-disabled) {
+      &:hover, &.is-hover {
+        background-color: var(--color-brand-1-dark);
+      }
+    }
+  }
+}

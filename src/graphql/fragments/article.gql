@@ -1,0 +1,23 @@
+#import "~graphql/fragments/image.gql"
+
+fragment article on Article {
+  authorV2 {
+    bio
+    email
+    firstName
+    lastName
+    name
+  }
+  blog {
+    title
+  }
+  excerpt
+  handle
+  id
+  image {
+    ...image
+  }
+  url: onlineStoreUrl
+  title
+  tags
+}

@@ -1,0 +1,46 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Promo card (promo-card)
+
+  @param {Boolean|Object} cardData - Liquid object, false shows loading state.
+  @param {Boolean} [loading_animation] - Force the display of the loading state.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign product_element = 'div'
+  assign title = cardData.title
+  assign description = cardData.description
+  assign url = cardData.url
+  assign image = cardData.image
+
+  if url
+    assign product_element = 'a'
+  endif
+
+  if loading_animation or cardData == false
+    assign product_element = 'div'
+    assign loading_class = 'is-loading'
+    assign title = ''
+    assign description = ''
+    assign image = false
+  endif
+-%}
+
+<{{ product_element }}
+  class="promo-card liquid {{ loading_class }}"
+  {% if url %}
+    href="{{ url }}"
+  {% endif %}
+>
+  {% render 'responsive-image' with
+    class: 'promo-card__image',
+    image: image,
+    min_max: '200-500',
+    ratio: '1:1',
+  %}
+
+  <p class="promo-card__title text-h5-desktop text-h6">{{ title }}</h5>
+  <p class="promo-card__description  text-p-desktop text-mobile-p">
+    {{ description }}
+  </p>
+</{{ product_element }}>

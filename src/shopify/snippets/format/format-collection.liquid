@@ -1,0 +1,29 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet / Format: Collection
+  - Returns collection Liquid object formatted as Vue prop data.
+  - Use as a replacement to storefront API queries.
+  - Format product snippet must be used in separated forloop to limit forloop.
+
+  @param {Object} collection - Collection Liquid object to format.
+  @param {Boolean} [page_info] - Whether to include pageInfo object.
+  @returns {Object}
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- capture data -%}
+  {%- paginate collection.products by settings.products_per_page -%}
+    description: {{ collection.description | json | escape }},
+    handle: {{ collection.handle | json | escape }},
+    id: {{ collection.id | json | escape }},
+    image: {% render 'format-image' with image: collection.image %},
+    liquid: {{ true | json | escape }},
+    {%- if page_info -%}
+      pageInfo: {% render 'format-paginate' with collection: collection, paginate: paginate %},
+    {%- endif -%}
+    products: [{% render 'format-product' for collection.products as product, with collection: collection, full_data: false %}],
+    title: {{ collection.title | json | escape }},
+    url: {{ collection.url | json | escape }}
+  {%- endpaginate -%}
+{%- endcapture -%}
+
+{ {{ data | strip | strip_newlines }} }

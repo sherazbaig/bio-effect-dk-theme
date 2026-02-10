@@ -1,0 +1,206 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet / Theme: Variables
+  - Assign global variables for use in JavaScript.
+  - Removes `no-js` class from html.
+  - Not used in checkout.liquid layout, see theme-variables-checkout.liquid.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign normalised_root = routes.root_url
+  assign state_waiting = 'waiting'
+  assign state_loading = 'loading'
+  assign state_active=  'active'
+  assign theme_name = theme.name | downcase
+
+  unless theme_name contains 'production'
+    assign disable_async_components = settings.disable_async_components
+    assign disable_canvas = settings.disable_canvas
+    assign disable_component_ready_state = settings.disable_component_ready_state
+    assign disable_component_by_handle = settings.disable_component_by_handle
+    assign disable_overlays_dismissed = settings.disable_overlays_dismissed
+    assign disable_vuex_persist = settings.disable_vuex_persist
+  endunless
+
+  if disable_async_components
+    assign state_active = 'waiting'
+    assign state_loading = 'waiting'
+  endif
+
+  if normalised_root != '/'
+    assign normalised_root = normalised_root | append: '/'
+  endif
+-%}
+
+{% capture recently_viewed_fallback_products %}
+  [
+  {% for i in (1..4) %}
+    {% assign product_string = 'product_#' | replace: '#', i %}
+    {% if settings[product_string] != blank %}
+      {
+        name: {{ settings[product_string].title | json  }} ,
+        url: {{ settings[product_string].url | json  }},
+        image: {{ settings[product_string].featured_image.src | img_url: '450x450' | json  }}
+        } {%- if forloop.last == false -%},{%- endif -%}
+    {% endif %}
+  {% endfor %}
+  ]
+{% endcapture %}
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Output to cnvs variable.
+-----------------------------------------------------------------------------
+{% endcomment %}
+<script>
+  window.cnvs = window.cnvs || {}
+  document.documentElement.className = document.documentElement.className.replace('no-js', '')
+
+  window.cnvs.credentials = {
+    storefront: {
+      store: {{ shop.permanent_domain | remove: '.myshopify.com' | json }},
+      token: {{ settings.storefront_token | json }},
+      version: {{ settings.storefront_version | json }},
+    },
+  }
+
+  window.cnvs.customer = {
+    enabled: {% if shop.customer_accounts_enabled or shop.customer_accounts_optional %}true{% else %}false{% endif %},
+    firstName: {{ customer.first_name | json }},
+    lastName: {{ customer.last_name | json }},
+    loggedIn: {% if customer %}true{% else %}false{% endif %},
+    optional: {{ shop.customer_accounts_optional | json }},
+    phone: {{ phone | json }},
+    fallbackProducts: {{ recently_viewed_fallback_products }}
+  }
+
+  {% # Do not edit %}
+  window.cnvs.environment = {
+    bugsnagApiKey: 'CANVAS_BUGSNAG_API_KEY',
+    canvas: 'CANVAS_VERSION',
+    mode: 'CANVAS_WEBPACK_MODE',
+    release: 'CANVAS_RELEASE_VERSION',
+  }
+
+  window.cnvs.page = {
+    handle: {{ handle | json }},
+    title: {{ page_title | json }},
+    type: {{ request.page_type | json }},
+  }
+
+  window.cnvs.request = {
+    designMode: {{ request.design_mode | json }},
+    host: {{ request.host | json }},
+    locale: {{ request.locale | json }},
+    origin: {{ request.origin | json }},
+    path: {{ request.path | json }},
+    pageType: {{ request.page_type | json }},
+  }
+
+  window.cnvs.routes = {
+    account: {
+      login: {{ routes.account_login_url | json }},
+      register: {{ routes.account_register_url | json }},
+      url: {{ routes.account_url | json }},
+    },
+    cart: {
+      add: {{ routes.cart_add_url | append: '.js' | json }},
+      change: {{ routes.cart_change_url | append: '.js' | json }},
+      clear: {{ routes.cart_clear_url | append: '.js' | json }},
+      js: {{ routes.cart_url | append: '.js' | json }},
+      update: {{ routes.cart_update_url | append: '.js' | json }},
+      url: {{ routes.cart_url | json }},
+    },
+    normalisedRoot: {{ normalised_root | json }},
+    predictiveSearch: {{ routes.predictive_search_url | json }},
+    productRecommendations: {{ routes.product_recommendations_url | append: '.json' | json }},
+    root: {{ routes.root_url | json }},
+    search: {{ routes.search_url | json }},
+  }
+
+  {% # Global theme settings %}
+  window.cnvs.settings = {
+    autoOpenCartDrawer: {{ settings.auto_open_cart_drawer | json }},
+    disableAsyncComponents: {{ disable_async_components | default: false | json }},
+    disableCanvas: {{ disable_canvas | default: false | json }},
+    disableComponentReadyState: {{ disable_component_ready_state | default: false | json }},
+    disableComponentByHandle: {{ disable_component_by_handle | default: '' | json }},
+    disableOverlaysDismissed: {{ disable_overlays_dismissed | default: false | json }},
+    disableVuexPersist: {{ disable_vuex_persist | default: false | json }},
+    pagination: {
+      articles: {{ settings.articles_per_page | json }},
+      collections: {{ settings.collections_per_page | json }},
+      products: {{ settings.products_per_page | json }},
+    },
+    enable_newsletter_modal: {{ settings.enable_newsletter_modal | json }},
+  }
+
+  {% # Do not edit %}
+  window.cnvs.states = {
+    active: {{ state_active | json }},
+    loading: {{ state_loading | json }},
+    waiting: {{ state_waiting | json }},
+  }
+
+  window.cnvs.store = {
+    baseCurrency: {{ shop.currency | json }},
+    country: {{ localization.country.iso_code | json }},
+    countryName: {{ localization.country.name | json }},
+    currency: {{ localization.country.currency.iso_code | json }},
+    currencySymbol: {{ localization.country.currency.symbol | json }},
+    language: {{ localization.language.iso_code | json }},
+    localisedPermanentDomain: {{ shop.permanent_domain | append: localization.language.root_url | append: '/' | replace: '//', '/' | prepend: '//' | json }},
+    localisedShopDomain: {{ shop.domain | append: localization.language.root_url | append: '/' | replace: '//', '/' | prepend: '//' | json }},
+    localisedShopUrl: {{ shop.url | split: '//' | last | append: localization.language.root_url | append: '/' | replace: '//', '/' | prepend: '//' | json }},
+    moneyFormat: {{ shop.money_format | json }},
+    permanentDomain: {{ shop.permanent_domain | append: '/' | replace: '//', '/' | prepend: '//' | json }},
+    shopDomain: {{ shop.domain | append: '/' | replace: '//', '/' | prepend: '//' | json }},
+    shopId: {{ shop.id | json }},
+    shopName: {{ shop.name | json }},
+    shopUrl: {{ shop.url | split: '//' | last | append: '/' | replace: '//', '/' | prepend: '//' | json }},
+  }
+
+  window.cnvs.template = {
+    directory: {{ template.directory | json }},
+    name: {{ template.name | json }},
+    suffix: {{ template.suffix | json }},
+  }
+
+  {% # Shopify.theme cannot always be relied upon %}
+  window.cnvs.theme = {
+    id: {{ theme.id | json }},
+    name: {{ theme.name | json }},
+    role: {{ theme.role | json }},
+  }
+
+  window.cnvs.urls = {
+    assets: {{ 'placeholder' | asset_url | replace: '?', '?v=' | json }},
+    files: {{ 'placeholder' | file_url | replace: '?', '?v=' | json }},
+    missingParameter: {{ 'placeholder' | asset_url | split: 'placeholder?' | last }},
+  }
+
+  window.cnvs.fgwp = {
+    gifts: [
+      {% for gift in shop.metaobjects.gwp.free_gift_threshold.gifts.value %}
+        {% assign gift_image = gift.featured_image | default: gift.product.featured_image %}
+        {
+          ...{{ gift | json }},
+          featured_image: {
+            alt: {{ gift_image.alt | json }},
+            aspectRatio: {{ gift_image.aspect_ratio | json }},
+            height: {{ gift_image.height | json }},
+            id: {{ gift_image.id | json }},
+            {% if gift_image.presentation.focal_point != blank %}
+              presentation: {
+                focalPoint: {{ gift_image.presentation.focal_point | json }}
+              },
+            {% endif %}
+            src: {{ gift_image.src | json }},
+            width: {{ gift_image.width | json }}
+          },
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ],
+    threshold: {{ shop.metaobjects.gwp.free_gift_threshold.thresholds.value | json }}
+  }
+</script>

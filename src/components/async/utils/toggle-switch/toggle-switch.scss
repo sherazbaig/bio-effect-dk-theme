@@ -1,0 +1,78 @@
+/**
+ * Styles: Toggle switch (toggle-switch)
+ * -----------------------------------------------------------------------------
+ * Base styles for toggle switch component.
+ *
+ */
+.toggle-switch {
+  --toggle-circle: var(--icon-2xs);
+  --toggle-padding: calc(var(--spacing-2xs) - 1px);
+  $parent: &;
+  align-items: center;
+  display: flex;
+  gap: var(--spacing-m);
+
+  &__toggle {
+    @include transition(color);
+    border: 1px solid currentcolor;
+    border-radius: 12px;
+    box-sizing: content-box;
+    color: var(--color-brand-1-default);
+    height: var(--toggle-circle);
+    padding: var(--toggle-padding);
+    position: relative;
+    // Twice the width of the toggle circle
+    width: calc(var(--toggle-circle) * 2);
+
+    &::before {
+      @include transition(translate);
+      background-color: currentcolor;
+      border-radius: 100%;
+      content: '';
+      height: var(--toggle-circle);
+      left: var(--toggle-padding);
+      position: absolute;
+      top: var(--toggle-padding);
+      width: var(--toggle-circle);
+    }
+  }
+
+  /**
+   * Active state.
+   */
+  &__input:checked ~ #{$parent}__toggle::before {
+    translate: 100% 0;
+  }
+
+  /**
+   * Hover state.
+   */
+  &:hover,
+  &.is-hover {
+    #{$parent}__toggle {
+      color: var(--color-brand-1-dark);
+    }
+  }
+
+  /**
+   * Disabled state.
+   */
+  &.is-disabled {
+    color: var(--color-neutral-3);
+    pointer-events: none;
+
+    #{$parent}__toggle {
+      opacity: 0.4;
+    }
+  }
+
+  /**
+    * Focus state.
+    */
+  .is-tabbable & {
+    #{$parent}__input:focus ~ #{$parent}__toggle,
+    &.is-focus #{$parent}__toggle {
+      @include focus-ring;
+    }
+  }
+}

@@ -1,0 +1,59 @@
+/**
+ * Styles: Main 404 (main-404)
+ * -----------------------------------------------------------------------------
+ * Base styles for main 404 component.
+ *
+ */
+.main-404 {
+  $parent: &;
+
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__content {
+    display: grid;
+  }
+
+  &__title {
+    color: var(--color-stone);
+    margin-block-end: var(--spacing-l);
+  }
+
+  &__text.text-h6 {
+    color: var(--color-stone);
+    font-weight: var(--font-weight-medium);
+  }
+
+  &__cta.button {
+    // Desired margin - grid gap
+    margin-block-start: calc(var(--spacing-l) - var(--spacing-xs));
+    max-width: 220px;
+    padding-inline: var(--spacing-m);
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: l) {
+    margin-block-end: var(--spacing-9xl);
+    margin-block-start: var(--spacing-4xl);
+
+    &__container {
+      margin-block: 0;
+    }
+
+    &__title {
+      margin-block-end: var(--spacing-xl);
+    }
+
+    &__image-block {
+      // Height according to design.
+      max-height: 587px;
+    }
+  }
+}

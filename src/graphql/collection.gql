@@ -1,0 +1,38 @@
+#import "~graphql/fragments/product.gql"
+
+query collection(
+  $after: String
+  $before: String
+  $country: CountryCode!
+  $first: Int
+  $handle: String!
+  $filters: [ProductFilter!]
+  $language: LanguageCode!
+  $last: Int
+) @inContext(country: $country, language: $language) {
+  collection(handle: $handle) {
+    descriptionHtml
+    handle
+    id
+    products(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      filters: $filters
+    ) {
+      edges {
+        node {
+          ...product
+        }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+      }
+    }
+    title
+  }
+}

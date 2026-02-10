@@ -1,0 +1,83 @@
+/**
+ * Style: General input (general-input)
+ * -----------------------------------------------------------------------------
+ * Base styles for checkbox input component.
+ *
+ */
+.general-input {
+  $parent: &;
+
+  &__wrapper {
+    align-items: center;
+    border: 1px solid var(--color-gray-text);
+    border-radius: 1px;
+    display: flex;
+    position: relative;
+  }
+
+  &__input {
+    @include input-reset;
+    font-size: var(--font-size-2);
+    outline: none;
+    padding: var(--spacing-m);
+    width: 100%;
+
+    &-not-empty {
+      padding-block-end: calc(var(--spacing-2xs) + var(--spacing-3xs));
+      padding-block-start: var(--spacing-l);
+    }
+  }
+
+  &__state-message {
+    color: var(--color-error-red);
+    font-size: var(--font-size-0);
+    padding-block-start: calc(var(--spacing-2xs) + var(--spacing-3xs));
+    padding-inline-start: var(--spacing-m);
+  }
+
+  &__label {
+    @include transition(opacity, transform);
+    color: var(--color-gray-text);
+    cursor: text;
+    font-size: var(--font-size-0);
+    line-height: normal;
+    margin: 0;
+    padding-inline-start: var(--spacing-m);
+    position: absolute;
+    top: 6px;
+  }
+
+  /**
+   * Hover state.
+   */
+  &:hover,
+  &.is-hover {
+    #{$parent}__input + #{$parent}__label::before {
+      border-color: var(--color-brand-1-dark);
+    }
+
+    #{$parent}__input:checked:not([disabled], .is-disabled) + #{$parent}__label::after {
+      background-color: var(--color-brand-1-dark);
+    }
+  }
+
+  /**
+   * Disabled state.
+   */
+  &__input[disabled],
+  &__input.is-disabled {
+    background-color: var(--color-breeze);
+    border: 1px solid var(--color-cool);
+    pointer-events: none;
+  }
+
+  /**
+   * Focus state.
+   */
+  .is-tabbable & {
+    #{$parent}__input:focus + #{$parent}__label::before,
+    &.is-focus #{$parent}__label::before {
+      @include focus-ring;
+    }
+  }
+}

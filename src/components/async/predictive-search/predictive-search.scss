@@ -1,0 +1,135 @@
+/**
+ * Styles: Predictive search (predictive-search)
+ * -----------------------------------------------------------------------------
+ * Base styles for predictive-search component.
+ *
+ */
+.predictive-search {
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+  overflow: auto;
+  padding-block: var(--spacing-4xl);
+  row-gap: var(--spacing-xl);
+
+  &__close {
+    @include button-reset;
+    padding-block: var(--spacing-xl);
+    padding-inline: var(--spacing-xl);
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  &__form {
+    display: flex;
+    height: fit-content;
+    margin-block-end: var(--spacing-xs);
+    position: relative;
+
+    &::after,
+    &::before {
+      bottom: 0;
+      content: '';
+      height: var(--spacing-4xs);
+      left: 0;
+      position: absolute;
+      width: 100%;
+    }
+
+    &::after {
+      background-color: var(--color-teal);
+      transform: scaleX(0);
+      transform-origin: 0 0;
+      transition: transform var(--timing-normal) cubic-bezier(0.65, 0, 0.35, 1);
+      z-index: 0;
+    }
+
+    &::before {
+      background-color: var(--color-grey);
+      transition: opacity var(--timing-normal) cubic-bezier(0.65, 0, 0.35, 1) var(--timing-normal);
+    }
+
+    &:focus-within::after {
+      transform: none;
+      transition-delay: var(--timing-normal);
+    }
+
+    &:focus-within::before {
+      opacity: var(--layer-base);
+      transition-delay: 0ms;
+      transition-duration: var(--timing-quick);
+    }
+  }
+
+  &__input {
+    &#{&} {
+      @include input-reset;
+      color: var(--color-stone);
+      margin-block-end: var(--spacing-s);
+      min-height: calc(var(--spacing-3xl) + var(--spacing-3xs));
+      width: 100%;
+
+      &::placeholder {
+        color: var(--color-grey);
+      }
+    }
+  }
+
+  &__submit--label {
+    color: var(--color-stone);
+    text-transform: capitalize;
+  }
+
+  .icon__arrow-link {
+    width: var(--spacing-3xl);
+  }
+
+  .icon {
+    color: var(--color-stone);
+  }
+
+  &__count {
+    color: var(--color-gray-text);
+  }
+
+  &__body {
+    display: flex;
+    gap: var(--spacing-l);
+  }
+
+  &__results {
+    display: grid;
+    gap: var(--spacing-m);
+    height: fit-content;
+    min-width: 60%;
+  }
+
+  &__upsell {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2xl);
+    height: fit-content;
+    margin-block-start: var(--spacing-2xl);
+    min-width: 40%;
+  }
+
+  &__error {
+    color: var(--color-error-red);
+    font-size: var(--font-size-0);
+  }
+
+  &__success {
+    color: var(--color-clouds);
+    font-size: var(--font-size-0);
+  }
+
+  @include mq($until: l) {
+    &__body {
+      flex-direction: column;
+    }
+  }
+
+  @include mq($from: l) {
+    padding-block: var(--spacing-10xl) var(--spacing-2xl);
+  }
+}

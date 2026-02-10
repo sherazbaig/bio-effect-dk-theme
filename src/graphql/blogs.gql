@@ -1,0 +1,52 @@
+query blogs(
+  $page: Int
+  $tag: String
+  $handle: String
+) {
+  blogs(first: 1, query: $handle) {
+    nodes {
+      __typename
+      title
+      handle
+      articles(first: $page, query: $tag, sortKey: PUBLISHED_AT, reverse: true) {
+        nodes {
+          onlineStoreUrl
+          title
+          excerpt
+          content
+          image {
+            url
+            width
+            height
+            id
+            altText
+          }
+          id
+          tags
+          handle
+          ladnscape_image: metafield(namespace: "custom" key: "landscape_image") {
+            reference{
+              ...on Metaobject {
+                field (key: "landscape_image") {
+                  reference {
+                  	... on MediaImage {
+                      previewImage {
+                        height
+                        width
+                        altText
+                        url
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        pageInfo {
+          hasNextPage
+        }
+      }
+    }
+  }
+}

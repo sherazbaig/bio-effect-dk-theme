@@ -1,0 +1,39 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Message input (message-input)
+
+  @param {String} [placeholder] - Text area placeholder.
+  @param {Boolean} [disabled] - Text area is disabled.
+  @param {String} [name] - Name for text area.
+  @param {String} id - ID for input.
+  @param {Number} [rows_length] - Row lengths for text area.
+  @param {Number|String} [value] - Text area value.
+------------------------------------------------------------------------------
+{% endcomment %}
+  {% liquid
+    assign disabled_class = ''
+    assign rows_length = rows_length | default: 2
+
+    if disabled
+      assign disabled_class = 'is-disabled'
+    endif
+   %}
+
+<div class="message-input liquid">
+  <div class="message-input__wrapper">
+    <textarea
+      id="{{ id }}"
+      class="message-input__textarea {{ disabled_class }}"
+      {% if name %}
+        name="{{ name }}"
+      {% endif %}
+      {% if value %}
+        value="{{ value }}"
+      {% endif %}
+      {% if placeholder %}
+        placeholder="{{ placeholder }}"
+      {% endif %}
+      rows="{{ rows_length }}"
+    ></textarea>
+  </div>
+</div>

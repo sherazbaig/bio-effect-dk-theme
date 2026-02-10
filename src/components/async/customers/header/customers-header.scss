@@ -1,0 +1,96 @@
+// stylelint-disable selector-max-compound-selectors, color-no-hex
+
+/**
+ * Styles: Customers header (customers-header)
+ * -----------------------------------------------------------------------------
+ * Base styles for customers header component.
+ * - Non-Vue component.
+ *
+ */
+.customers-header {
+  $parent: &;
+
+  &__header {
+    align-items: baseline;
+    color: var(--color-stone);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: space-between;
+    margin-block-end: var(--spacing-4xl);
+  }
+
+  &__subtitle {
+    color: var(--color-stone);
+
+    a {
+      text-decoration-color: var(--color-bio);
+      text-decoration-thickness: 1px;
+      text-underline-position: under;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
+  &__navigation {
+    border-bottom: 1px solid #73737333;
+    display: flex;
+    margin-block-end: var(--spacing-2xl);
+    -ms-overflow-style: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    width: 100%;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__navigation-item {
+    align-items: center;
+    display: flex;
+    height: 50px;
+    margin-inline-end: var(--spacing-xl);
+    position: relative;
+    white-space: nowrap;
+
+    &::after {
+      background-color: var(--color-bio);
+      bottom: -1px;
+      content: '';
+      height: 3px;
+      left: 0;
+      position: absolute;
+      transform: scaleX(0);
+      transform-origin: 0 0;
+      transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+      width: 100%;
+    }
+
+    &.is-active {
+      &::after {
+        transform: none;
+      }
+
+      #{$parent}__navigation-link {
+        color: var(--color-stone);
+      }
+    }
+  }
+
+  &__navigation-link {
+    align-items: center;
+    color: var(--color-gray-text);
+    display: flex;
+    gap: var(--spacing-s);
+    margin-inline-end: var(--spacing-m);
+    text-transform: uppercase;
+
+    .icon:last-of-type {
+      margin-inline-start: auto;
+    }
+  }
+}

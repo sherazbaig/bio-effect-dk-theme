@@ -1,0 +1,8 @@
+# Files to ignore when running `yarn copy`
+assets/*
+config/settings_schema.json
+layout/*
+sections/*.liquid
+snippets/*
+templates/customers/*.liquid
+templates/*.liquid

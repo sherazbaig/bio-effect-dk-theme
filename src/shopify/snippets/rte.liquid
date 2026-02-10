@@ -1,0 +1,26 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: RTE
+  - Used to standardise output of RTE content.
+
+  @param {String} content - RTE content.
+  @param {Number} [image_width] - RTE content image width.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign image_size = image_width | default: 920
+  assign replace_image_size = image_size | append: 'x' | append: image_size
+
+  # Update image sizes
+  assign formatted_content = content | replace: '480x480', replace_image_size | replace: '600x600', replace_image_size | replace: '1024x1024', replace_image_size | replace: '2048x2048', replace_image_size
+  # Remove image wrapping <p> tags
+  assign formatted_content = formatted_content | replace: '<p><img', '<img' | replace: 'alt></p>', 'alt>' | replace: '"></p>', '">'
+  # Add text classes
+  assign formatted_content = formatted_content | replace: '<p', '<p class="text-body-s-regular text-body-m-regular-desktop"' | replace: '<strong', '<strong class="text-heading-s text-heading-m-desktop"'
+    # Add heading classes
+  assign formatted_content = formatted_content | replace: '<h2', '<h2 class="text-heading-4xl"' | replace: '<h3', '<h3 class="text-heading-3xl"' | replace: '<h4', '<h4 class="text-heading-2xl"' | replace: '<h5', '<h5 class="text-heading-xl"' | replace: '<h6', '<h6 class="text-heading-l"'
+    # Add table classes
+  assign formatted_content = formatted_content | replace: '<th', '<th class="text-body-s-regular"' | replace: '<td', '<td class="text-body-s-regular"'
+
+  echo formatted_content
+-%}

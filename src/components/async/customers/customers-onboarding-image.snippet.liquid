@@ -1,0 +1,23 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Customers onboarding image
+  - Image shown on login, register, and reset password pages.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  if settings.customers_onboarding_image == blank
+    continue
+  endif
+-%}
+
+<div class="customers__onboarding-image-column">
+  <div class="customers__onboarding-image">
+    {% render 'responsive-image' with
+      image: settings.customers_onboarding_image,
+      lazyload: false,
+      min_max: '350-1200',
+      padding: false,
+      sizes: '(min-width: 1024px) 50vw, 100vw',
+    %}
+  </div>
+</div>

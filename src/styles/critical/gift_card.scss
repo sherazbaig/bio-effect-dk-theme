@@ -1,0 +1,38 @@
+/*
+ * Critical: Gift card
+ * -----------------------------------------------------------------------------
+ * Critical styles for gift card layout.
+ * - All styles for gift card layout are stored here for performance reasons.
+ * - Compiles into `critical-gift_card.liquid`.
+ *
+ */
+@charset 'UTF-8';
+
+/**
+ * Import base.
+ * - Import order is important.
+ */
+@import '@/base/reset';
+@import '@/base/critical';
+@import '@/base/icon';
+@import '@/base/forms';
+@import '@/base/preview-bar';
+@import '@/base/classes';
+
+/**
+ * Import helpers.
+ * - Add in alphabetical order.
+ */
+@import '@/helpers/display';
+@import '@/helpers/layout';
+@import '@/helpers/text';
+
+/**
+ * Import templates.
+ */
+@import '@/templates/gift_card';
+
+/**
+ * Import components.
+ */
+@import '~global/btn/btn';

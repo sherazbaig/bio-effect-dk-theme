@@ -1,0 +1,91 @@
+/**
+ * Base: Icons
+ * -----------------------------------------------------------------------------
+ * Base styling for all theme icons.
+ *
+ */
+.icon {
+  display: inline-block;
+  fill: currentcolor;
+  height: var(--icon-m);
+  pointer-events: none;
+  vertical-align: middle;
+  width: var(--icon-m);
+
+  &__loading {
+    animation: spin var(--timing-slow) linear infinite;
+  }
+
+  // Override styles for quantity selector icons.
+  &__minus-round, &__plus-round {
+    color: var(--color-grey);
+    fill: transparent;
+    stroke: var(--color-grey);
+  }
+
+  .no-svg & {
+    display: none;
+  }
+
+  /**
+   * Directional icons need flipping for RTL languages.
+   */
+  [dir=rtl] & {
+    &__arrow--left,
+    &__arrow--right,
+    &__chevron--left,
+    &__chevron--right {
+      scale: -1 1;
+    }
+  }
+
+  /**
+   * High contrast and forced colour mode.
+   */
+  @media (forced-colors: active) {
+    fill: canvastext;
+
+    a &,
+    button & {
+      fill: linktext;
+    }
+  }
+}
+
+/**
+ * Use for buttons with only icon content.
+ * - Makes for a larger touch target.
+ */
+.icon-button {
+  @include button-reset;
+  line-height: var(--line-height-baseline, 100%);
+  margin: calc(var(--spacing-xs) * -1);
+  padding: var(--spacing-xs);
+}
+
+svg,
+symbol {
+  circle,
+  ellipse,
+  g,
+  line,
+  path,
+  polygon,
+  polyline,
+  img {
+    max-width: 100%;
+  }
+
+  rect {
+    stroke: inherit;
+
+    &:not([fill]) {
+      fill: inherit;
+    }
+  }
+}
+
+.payment-icons {
+  cursor: default;
+  user-select: none;
+}

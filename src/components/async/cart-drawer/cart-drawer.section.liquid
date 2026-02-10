@@ -1,0 +1,152 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Section: Cart drawer (cart-drawer)
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign checkout_string = 'cart.checkout' | t
+  assign continue_shopping_string = 'cart.empty.continue_shopping' | t
+  assign items_string = 'cart.items.plural' | t
+  assign view_cart_string = 'cart.view_cart' | t
+
+  if cart.item_count == 1
+    assign items_string = 'cart.items.single' | t
+  endif
+-%}
+
+<section
+  data-component-handle="cart-drawer"
+  data-component-type="trigger"
+>
+  <overlay
+    key="cartDrawer"
+    block-class="cart-drawer-overlay"
+    direction="left"
+    namespace="cartDrawer"
+    type="drawer"
+  >
+    <template #title>
+      {{ 'cart.title' | t }}
+    </template>
+
+    <template #body="overlay">
+      <cart-drawer
+        v-if="getComponentVisible('cart-drawer')"
+        v-cloak
+        :liquid="{
+          freeShippingEnabled:
+            {{ section.settings.free_shipping_enabled | json }},
+          freeShippingThreshold:
+            {{ section.settings.free_shipping_threshold | json }},
+          termsEnabled:
+            {{ section.settings.terms_and_conditions_enabled | json }},
+          termsLabel:
+            {{ section.settings.terms_and_conditions_link | json | escape }},
+          taxLineEnabled:
+            {{ section.settings.tax_line_enabled | json }}
+        }"
+        :overlay="overlay"
+      ></cart-drawer>
+
+      {% comment %}
+      -------------------------------------------------------------------------
+        Loading state.
+      -------------------------------------------------------------------------
+      {% endcomment %}
+      <div v-if="!getComponentActive('cart-drawer')">
+        <div class="cart-drawer is-loading critical-component-hide liquid">
+          {% if cart.item_count > 0 %}
+            {% render 'free-shipping-notification' %}
+
+            <form
+              class="cart-drawer__form"
+              action="{{ routes.cart_url }}"
+              method="post"
+            >
+              <div
+                class="cart-drawer__line-items"
+                js-overlay="scrollElement"
+              >
+                <div
+                  class="cart-drawer__line-items--body"
+                >
+                  {%- liquid
+                    for line_item in cart.items
+                      unless line_item.properties['_gift']
+                        render 'line-item' with class: 'cart-drawer__line-item', line_item: line_item
+                      endunless
+                    endfor
+                  -%}
+
+                  <div class="cart-drawer__details">
+                    <table class="cart-drawer__details-table">
+                      <tbody>
+                        <tr>
+                          <th
+                            class="text-p-small"
+                            scope="row"
+                          >
+                            {{ 'cart.details.priceLabel' | t }}
+                          </th>
+                          <td
+                            class="text-button"
+                          >
+                            {{ cart.total_price | money }}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th
+                            class="text-p-small"
+                            scope="row"
+                          >
+                            {{ 'cart.details.taxLabel' | t }}
+                          </th>
+                          <td
+                            class="text-button"
+                          >
+                            {{ 'cart.details.taxMessage' | t }}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th
+                            class="text-p-small"
+                            scope="row"
+                          >
+                            {{ 'cart.details.shippingLabel' | t }}
+                          </th>
+                          <td
+                            class="text-button"
+                          >
+                            {{ 'cart.details.shippingMessage' | t }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              {% render 'cart-summary' %}
+            </form>
+
+          {% else %}
+            <div
+              class="cart-drawer__empty"
+            >
+              <p class="text-h6">{{ 'cart.empty.drawer_text' | t }}</p>
+
+              {% render 'btn' with
+                attributes: 'name="checkbox"',
+                class: 'cart-drawer__close text-button'
+                label: continue_shopping_string,
+                type: 'button',
+              %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </template>
+  </overlay>
+</section>
+
+{% schema 'cart-drawer' %}

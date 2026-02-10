@@ -1,0 +1,131 @@
+/**
+ * Template: Gift card
+ * -----------------------------------------------------------------------------
+ * Styles for gift card redemption page.
+ * - Gift card styles uses fully responsive font sizes in badges.
+ *
+ */
+.gift-card {
+  display: grid;
+  min-height: 100vh;
+  padding-block-end: var(--layout-padding-bottom);
+  padding-block-start: var(--layout-padding-top);
+  place-content: center;
+
+  &__content {
+    display: grid;
+    gap: var(--spacing-l);
+    max-width: 448px;
+    min-width: 448px;
+    width: 100%;
+  }
+
+  &__image-wrapper {
+    height: 0;
+    padding-block-end: 66%;
+    position: relative;
+  }
+
+  &__image {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: var(--layer-base);
+  }
+
+  &__badge {
+    align-items: center;
+    background-color: var(--color-neutral-6);
+    border-radius: 100%;
+    display: grid;
+    height: 70px;
+    place-items: center;
+    position: absolute;
+    right: var(--spacing-s);
+    top: var(--spacing-s);
+    width: 70px;
+    z-index: var(--layer-flat);
+
+    &#{&}--expired {
+      background-color: var(--color-neutral-1);
+      color: var(--color-neutral-6);
+      z-index: var(--layer-raised);
+    }
+  }
+
+  &__code-container {
+    position: relative;
+  }
+
+  &__code {
+    border: 1px solid var(--color-neutral-4);
+    cursor: pointer;
+    padding-block-end: var(--spacing-m);
+    padding-block-start: var(--spacing-m);
+    width: 100%;
+  }
+
+  &__copy-message {
+    @include transition(opacity);
+    background-color: var(--color-neutral-1);
+    color: var(--color-neutral-6);
+    cursor: pointer;
+    display: grid;
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    padding: var(--spacing-xs);
+    place-items: center;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    &.is-active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  &__information {
+    display: grid;
+    gap: var(--spacing-s);
+    text-align: center;
+  }
+
+  &__qr-code {
+    display: grid;
+    min-height: 150px;
+    place-content: center;
+  }
+
+  &__buttons {
+    display: grid;
+    gap: var(--spacing-s);
+  }
+
+  &__apple-wallet {
+    display: inline-block;
+  }
+
+  /**
+   * RTL.
+   */
+  [dir=rtl] & {
+    &__badge {
+      left: var(--spacing-s);
+      right: unset;
+    }
+  }
+
+  /**
+   * Media queries.
+   */
+  @media print {
+    &__buttons {
+      display: none;
+    }
+  }
+}

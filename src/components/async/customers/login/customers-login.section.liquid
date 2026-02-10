@@ -1,0 +1,72 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Customers login (customers-login)
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.customers-login.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign reset_sucess_string = 'customers.login.forgot_password.success' | t
+-%}
+
+<section
+  class="customers critical-customers-clear"
+  aria-labelledby="template-title"
+  data-component-handle="customers-login"
+  data-component-type="load"
+>
+  <div
+    class="
+      customers-login
+      customers__onboarding
+      {% if settings.customers_onboarding_image != blank %}
+        customers__onboarding--has-image
+      {% endif %}
+      critical-component-clear
+      liquid
+    "
+  >
+    {% render 'customers-onboarding-image'%}
+
+    <div class="customers__onboarding-content grid container">
+      <div
+        class="customers__onboarding-forms col xs-span l4-9"
+        js-login="container"
+      >
+        {% render 'notification-panel' with
+          attributes: 'js-forgot-password="success"',
+          class: 'customers-login__reset-success is-hidden'
+          show_close: false,
+          text: reset_sucess_string,
+          type: 'success',
+        %}
+
+        <div
+          class="customers-login__toggle-form"
+          js-login="loginForm"
+        >
+          {% render 'login-form' %}
+        </div>
+
+        <div
+          class="customers-login__toggle-form is-hidden"
+          js-login="forgotPasswordForm"
+        >
+          {% render 'forgot-password-form' %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% comment %}
+  -----------------------------------------------------------------------------
+    Load Vue component to initialise JS code.
+  -----------------------------------------------------------------------------
+  {% endcomment %}
+  <customers-login
+    v-if="getComponentVisible('customers-login')"
+    v-cloak
+  ></customers-login>
+</section>
+
+{% schema 'customers-login' %}

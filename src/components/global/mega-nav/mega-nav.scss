@@ -1,0 +1,94 @@
+/**
+ * Styles: mega-nav (mega-nav)
+ * -----------------------------------------------------------------------------
+ * Base styles for mega-nav component.
+ *
+ */
+.mega-nav {
+  background-color: var(--color-clouds);
+  max-width: unset;
+  padding-block-end: var(--spacing-5xl);
+  padding-block-start: var(--spacing-3xl);
+  width: 100%;
+
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__left--inner {
+    display: grid;
+    grid-template-columns: repeat(var(--menu-item-count), minmax(0, 1fr)) 300px;
+  }
+
+  &__col-title {
+    color: var(--color-stone);
+    text-transform: uppercase;
+  }
+
+  &__col-list {
+    margin-block-start: var(--spacing-l);
+  }
+
+  &__discover-link {
+    text-decoration: none;
+  }
+
+  &__col-link {
+    color: var(--color-stone);
+    line-height: 220%;
+    position: relative;
+    text-decoration: none;
+
+    &::after {
+      background-color: var(--color-teal);
+      bottom: -2px;
+      content: '';
+      height: 1px;
+      left: 0;
+      position: absolute;
+      right: 0;
+      transform: scaleX(0);
+      transform-origin: 100% 0;
+      transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    &:hover {
+      color: var(--color-teal);
+
+      &::after {
+        transform: scaleX(1);
+        transform-origin: 0 0;
+      }
+    }
+  }
+
+  &__image {
+    margin-block-end: var(--spacing-xs);
+    // Magic number to match design
+    width: 296px;
+  }
+
+  &__image-title-container {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+
+    &:hover {
+      .icon {
+        transform: translateX(var(--spacing-xs));
+      }
+    }
+
+    .icon {
+      transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    svg {
+      width: var(--spacing-3xl);
+    }
+  }
+}

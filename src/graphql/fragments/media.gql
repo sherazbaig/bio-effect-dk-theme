@@ -1,0 +1,40 @@
+fragment media on Media {
+  alt
+  mediaType: mediaContentType
+  previewImage {
+    altText
+    height
+    id
+    url
+    width
+  }
+  ... on ExternalVideo {
+    embedUrl
+    host
+    id
+  }
+  ... on MediaImage {
+    id
+    image {
+      altText
+      url
+    }
+  }
+  ... on Model3d {
+    sources {
+      format
+      mimeType
+      url
+    }
+  }
+  ... on Video {
+    id
+    sources {
+      format
+      height
+      mimeType
+      url
+      width
+    }
+  }
+}

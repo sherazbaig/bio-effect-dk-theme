@@ -1,0 +1,260 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Hero banner (hero-banner)
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.hero-banner.css' | asset_url | stylesheet_tag }}
+
+{% assign video_types = 'mobile_video,desktop_video' | split: ',' %}
+{% assign slide_count_to_show = 0 %}
+
+{% capture pagination_icon %}
+  {% render 'icon-general' with icon: 'circle' %}
+{% endcapture %}
+
+<section
+  :class="{ [$class('active')]: getComponentActive('hero-banner') }"
+  {% for block in section.blocks %}
+    {% if block.settings.title != blank %}
+      aria-labelledby="section-title-{{ section.id }}"
+    {% endif %}
+  {% endfor %}
+  data-component-handle="hero-banner"
+  data-component-type="load"
+  data-component-animation
+  js-hero-slider="{{ section.id }}"
+>
+  <div class="hero-banner critical-component-clear liquid">
+    <div
+      class="hero-banner__carousel splide"
+      js-splide="carousel"
+      data-slides-quantity="{{ section.blocks.size }}"
+    >
+      <div class="splide__track">
+        <ul class="splide__list">
+          {% for block in section.blocks %}
+            {%- liquid
+              assign should_show_banner_video_desktop = false
+              assign should_show_banner_image_desktop = false
+              assign should_show_banner_video_mobile = false
+              assign should_show_banner_image_mobile = false
+
+              if block.settings.desktop_video != blank
+                assign should_show_banner_video_desktop = true
+              endif
+
+              if block.settings.desktop_image != blank
+                assign should_show_banner_image_desktop = true
+              endif
+
+              if block.settings.mobile_video != blank
+                assign should_show_banner_video_mobile = true
+              endif
+
+              if block.settings.mobile_image != blank
+                assign should_show_banner_image_mobile = true
+              endif
+            %}
+            {% if should_show_banner_video_desktop or should_show_banner_image_desktop %}
+              {% if should_show_banner_video_mobile or should_show_banner_image_mobile %}
+                {% assign slide_count_to_show = slide_count_to_show | plus: 1 %}
+
+                <li class="hero-banner__slide splide__slide grid enter-active">
+                  <div
+                    class="hero-banner__slide-media-wrapper hero-banner__slide-media-desktop col xs-span"
+                    style="--overlay-opacity: {{ block.settings.overlay_opacity }}"
+                  >
+                    {% if should_show_banner_video_desktop %}
+                      {% assign video_settings = block.settings.desktop_video %}
+                      {% assign video_classnames = 'hero-banner__video '
+                        | append: video_type
+                      %}
+
+                      {{ video_settings | video_tag:
+                        class: video_classnames,
+                        js-hero-banner: 'video',
+                        preload: 'metadata',
+                        autoplay: true,
+                        playsinline: true,
+                        loop: true,
+                        muted: true
+                      }}
+
+                    {% else %}
+                      {% render 'art-direction' with
+                        class: 'hero-banner__image',
+                        image: block.settings.mobile_image,
+                        image_desktop: block.settings.desktop_image,
+                        padding: true,
+                        lazyload: false,
+                        ratio: '1:1',
+                        ratio_desktop: '1442:768',
+                      %}
+                    {% endif %}
+                  </div>
+
+                  <div
+                    class="hero-banner__slide-media-wrapper hero-banner__slide-media-mobile col xs-span"
+                    style="--overlay-opacity: {{ block.settings.overlay_opacity }}"
+                  >
+                    {% if should_show_banner_video_mobile %}
+                      {% assign video_settings = block.settings.mobile_video %}
+                      {% assign video_classnames = 'hero-banner__video '
+                        | append: video_type
+                      %}
+
+                      {{ video_settings | video_tag:
+                        class: video_classnames,
+                        js-hero-banner: 'video',
+                        preload: 'metadata',
+                        autoplay: true,
+                        playsinline: true,
+                        loop: true,
+                        muted: true
+                      }}
+
+                    {% else %}
+                      {% render 'art-direction' with
+                        class: 'hero-banner__image',
+                        image: block.settings.mobile_image,
+                        image_desktop: block.settings.desktop_image,
+                        padding: true,
+                        lazyload: false,
+                        ratio: '1:1',
+                        ratio_desktop: '1442:768',
+                      %}
+                    {% endif %}
+                  </div>
+
+                  <div
+                    class="
+                      hero-banner__slide-content-wrapper
+                      col
+                      xs-span
+                      l2-7
+                    "
+                    style="
+                      --hero-banner-desktop-colour: var({{ block.settings.text_color }});
+                    "
+                  >
+                    {% if block.settings.subtitle != blank %}
+                      <p class="hero-banner__subtitle text-p-xs-bold mb-l">
+                        {{ block.settings.subtitle }}
+                      </p>
+                    {% endif %}
+
+                    {% if block.settings.title != blank %}
+                      {% assign block_title = block.settings.title | split: ' ' %}
+
+                      <h2
+                        id="section-title-{{ section.id }}-{{ forloop.index }}"
+                        class="
+                          hero-banner__title
+                          text-mobile-titles
+                          mb-l
+                          mb-xl-desktop
+                        "
+                      >
+                        {% for word in block_title %}
+                          {% assign word_size = word.size %}
+
+                          <span
+                            style="
+                              --i-hb: {{ forloop.index0 }};
+                              --r-hb: {{ forloop.index | reverse }};
+                              --l-hb: {{ block_title.size }}
+                            "
+                          >
+                            {{ word -}}
+                          </span>
+                        {% endfor %}
+                      </h2>
+                    {% endif %}
+
+                    {% if block.settings.subtext != blank %}
+                      <div class="hero-banner__subtext mb-2xl second-entering-item">
+                        {{ block.settings.subtext }}
+                      </div>
+                    {% endif %}
+
+                    {% if
+                      block.settings.cta_url != blank and
+                      block.settings.cta_text != blank
+                    %}
+                      {% render 'btn' with
+                        class: 'hero-banner__button third-entering-item no-drag',
+                        label: block.settings.cta_text,
+                        url: block.settings.cta_url,
+                        modifiers: 'primary',
+                        show_icon: false,
+                      %}
+                    {% endif %}
+                  </div>
+                </li>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div
+        class="splide__arrows is-hidden"
+        js-splide="arrows"
+      >
+        <div class="hero-banner__arrow">
+          <button
+            aria-label="{{ 'accessibility.carousel.previous' | t }}"
+            class="splide__arrow splide__arrow--prev"
+          >
+            {% render 'icon-directional-navigation' with icon: 'arrow', direction: 'left' %}
+          </button>
+        </div>
+
+        <div class="hero-banner__arrow hero-banner__arrow--next">
+          <button
+            aria-label="{{ 'accessibility.carousel.next' | t }}"
+            class="splide__arrow splide__arrow--next"
+          >
+            {% render 'icon-directional-navigation' with icon: 'arrow', direction: 'right' %}
+          </button>
+        </div>
+      </div>
+
+      <ul class="splide__pagination is-hidden">
+        <li class="hero-banner__autoplay splide__controls">
+          <button
+            class="splide__toggle splide__play-pause"
+            type="button"
+            js-splide="autoplay"
+          >
+            <span class="splide__toggle__play visually-hidden">
+              {{ 'accessibility.carousel.play' | t }}
+            </span>
+
+            <span class="splide__toggle__pause visually-hidden">
+              {{ 'accessibility.carousel.pause' | t }}
+            </span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  {% comment %}
+  -----------------------------------------------------------------------------
+    Load Vue component to initialise JS code.
+  -----------------------------------------------------------------------------
+  {% endcomment %}
+  <hero-banner
+    v-if="getComponentVisible('hero-banner')"
+    v-cloak
+    :section-id="{{ section.id | json | escape }}"
+    :autoplay-speed="{{ section.settings.carousel_speed | times: 1000 | json | escape }}"
+    :pagination-icon="{{ pagination_icon | json | escape }}"
+    :slide-count-to-show="{{ slide_count_to_show | json | escape }}"
+  >
+  </hero-banner>
+</section>
+
+{% schema 'hero-banner' %}

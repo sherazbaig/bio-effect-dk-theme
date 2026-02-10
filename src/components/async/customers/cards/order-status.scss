@@ -1,0 +1,149 @@
+/**
+ * Styles: Order status (cards)
+ * -----------------------------------------------------------------------------
+ * Base styles for order status component.
+ *
+ */
+.order-status {
+  --bar-thickness: 2px;
+  --circle-width: 8px;
+  $parent: &;
+  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(10px, 1fr));
+  position: relative;
+  width: 100%;
+
+  &__stage {
+    position: relative;
+
+    &::before,
+    &::after {
+      background-color: var(--color-neutral-4);
+      content: '';
+      position: absolute;
+      right: 0;
+    }
+
+    /**
+     * Bar.
+     */
+    &::before {
+      bottom: calc((var(--circle-width) - var(--bar-thickness)) / 2);
+      height: var(--bar-thickness);
+      width: 100%;
+    }
+
+    /**
+     * Circle.
+     */
+    &::after {
+      border-radius: 100%;
+      bottom: 0;
+      height: var(--circle-width);
+      width: var(--circle-width);
+      z-index: var(--layer-raised);
+    }
+
+    /**
+     * Forloop modifiers.
+     */
+    &#{&}--first {
+      left: 0;
+      position: absolute;
+
+      &::after {
+        left: 0;
+      }
+    }
+
+    /**
+     * Active state.
+     */
+    &.is-active:not(.cancelled) {
+      &::before,
+      &::after {
+        background-color: var(--color-system-success-light-mode);
+      }
+    }
+
+    /**
+     * Partially shipped state.
+     */
+    &.partially-shipped {
+      &::before {
+        background-image: linear-gradient(90deg, var(--color-system-success-light-mode) 50%, var(--color-neutral-4) 50%);
+      }
+    }
+
+    /**
+     * Cancelled state.
+     */
+    &.cancelled {
+      &::before,
+      &::after {
+        background-color: var(--color-system-error-light-mode);
+      }
+    }
+  }
+
+  &__label {
+    color: var(--color-neutral-3);
+    padding-block-end: var(--layout-page-spacing);
+    text-align: center;
+    translate: 50% 0;
+
+    &#{&}--first {
+      text-align: flex-start;
+      translate: 0;
+    }
+
+    &#{&}--last {
+      text-align: end;
+      translate: 0;
+    }
+
+    &.is-active:not(.cancelled) {
+      color: var(--color-neutral-2);
+    }
+
+    &.cancelled {
+      color: var(--color-system-error-light-mode);
+    }
+  }
+
+  /**
+   * RTL.
+   */
+  [dir=rtl] & {
+    &__stage {
+      &::before,
+      &::after {
+        left: 0;
+        right: unset;
+      }
+
+      &--first {
+        left: unset;
+        right: 0;
+      }
+
+      &--first::after {
+        left: unset;
+        right: 0;
+      }
+    }
+
+    &__label {
+      translate: -50% 0;
+
+      &--first {
+        translate: 0;
+      }
+
+      &--last {
+        translate: 0;
+      }
+    }
+  }
+}

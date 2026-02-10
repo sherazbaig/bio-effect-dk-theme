@@ -1,0 +1,288 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Layout: Theme
+  - Primary theme layout file.
+  - `site-` prefixed snippets deal with site settings irrespective of theme.
+  - `theme-` prefixed snippets are specific to the current theme.
+  - https://shopify.dev/docs/themes/files/theme-liquid
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign app_pages = '/a/,/apps/,/community/,/tools/' | split: ','
+  assign not_production = true
+  assign theme_name = theme.name | downcase
+
+  if theme_name contains 'production'
+    assign not_production = false
+  endif
+
+  for app_page in app_pages
+    if request.path contains app_page
+      assign is_app_page = true
+      break
+    endif
+  endfor
+
+  if request.page_type == 'captcha'
+    assign is_app_page = true
+  endif
+
+  if request.design_mode
+    assign is_app_page = false
+  endif
+
+  # RTL languages based on https://en.wikipedia.org/wiki/Right-to-left_script
+  assign rtl_languages = 'ar,dv,fa,ff,he,ks,ku,ur,wo,yi' | split: ','
+  assign direction = 'ltr'
+
+  if rtl_languages contains localization.language.iso_code
+    assign direction = 'rtl'
+  endif
+-%}
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Content for header capture.
+  - Captured so we can remove preview bar.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{% capture shopify_header_content %}
+  {{ content_for_header }}
+{% endcapture %}
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Main content capture.
+  - Captured to render in different locations based on app page.
+  - App page content can't be rendered in Vue instance as it causes errors.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{% capture main_content %}
+  <main
+    id="main-content"
+    class="site-main-section critical-clear"
+    data-sign-post-location="head"
+    data-sign-post-priority="0"
+    js-sign-post="{{ 'accessibility.sign_posts.main_content' | t }}"
+  >
+    <div id="main-content-sign-posts"></div>
+
+    <!-- BEGIN content_for_layout -->
+    {{ content_for_layout }}
+    <!-- END content_for_layout -->
+  </main>
+{% endcapture %}
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Vue element capture.
+  - Captured to duplicate when in design mode.
+  - This enables instant update without need for refresh.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{% capture vue_element %}
+  <accessibility></accessibility>
+  <index></index>
+
+  <div
+    id="site-header-group-section"
+    class="site-header-group-section"
+  >
+    <site-header-group>
+      {% sections 'site-header-group' %}
+    </site-header-group>
+  </div>
+
+  {% comment %}
+  -----------------------------------------------------------------------------
+    Account forms pop-up.
+    - This is a separate component to allow for customisation.
+    - It is not rendered in Vue instance as it handles login/register forms.
+  -----------------------------------------------------------------------------
+  {% endcomment %}
+  <section class="account-forms-trigger">
+    <overlay
+      key="accountForms"
+      block-class="account-forms-overlay"
+      direction="down"
+      namespace="accountForms"
+      type="modal"
+    >
+      <template #body="{ isActive }">
+        {% render 'account-forms' %}
+      </template>
+    </overlay>
+  </section>
+
+  {% section 'cart-drawer' %}
+  {% section 'upsell-popup' %}
+  {% section 'newsletter-modal' %}
+  {% section 'multi-store-settings' %}
+
+  {% comment %}
+  -----------------------------------------------------------------------------
+    If app page then render placeholder to hide shifting as elements are moved.
+    - Use data-elements attribute to list IDs of elements to move outside Vue.
+    - Otherwise render content normally.
+  -----------------------------------------------------------------------------
+  {% endcomment %}
+  {% if is_app_page %}
+    <main
+      class="site-main-section app-handler is-visible"
+      data-elements="site-footer-group-section"
+      js-app-handler="placeholder"
+    ></main>
+
+  {% else %}
+    {{ main_content }}
+  {% endif %}
+
+  <div
+    id="site-footer-group-section"
+    class="site-footer-group-section"
+  >
+    {% sections 'site-footer-group' %}
+  </div>
+{% endcapture %}
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Render HTML.
+-----------------------------------------------------------------------------
+{% endcomment %}
+<!doctype html>
+<html
+  class="no-js"
+  dir="{{ direction }}"
+  lang="{{ localization.language.iso_code }}"
+>
+  <head>
+    {% unless request.design_mode %}
+      {% render 'site-cookie-hub' %}
+    {% endunless %}
+    {% render 'critical-theme' %}
+
+    {% comment %}
+    -----------------------------------------------------------------------------
+      Site snippets.
+    -----------------------------------------------------------------------------
+    {% endcomment %}
+    {%- liquid
+      render 'site-meta'
+      render 'site-hreflang'
+      render 'site-favicon'
+      render 'site-social-tags'
+      render 'site-gtm' with head: true
+    -%}
+
+    {% comment %}
+    -----------------------------------------------------------------------------
+      Theme snippets.
+    -----------------------------------------------------------------------------
+    {% endcomment %}
+    {%- liquid
+      render 'theme-fonts'
+      render 'theme-strings'
+      render 'theme-variables'
+    -%}
+
+    <!-- BEGIN content_for_header -->
+    {%- if settings.remove_preview_bar and not_production -%}
+      {{ shopify_header_content | remove: 'previewBarInjector.init();' }}
+    {%- else -%}
+      {{ shopify_header_content }}
+    {%- endif -%}
+    <!-- END content_for_header -->
+
+    {% comment %}
+    ----------------------------------------------------------------------------
+      Theme styles.
+      - Must be placed here so dynamically loaded component styles override.
+    ----------------------------------------------------------------------------
+    {% endcomment %}
+    {%- unless settings.disable_theme_styles and not_production -%}
+      {% render 'theme-styles' with layout: 'theme' %}
+    {%- endunless -%}
+  </head>
+
+  <body
+    id="{{ page_title | handle }}"
+    class="
+      page-type-{{ request.page_type | replace: '/', '-' }}
+      template-{{ template.name | handle }}
+      {%- if is_app_page -%}
+        site-grid
+      {%- endif -%}
+    "
+  >
+    {% render 'site-gtm' with body: true %}
+
+    {% comment %}
+    -----------------------------------------------------------------------------
+      Design mode duplicate of Vue instance.
+      - Must come first so theme editor updates content.
+    -----------------------------------------------------------------------------
+    {% endcomment %}
+    {%- if request.design_mode -%}
+      <div
+        id="vue-design-mode-element"
+        class="site-grid"
+        style="display: none;"
+      >
+        {{ vue_element }}
+      </div>
+    {%- endif -%}
+
+    {% comment %}
+    -----------------------------------------------------------------------------
+      Vue instance container.
+    -----------------------------------------------------------------------------
+    {% endcomment %}
+    <div
+      id="vue-element"
+      class="
+        site-grid
+        {%- if is_app_page -%}
+          site-grid--header-only
+        {%- endif -%}
+      "
+    >
+      {{ vue_element }}
+    </div>
+
+    {% comment %}
+    -----------------------------------------------------------------------------
+      Render app page content outside Vue.
+      - App content is updated outside Vue which breaks the Vue instance.
+    -----------------------------------------------------------------------------
+    {% endcomment %}
+    {%- if is_app_page -%}
+      {{ main_content }}
+    {%- endif -%}
+
+    {% comment %}
+    -----------------------------------------------------------------------------
+      Custom preview bar.
+    -----------------------------------------------------------------------------
+    {% endcomment %}
+    {% render 'theme-preview-bar' %}
+
+    {% comment %}
+    ----------------------------------------------------------------------------
+      Schema.org data.
+    ----------------------------------------------------------------------------
+    {% endcomment %}
+    {% render 'schema' %}
+  </body>
+
+  {% comment %}
+  ----------------------------------------------------------------------------
+    Theme scripts.
+  ----------------------------------------------------------------------------
+  {% endcomment %}
+  {% render 'theme-scripts' with layout: 'theme' %}
+
+  {%- if template.directory == 'customers' -%}
+    <script defer src="{{ 'shopify_common.js' | shopify_asset_url }}"></script>
+  {%- endif -%}
+</html>

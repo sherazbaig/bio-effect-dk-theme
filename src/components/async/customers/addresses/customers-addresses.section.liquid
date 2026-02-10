@@ -1,0 +1,229 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Customers addresses (customers-addresses)
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.customers-addresses.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign add_new_address_string = 'customers.addresses.add_new_address' | t
+  assign default_confirm_string = 'customers.addresses.default_address.confirm' | t
+  assign default_cancel_string = 'customers.addresses.default_address.cancel' | t
+  assign delete_confirm_string = 'customers.addresses.delete.confirm' | t
+  assign delete_cancel_string = 'customers.addresses.delete.cancel' | t
+-%}
+
+<section
+  class="customers critical-customers-clear"
+  aria-labelledby="template-title"
+  data-component-handle="customers-addresses"
+  data-component-type="load"
+>
+  <div class="customers-addresses critical-component-clear liquid">
+    <div class="customers__pages-content container grid no-row-gap">
+
+      <div class="col xs-span">
+        <div
+          class="customers-addresses__content"
+          js-addresses="addressesContainer"
+        >
+          <div class="customers-addresses__header">
+            <h1
+              id="template-title"
+              class="
+                customers__pages-title
+                text-heading-xl
+                text-heading-2xl-desktop
+              "
+            >
+              {{ 'customers.addresses.title' | t }}
+            </h1>
+
+            <p
+              class="
+                customers__pages-text
+                text-body-m-regular
+                text-body-l-regular-desktop
+              "
+            >
+              {% if customer.addresses.size == 0 %}
+                {{ 'customers.addresses.no_addresses_html' | t | replace: '<a', '<a class="text-body-m-underline text-body-l-underline-desktop"' | newline_to_br }}
+              {% else %}
+                {{ 'customers.addresses.text_html' | t | replace: '<a', '<a class="text-body-m-underline text-body-l-underline-desktop"' | newline_to_br }}
+              {% endif %}
+            </p>
+
+            <p
+              class="
+                customers-addresses__count
+                text-body-m-regular
+                text-body-l-regular-desktop
+              "
+            >
+              {% # Use addresses.size instead of addresses_count as it pluralises correctly %}
+              {{ 'customers.addresses.address_count' | t: count: customer.addresses.size }}
+            </p>
+          </div>
+
+          {% render 'divider-line' %}
+
+          {% comment %}
+          -----------------------------------------------------------------------------
+            Addresses.
+          -----------------------------------------------------------------------------
+          {% endcomment %}
+          <div class="customers-addresses__addresses">
+            {% if customer.addresses_count > 0 %}
+              <div class="customers-addresses__default">
+                <h2 class="text-heading-l text-heading-xl-desktop">
+                  {{ 'customers.addresses.default' | t }}
+                </h2>
+
+                {% render 'address-block' with
+                  address: customer.default_address,
+                  form_id: customer.default_address.id,
+                %}
+              </div>
+
+              {% render 'divider-line' %}
+            {% endif %}
+
+            {% if customer.addresses_count > 1 %}
+              <div class="customers-addresses__additional">
+                <h2 class="text-heading-l text-heading-xl-desktop">
+                  {{ 'customers.addresses.additional' | t }}
+                </h2>
+
+                {%- liquid
+                  for address in customer.addresses
+                    if address == customer.default_address
+                      continue
+                    endif
+
+                    render 'address-block' with address: address, form_id: address.id, set_default_address: true
+                  endfor
+                -%}
+              </div>
+
+            {% endif %}
+
+            {% render 'btn' with
+              attributes: 'js-addresses="add"',
+              class: 'customers-addresses__add',
+              label: add_new_address_string,
+              type: 'button',
+            %}
+          </div>
+        </div>
+
+        {% comment %}
+        -----------------------------------------------------------------------------
+          Add/edit forms.
+        -----------------------------------------------------------------------------
+        {% endcomment %}
+        <div
+          class="customers-addresses__forms is-hidden"
+          js-addresses="formContainer"
+        >
+          {%- liquid
+            render 'address-form' with address: customer.new_address, form_id: 'new'
+
+            for address in customer.addresses
+              assign default_address = false
+
+              if address == customer.default_address
+                assign default_address = true
+              endif
+
+              render 'address-form' with address: address, default_address: default_address, form_id: address.id
+            endfor
+          -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% comment %}
+  -----------------------------------------------------------------------------
+    Default modal.
+  -----------------------------------------------------------------------------
+  {% endcomment %}
+  <overlay
+    key="defaultAddress"
+    block-class="customers-addresses-overlay"
+    direction="up"
+    namespace="defaultAddress"
+    type="shelf-modal"
+  >
+    <template #body>
+      <p class="text-body-m-regular text-body-l-regular-desktop">
+        {{ 'customers.addresses.default_address.text_html' | t: address: '<span js-addresses="defaultAddress"></span>' | replace: '<a', '<a class="text-body-m-underline text-body-l-underline-desktop"' | newline_to_br }}
+      </p>
+
+      <div class="customers-addresses__modal-buttons">
+        {% render 'btn' with
+          attributes: 'js-addresses="defaultConfirm"',
+          class: 'customers-addresses__modal-confirm',
+          label: default_confirm_string,
+          type: 'button',
+        %}
+
+        {% render 'btn' with
+          attributes: 'js-addresses="defaultCancel"',
+          class: 'customers-addresses__modal-cancel',
+          label: default_cancel_string,
+          modifiers: 'secondary block center',
+          type: 'button',
+        %}
+      </div>
+    </template>
+  </overlay>
+
+  {% comment %}
+  -----------------------------------------------------------------------------
+    Delete modal.
+  -----------------------------------------------------------------------------
+  {% endcomment %}
+  <overlay
+    key="deleteAddress"
+    block-class="customers-addresses-overlay"
+    direction="up"
+    namespace="deleteAddress"
+    type="shelf-modal"
+  >
+    <template #body>
+      <p class="text-body-m-regular text-body-l-regular-desktop">
+        {{ 'customers.addresses.delete.text_html' | t: address: '<span js-addresses="deleteAddress"></span>' | replace: '<a', '<a class="text-body-m-underline text-body-l-underline-desktop"' | newline_to_br }}
+      </p>
+
+      <div class="customers-addresses__modal-buttons">
+        {% render 'btn' with
+          attributes: 'js-addresses="deleteConfirm"',
+          class: 'customers-addresses__modal-confirm',
+          label: delete_confirm_string,
+          type: 'button',
+        %}
+
+        {% render 'btn' with
+          attributes: 'js-addresses="deleteCancel"',
+          class: 'customers-addresses__modal-cancel',
+          label: delete_cancel_string,
+          modifiers: 'secondary block center',
+          type: 'button',
+        %}
+      </div>
+    </template>
+  </overlay>
+
+  {% comment %}
+  -----------------------------------------------------------------------------
+    Load Vue component to initialise JS code.
+  -----------------------------------------------------------------------------
+  {% endcomment %}
+  <customers-addresses
+    v-if="getComponentVisible('customers-addresses')"
+    v-cloak
+  ></customers-addresses>
+</section>
+
+{% schema 'customers-addresses' %}

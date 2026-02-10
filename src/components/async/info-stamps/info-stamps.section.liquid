@@ -1,0 +1,127 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: info-stamps (info-stamps)
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.info-stamps.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign product_metafield_stamps = product.metafields.custom.product_info_stamps_grid.value.info_stamps.value
+  assign product_metafield_title = product.metafields.custom.product_info_stamps_grid.value.title
+  assign product_metafield_subtext = product.metafields.custom.product_info_stamps_grid.value.subtext
+  assign product_metafield_url = product.metafields.custom.product_info_stamps_grid.value.url
+  assign showing_only_badges = false
+  assign badges_grid_layout = 'l2-8'
+
+  assign section_title = product_metafield_title | default: section.settings.title
+  assign section_subtext = product_metafield_subtext | default: section.settings.subtext
+  assign section_url = product_metafield_url | default: section.settings.link
+
+  if section_title == blank and section_subtext == blank
+    assign showing_only_badges = true
+    assign badges_grid_layout = 'l2-13 info-stamps__centered'
+  endif
+-%}
+
+<section
+  aria-labelledby="section-title-{{ section.id }}"
+  data-component-handle="info-stamps"
+>
+  <div
+    class="
+      info-stamps
+      critical-component-clear
+      liquid
+      container
+      grid
+    "
+  >
+    <ul
+      class="
+        info-stamps__image-list
+        col
+        {{ badges_grid_layout }}
+      "
+    >
+      {% if product_metafield_stamps == blank %}
+        {% for block in section.blocks %}
+          {% assign stamp = block.settings.stamp %}
+
+          {% unless stamp == blank %}
+            <li class="info-stamps__image">
+              {% render 'responsive-image' with
+                image: stamp,
+                lazyload: false,
+                padding: true,
+                ratio: '0.94',
+              %}
+            </li>
+          {% endunless %}
+        {% endfor %}
+
+      {% else %}
+        {% for stamp in product_metafield_stamps %}
+          {% unless stamp == blank %}
+            <li class="info-stamps__image">
+              {% render 'responsive-image' with
+                image: stamp,
+                lazyload: false,
+                padding: true,
+                ratio: '0.94',
+              %}
+            </li>
+          {% endunless %}
+        {% endfor %}
+      {% endif %}
+
+    </ul>
+
+    {% unless showing_only_badges %}
+      <div
+        class="
+          info-stamps__header
+          col
+          l9-13
+        "
+      >
+        {% if section_title != blank %}
+          <h2
+            class="
+              info-stamps__title
+              text-h2-desktop
+              text-mobile-titles
+            "
+          >
+            {{ section_title }}
+          </h2>
+        {% endif %}
+
+        <div class="info-stamps__subtext-wrapper">
+          {% if section_url != blank %}
+            <a
+              class="info-stamps__link"
+              href="{{ section_url }}"
+            >
+              <span class="info-stamps__subtext text-p-small">
+                {{ section_subtext }}
+              </span>
+              <span class="info-stamps__arrow-icon">
+                {% render 'icon-directional-navigation' with icon: 'link-arrow' %}
+              </span>
+            </a>
+
+          {% else %}
+            <p class="info-stamps__link">
+              <span class="info-stamps__subtext text-p-small">
+                {{ section_subtext }}
+              </span>
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    {% endunless %}
+  </div>
+</section>
+
+{% schema 'info-stamps' %}

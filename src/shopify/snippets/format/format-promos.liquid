@@ -1,0 +1,48 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet / Format: PLP Promos
+
+  @param {Numder} product_index - product index within the forloop.
+  @param {Number} in_grid_promos_count - Image Liquid object to format.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- capture formatted_promos -%}
+  {% assign promo_index = product_index | plus: in_grid_promos_count %}
+  {% for promo in promos %}
+    {% if promo.settings.position_index == promo_index %}
+      {% render 'promo-card' with
+        cardData: promo.settings,
+        loading_animation: loading_animation
+      %}
+
+      {% assign in_grid_promos_count = in_grid_promos_count | plus: 1 %}
+
+      {% capture formatted_promos_content %}
+        {%
+          render 'format-promos' with
+          promos: promos,
+          product_index: product_index,
+          in_grid_promos_count: in_grid_promos_count,
+          loading_animation: loading_animation
+        %}
+      {% endcapture %}
+
+      {% assign nested_promos = formatted_promos_content
+        | split: '#########'
+        | first
+      %}
+
+      {% assign in_grid_promos_count = formatted_promos_content
+        | split: '#########'
+        | last
+      %}
+
+      {{ nested_promos }}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{%- endcapture -%}
+
+{{ formatted_promos }}
+#########
+{{ in_grid_promos_count }}

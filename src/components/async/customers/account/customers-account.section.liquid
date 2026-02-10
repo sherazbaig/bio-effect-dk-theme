@@ -1,0 +1,251 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Customers account (customers-account)
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.customers-account.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign order = customer.orders | first
+  assign orders_url = routes.account_url | append: '?view=orders'
+
+  assign addresses_cta_string = 'customers.account.addresses.cta' | t
+  assign recent_orders_cta_string = 'customers.account.recent_orders.cta' | t
+
+  capture icon_arrow_left
+    render 'icon-directional-navigation' with icon: 'arrow', direction: 'left'
+  endcapture
+
+  capture icon_arrow_right
+    render 'icon-directional-navigation' with icon: 'arrow', direction: 'right'
+  endcapture
+-%}
+
+<section
+  class="customers critical-customers-clear"
+  aria-labelledby="template-title"
+  data-component-handle="customers-account"
+  data-component-type="load"
+>
+  <div class="customers-account critical-component-clear liquid">
+
+    <div class="customers__pages-content container grid no-row-gap">
+      <div class="col xs-span l2-13">
+        {% render 'customers-header' with current_url: routes.account_url %}
+      </div>
+
+      <div class="customers-account__grid col xs-span l2-13">
+        <div class="customers-account__content">
+
+          {% comment %}
+          -----------------------------------------------------------------------------
+            Recent orders.
+          -----------------------------------------------------------------------------
+          {% endcomment %}
+          <div
+            class="customers-account__panel"
+            js-tabs-panel="MyOrders"
+          >
+            <div class="
+                col grid xs-span
+                customers-account__panel-header
+                customers-account__orders
+              "
+            >
+
+              {% if customer.orders.size == 0 %}
+                <div class="customers-account__no-order col xs-span mb-3xl">
+                  <p class="text-h5-desktop text-h6">
+                    {{ 'customers.account.recent_orders.title' | t }}
+                  </p>
+
+                  <p class="text-p-desktop text-mobile-p mt-xs mb-m-desktop mb-s">
+                    {{ 'customers.account.recent_orders.none' | t }}
+                  </p>
+
+                  {% render 'btn' with
+                    class: 'customers-account__no-order-button',
+                    label: recent_orders_cta_string,
+                    modifiers: 'primary block center',
+                    url: routes.root_url,
+                  %}
+                </div>
+              {% endif %}
+
+              {% unless customer.orders.size == 0 %}
+                <div class="customers-account__orders-title col xs-span">
+                  <p class="text-h5-desktop text-h6">
+                    {{ 'customers.account.recent_orders.title' | t }}
+                  </p>
+
+                  <p class="text-p-desktop text-mobile-p mt-xs mb-m">
+                    {{ 'customers.account.recent_orders.check_status' | t }}
+                  </p>
+                </div>
+
+                {% paginate customer.orders by 5 %}
+                  {% for order in customer.orders %}
+
+                    {% render 'customer-orders' with order: order %}
+
+                  {% endfor %}
+
+                  {% if paginate.pages > 1 %}
+                    {%
+                      render 'pagination' with
+                      paginate: paginate,
+                      class_name: 'col xs-span'
+                    %}
+                  {% endif %}
+                {% endpaginate %}
+              {% endunless %}
+
+            </div>
+          </div>
+
+          {% comment %}
+          -----------------------------------------------------------------------------
+            Addresses.
+          -----------------------------------------------------------------------------
+          {% endcomment %}
+          <div
+            class="
+              customers-account__panel
+              customers-account__addresses
+            "
+            js-addresses="addressesContainer"
+            js-tabs-panel="Addresses"
+          >
+            <div js-addresses="panel">
+              <p class="text-h5-desktop text-h6">
+                {{ 'customers.account.addresses.title' | t }}
+              </p>
+
+              <p
+                class="text-p-desktop text-mobile-p mt-xs mb-m"
+                js-addresses="address-text"
+              >
+                {{ 'customers.account.addresses.your_saved_addresses' | t }}
+              </p>
+
+              {% assign create_new_string = 'customers.account.addresses.add_address' | t %}
+
+              {% render 'btn'
+                attributes: 'js-addresses="add"',
+                class: 'customers-account__add-address',
+                label: create_new_string,
+                modifiers: 'primary center',
+              %}
+
+              <div js-addresses="formContainer" class="is-hidden mt-3xl">
+                {% render 'address-form' with
+                  address: customer.new_address,
+                  form_id: 'new',
+                %}
+
+                  {%- liquid
+                    if customer.addresses_count > 0
+                      for address in customer.addresses
+                        render 'address-form' with address: address, default_address: false, form_id: address.id
+                      endfor
+                    endif
+                  -%}
+              </div>
+            </div>
+
+            {% if customer.addresses_count == 0 %}
+              <p class="text-p">
+                {{ 'customers.account.addresses.none' | t }}
+              </p>
+
+            {% else %}
+              <div class="customers-account__default-address-body address-block__default-address">
+                <p class="text-p-desktop text-mobile-p-bold mb-xs">
+                  {{ 'customers.account.addresses.default_address' | t }}
+                </p>
+
+                {% render 'address-block' with
+                  address: customer.default_address,
+                  form_id: customer.default_address.id,
+                  overview: true,
+                %}
+              </div>
+
+              {% if customer.addresses_count > 1 %}
+                <div class="customers-addresses__additional">
+                  {%- liquid
+                    for address in customer.addresses
+                      if address == customer.default_address
+                        continue
+                      endif
+
+                      render 'address-block' with address: address, form_id: address.id, set_default_address: true
+                    endfor
+                  -%}
+                </div>
+
+              {% endif %}
+            {% endif %}
+          </div>
+
+          {% comment %}
+          -----------------------------------------------------------------------------
+            Recently Viewed.
+          -----------------------------------------------------------------------------
+          {% endcomment %}
+          <div
+            class="
+              customers-account__panel
+              customers-account__recently-viewed
+            "
+            js-tabs-panel="RecentlyViewed"
+          >
+            <p class="text-h5-desktop text-h6 mb-xl">
+              {{ 'customers.account.recently_viewed' | t }}
+            </p>
+
+            <div id="carousel" class="splide" js-splide="carousel">
+              <div class="customers-account__track splide__track">
+                <ul class="customers-account__carousel splide__list">
+
+                </ul>
+              </div>
+
+              <div class="customers-account__footer col xs6 m6 l2-13 mt-xl">
+                <div class="customers-account__slider-arrows splide__arrows">
+                  {% render 'btn' with
+                    class: 'splide__arrow splide__arrow--prev',
+                    icon: icon_arrow_left,
+                    modifiers: 'light reversed text',
+                    show_icon: true,
+                    type: 'button',
+                  %}
+
+                  {% render 'btn' with
+                    class: 'splide__arrow splide__arrow--next',
+                    icon: icon_arrow_right,
+                    modifiers: 'light text',
+                    show_icon: true,
+                    type: 'button',
+                  %}
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Load Vue component to initialise JS code.
+-----------------------------------------------------------------------------
+{% endcomment %}
+<customers-account
+  v-if="getComponentVisible('customers-account')"
+  v-cloak
+></customers-account>
+
+{% schema 'customers-account' %}

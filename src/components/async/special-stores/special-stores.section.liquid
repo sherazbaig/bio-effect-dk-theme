@@ -1,0 +1,46 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Special stores (special-stores)
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.special-stores.css' | asset_url | stylesheet_tag }}
+
+{% assign title = section.settings.title %}
+
+<section
+  class="container grid"
+  aria-labelledby="section-title-{{ section.id }}"
+  data-component-handle="special-stores"
+>
+  <div class="special-stores critical-component-clear liquid col xs-span l2-13">
+    <h2 class="special-stores__title text-h6 text-h5-desktop">{{ title }}</h2>
+
+    <div class="special-stores__list">
+      {% for block in section.blocks %}
+        {% comment %} Skip block with empty field {% endcomment %}
+        {% if
+          block.settings.title == empty or
+          block.settings.cta_label == empty or
+          block.settings.cta_url == nil
+        %}
+          {% continue %}
+        {% endif %}
+
+        <div class="special-stores__store mb-xl">
+          <h3 class="special-stores__store-title text-mobile-p-bold text-p-bold-desktop">
+            {{ block.settings.title }}
+          </h3>
+
+          {% render 'btn' with
+            class: 'special-stores__cta'
+            label: block.settings.cta_label,
+            url: block.settings.cta_url,
+          %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema 'special-stores' %}

@@ -1,0 +1,89 @@
+/**
+ * Styles: Selection tab (selection-tab)
+ * -----------------------------------------------------------------------------
+ * Base styles for selection tab component.
+ *
+ */
+.selection-tab {
+  $parent: &;
+  display: inherit;
+
+  &__input {
+
+    /**
+     * Checked state.
+     */
+    &:checked + #{$parent}__label {
+      background-color: var(--color-stone);
+      color: var(--color-clouds);
+    }
+
+    /**
+     * Disabled state.
+     */
+    &[disabled],
+    &.is-disabled {
+      + #{$parent}__label {
+        background-image: linear-gradient(to top right, transparent 0%, transparent calc(50% - 0.8px), var(--color-neutral-1) 50%, transparent calc(50% + 0.8px), transparent 100%),;
+        cursor: default;
+      }
+    }
+  }
+
+  &__label {
+    @include transition(background-color);
+    background-color: var(--color-clouds);
+    border: 1px solid var(--color-grey);
+    border-radius: var(--spacing-2xs);
+    color: var(--color-stone);
+    display: grid;
+    // Matches the design.
+    height: 36px;
+    min-width: 106px;
+    overflow: hidden;
+    padding: var(--spacing-s) var(--spacing-m);
+    place-content: center;
+    position: relative;
+    text-align: center;
+  }
+
+  /**
+   * Focus state.
+   */
+  .is-tabbable & {
+    &__input:focus + #{$parent}__label,
+    &__input.is-focus + #{$parent}__label {
+      @include focus-ring;
+    }
+  }
+
+  /**
+   * Loading state.
+   */
+  &.is-loading:not(.liquid) {
+    pointer-events: none;
+
+    #{$parent}__label {
+      @include loading;
+      background-image: none;
+    }
+  }
+
+  /**
+   * Button modifier state.
+   */
+  &#{&}--button {
+    &.is-active {
+      #{$parent}__label {
+        background-color: var(--color-stone);
+        color: var(--color-clouds);
+      }
+    }
+
+    .is-tabbable & {
+      #{$parent}__label:focus {
+        @include focus-ring;
+      }
+    }
+  }
+}

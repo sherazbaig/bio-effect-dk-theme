@@ -1,0 +1,13 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: <%= name %> icons
+  - Generated as part of the build process, do not edit.
+
+  @param {String} icon - Icon name.<%= parameters %>
+-----------------------------------------------------------------------------
+{% endcomment %}
+{% case icon %}
+<%= liquid %>
+  {% else %}
+    <span>No icon found</span>
+{% endcase %}

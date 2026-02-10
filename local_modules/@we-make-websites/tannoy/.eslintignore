@@ -1,0 +1,5 @@
+# Files for eslint to ignore
+node_modules
+.eslintrc.js
+.stylelintrc.js
+jsconfig.json

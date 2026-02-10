@@ -1,0 +1,202 @@
+/**
+ * Styles: Free gift with purchase list (free-gift-with-purchase-list)
+ * -----------------------------------------------------------------------------
+ * Base styles for free gift with purchase list component.
+ *
+ */
+.free-gift-with-purchase-list {
+  $parent: &;
+  margin-block-end: var(--spacing-xl);
+
+  &.threshold-not-reached {
+    #{$parent}__item {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    margin-block: var(--spacing-m);
+  }
+
+  &__folding-container {
+    &.folded {
+      height: 0;
+      overflow: hidden;
+    }
+  }
+
+  &__title {
+    color: var(--color-stone);
+    margin-block-start: var(--spacing-3xs);
+  }
+
+  &__title-wrapper, &__selected-count {
+    align-items: center;
+    display: flex;
+    gap: var(--spacing-s);
+  }
+
+  &__threshold-progress-bar {
+    margin-block-end: var(--spacing-m);
+    position: relative;
+  }
+
+  &__progress-prize-one, &__progress-prize-two {
+    background-color: var(--color-breeze);
+    border: 1px solid var(--color-gray-text);
+    border-radius: 50%;
+    // matching design
+    height: 24px;
+    padding-block-start: 0;
+    padding-inline-start: 3px;
+    position: absolute;
+    top: -11px;
+    // matching design
+    width: 24px;
+
+    .icon {
+      height: var(--spacing-m);
+      width: var(--spacing-m);
+    }
+
+    path {
+      fill: var(--color-gray-text);
+      stroke: var(--color-gray-text);
+    }
+
+    &.reached {
+      background-color: var(--color-teal);
+      border: 1px solid var(--color-breeze);
+
+      path {
+        fill: var(--color-breeze);
+        stroke: var(--color-breeze);
+      }
+    }
+  }
+
+  &__progress-prize-two {
+    left: calc(100% - 12px);
+  }
+
+  &__track {
+    background-color: var(--color-cool);
+    height: var(--spacing-2xs);
+    width: 100%;
+  }
+
+  &__progress {
+    background-color: var(--color-teal);
+    height: 100%;
+    width: 20%;
+  }
+
+  &__item {
+    @include button-reset;
+    align-items: center;
+    background-color: var(--color-clouds);
+    border: solid 1px transparent;
+    display: flex;
+    gap: var(--spacing-xs);
+    // matching design
+    height: 100px;
+    justify-content: space-between;
+    padding-inline-end: var(--spacing-l);
+    padding-inline-start: var(--spacing-m);
+
+    #{$parent}__selection-check {
+      color: var(--color-teal);
+      display: none;
+    }
+
+    #{$parent}__selection-square {
+      border: 1px solid var(--color-grey);
+      height: var(--icon-m);
+      width: var(--icon-m);
+    }
+
+    &.selected {
+      border: 1px solid var(--color-teal);
+
+      #{$parent}__selection-square {
+        display: none;
+      }
+
+      #{$parent}__selection-check {
+        display: block;
+      }
+    }
+  }
+
+  &__item-titles {
+    text-align: start;
+  }
+
+  &__threshold-check-wrapper {
+    align-items: center;
+    display: flex;
+    gap: var(--spacing-s);
+
+    .icon {
+      border-radius: 50%;
+      color: var(--color-teal);
+      // matching design
+      height: 20px;
+      width: 20px;
+    }
+  }
+
+  &__title-wrapper-threshold {
+    display: grid;
+    gap: var(--spacing-xs);
+    margin-block-end: var(--spacing-l);
+    margin-block-start: var(--spacing-s);
+
+    #{$parent}__selection-circle {
+      height: 20px;
+      width: 20px;
+    }
+  }
+
+  &__item-image-container {
+    // matching design
+    width: 59px;
+  }
+
+  &__left-hand {
+    align-items: center;
+    display: flex;
+    gap: var(--spacing-m);
+  }
+
+  &__selection-circle {
+    border: 1px solid var(--color-grey);
+    border-radius: 50%;
+    height: var(--spacing-m);
+    width: var(--spacing-m);
+  }
+
+  &__hide-button, &__add-button {
+    background-color: var(--color-clouds);
+  }
+
+  &__add-button {
+    margin-block-end: var(--spacing-m);
+  }
+
+  @include mq($until: l) {
+    &__progress-prize-two {
+      left: calc(100% - 23px);
+    }
+  }
+
+  @include mq($from: l) {
+    &__threshold-progress-bar {
+      width: 97%;
+    }
+  }
+}

@@ -1,0 +1,121 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: account forms (account-forms)
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- liquid
+  assign register_cta_string = 'customers.register.cta' | t
+  assign sign_in_string = 'customers.login.title' | t
+  assign sign_out_string = 'customers.login.sign_out' | t
+  assign forgot_password_string = 'customers.login.forgot_password_link' | t
+  assign go_to_my_account_string = 'customers.login.go_to_my_account' | t
+  assign forgot_pass_title = 'customers.login.forgot_password.title' | t
+  assign forgot_pass_description = 'customers.login.forgot_password.text_html' | t
+  assign create_account_string = 'customers.register.cta' | t
+-%}
+
+<div
+  class="account-forms liquid"
+  js-account-forms="container"
+>
+  <div class="account-forms">
+
+    {% comment %}
+    ----------------------------------------------------------------------------
+      Login container.
+      - Login form.
+    ----------------------------------------------------------------------------
+    {% endcomment %}
+    <div
+      class="account-forms__login {% if customer %}is-hidden{% endif %}"
+      js-account="login"
+    >
+    <h2 class="text-h5-desktop text-h6 mb-m account-forms__title">
+      {{ sign_in_string }}
+    </h2>
+
+      {% render 'login-form' %}
+    </div>
+
+    {% comment %}
+    ----------------------------------------------------------------------------
+      Forgot password container.
+      - Forgot password.
+    ----------------------------------------------------------------------------
+    {% endcomment %}
+    <div
+      class="account-forms__forgot-password is-hidden"
+      js-account="forgot-password"
+    >
+      <h2 class="text-h5-desktop text-h6 mb-m account-forms__title">
+        {{ forgot_pass_title }}
+      </h2>
+      <p class="text-mobile-p mb-s">
+        {{ forgot_pass_description }}
+      </p>
+
+      {% render 'forgot-password-form' %}
+    </div>
+
+    {% comment %}
+    ----------------------------------------------------------------------------
+      Register customer container.
+      - Register customer.
+    ----------------------------------------------------------------------------
+    {% endcomment %}
+    <div
+      class="account-forms__register is-hidden"
+      js-account="register"
+    >
+      <h2 class="text-h5-desktop text-h6 mb-m account-forms__title">
+        {{ create_account_string }}
+      </h2>
+
+      {% render 'register-form' %}
+    </div>
+
+    {% comment %}
+    ----------------------------------------------------------------------------
+      Log out container.
+      - Log out form.
+    ----------------------------------------------------------------------------
+    {% endcomment %}
+    <div
+      class="
+        account-forms__logout
+        {% if customer %}{% else %}is-hidden{% endif %}
+      "
+      js-account="logout"
+    >
+      <h2 class="text-h5-desktop text-h6 account-forms__title">
+        {{ 'customers.login.hi' | t }}
+      </h2>
+
+      {% render 'btn' with
+        class: 'account-forms__my-account',
+        label: go_to_my_account_string,
+        modifiers: 'primary block center',
+        url: routes.account_url,
+      %}
+
+      {% render 'btn' with
+        class: 'account-forms__signout mt-m',
+        label: sign_out_string,
+        modifiers: 'secondary block center',
+        url:  routes.account_logout_url,
+      %}
+    </div>
+  </div>
+</div>
+
+{% comment %}
+-----------------------------------------------------------------------------
+  Load Vue component to initialise JS code.
+-----------------------------------------------------------------------------
+{% endcomment %}
+<account-forms
+  v-if="getComponentVisible('account-forms')"
+  v-cloak
+>
+</account-forms>

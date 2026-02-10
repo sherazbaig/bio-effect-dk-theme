@@ -1,0 +1,92 @@
+/**
+ * Style: Checkbox input (checkbox-input)
+ * -----------------------------------------------------------------------------
+ * Base styles for checkbox input component.
+ *
+ */
+.checkbox-input {
+  $parent: &;
+  align-items: center;
+  display: flex;
+
+  &__label {
+    @include transition(opacity);
+    align-items: flex-start;
+    display: grid;
+    gap: var(--spacing-xs);
+    grid-auto-flow: column;
+    padding-inline-start: calc(var(--icon-2xs) + var(--spacing-s));
+    position: relative;
+
+    &::before,
+    &::after {
+      content: '';
+      height: var(--icon-2xs);
+      position: absolute;
+      width: var(--icon-2xs);
+    }
+
+    &::before {
+      @include transition(border-color);
+      border: 1px solid var(--color-grey);
+      left: 0;
+      top: 0;
+    }
+
+    &::after {
+      @include transition(background-color, opacity);
+      background-color: var(--color-brand-1-default);
+      background-image: url('data:~icons/general/check.svg');
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+      top: 0;
+    }
+  }
+
+  /**
+   * Active state.
+   */
+  &__input:checked {
+    + #{$parent}__label {
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+
+  /**
+   * Hover state.
+   */
+  &:hover,
+  &.is-hover {
+    #{$parent}__input + #{$parent}__label::before {
+      border-color: var(--color-teal);
+    }
+
+    #{$parent}__input:checked:not(:disabled, .is-disabled) + #{$parent}__label::after {
+      background-color: var(--color-grey);
+    }
+  }
+
+  /**
+   * Disabled state.
+   */
+  &__input[disabled],
+  &__input.is-disabled {
+    + #{$parent}__label {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+  }
+
+  /**
+   * Accessibility - focus ring.
+   */
+  .is-tabbable & {
+    #{$parent}__input:focus-visible + #{$parent}__label::before {
+      @include focus-ring;
+      outline-offset: var(--spacing-2xs);
+    }
+  }
+}

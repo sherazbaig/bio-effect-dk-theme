@@ -1,0 +1,248 @@
+/**
+ * Helper: Grid
+ * -----------------------------------------------------------------------------
+ * Grid classes for layout.
+ */
+// stylelint-disable order/order
+
+@use 'sass:math';
+
+/**
+ * .col classes.
+ */
+@mixin col-classes($size, $columns, $gutter) {
+  $start: 1;
+  $modifier-tablet: math.div($layout-tablet-column, $layout-mobile-column);
+  $modifier-desktop: math.div($layout-desktop-column, $layout-mobile-column);
+
+  /**
+   * Full width span class.
+   * - E.g. xs-span.
+   */
+  &.#{$size}-span {
+    grid-column: span $columns;
+  }
+
+  @if $size == 'xs' {
+    @include mq($from: m) {
+      &.#{$size}-span {
+        grid-column: span #{$columns * $modifier-tablet};
+      }
+    }
+
+    @include mq($from: l) {
+      &.#{$size}-span {
+        grid-column: span #{$columns * $modifier-desktop};
+      }
+    }
+  }
+
+  /**
+   * Span col classes.
+   * - E.g. l6.
+   * - And internal grid column classes.
+   * - Setting xs4 will become l12 if no other class is set.
+   */
+  @while $start <= $columns {
+    &.#{$size}#{$start} {
+      grid-column: span $start;
+
+      &.grid {
+        grid-template-columns: repeat($start, minmax(10px, 1fr));
+      }
+    }
+
+    @if $size == 'xs' {
+      @include mq($from: m) {
+        &.#{$size}#{$start} {
+          grid-column: span #{$start * $modifier-tablet};
+        }
+      }
+
+      @include mq($from: l) {
+        &.#{$size}#{$start} {
+          grid-column: span #{$start * $modifier-desktop};
+        }
+      }
+    }
+    $end: $start;
+
+    /**
+     * Position col classes.
+     * - E.g. l6-12.
+     * - And internal grid column classes.
+     * - Setting xs1-2 will become l1-6 if no other class is set.
+     */
+    @while $end <= ($columns) {
+      $span: ($end + 1) - $start;
+
+      &.#{$size}#{$start}-#{$end} {
+        grid-column: #{$start} / #{$end + 1};
+
+        &.grid {
+          grid-template-columns: repeat($span, minmax(10px, 1fr));
+        }
+      }
+
+      @if $size == 'xs' {
+        @include mq($from: m) {
+          &.#{$size}#{$start}-#{$end} {
+            grid-column: #{($start - 1) * $modifier-tablet + 1} / #{$end * $modifier-tablet + 1};
+          }
+        }
+
+        @include mq($from: l) {
+          &.#{$size}#{$start}-#{$end} {
+            grid-column: #{($start - 1) * $modifier-desktop + 1} / #{$end * $modifier-desktop + 1};
+          }
+        }
+      }
+      $end: $end + 1;
+    }
+
+    /**
+     * Offset col classes.
+     * - E.g. .col.offset-left-l means offset left is applied at l breakpoint.
+     * - Must be set at all breakpoints you want an offset.
+     */
+    &.offset-both-#{$size} {
+      margin-inline-end: $gutter;
+      margin-inline-start: $gutter;
+      width: calc(100% - (#{$gutter} * 2));
+    }
+
+    &.offset-left-#{$size} {
+      margin-inline-end: calc(#{$gutter} * -1);
+      margin-inline-start: $gutter;
+      width: calc(100% - #{$gutter});
+    }
+
+    &.offset-right-#{$size} {
+      margin-inline-end: $gutter;
+      width: calc(100% - #{$gutter});
+    }
+    $start: $start + 1;
+  }
+}
+
+/**
+ * .grid and .col classes.
+ */
+@mixin grid-col-classes($size, $columns, $gutter) {
+  @if $gutter {
+    gap: $gutter;
+  }
+
+  /**
+   * Grid column override.
+   * - Limit prevents having more columns than the maximum for that breakpoint.
+   * - Repeated instances of #{&} are to apply greater specificity than other
+   *   classes without using !important.
+   * - E.g. .grid.grid--col-l6 means the grid has six columns at l breakpoint.
+   */
+  @for $i from 1 through ($columns - 1) {
+    &#{&}#{&}#{&}#{&}--col-#{$size}#{$i} {
+      grid-template-columns: repeat(#{$i}, minmax(10px, 1fr));
+    }
+  }
+
+  /**
+   * Expand modifiers.
+   * - E.g. .grid.expand-left-l or .col.expand-left-l will apply the expand left
+   * modifier at the l breakpoint.
+   */
+  &.expand-both-#{$size},
+  > .col.expand-both-#{$size} {
+    margin-inline-end: calc(#{$gutter} * -1);
+    margin-inline-start: calc(#{$gutter} * -1);
+    padding-inline-end: #{$gutter};
+    padding-inline-start: #{$gutter};
+    width: calc(100% + (#{$gutter} * 2));
+  }
+
+  &.expand-left-#{$size},
+  > .col.expand-left-#{$size} {
+    margin-inline-start: calc(#{$gutter} * -1);
+    padding-inline-start: #{$gutter};
+    width: calc(100% + #{$gutter});
+  }
+
+  &.expand-right-#{$size},
+  > .col.expand-right-#{$size} {
+    margin-inline-end: calc(#{$gutter} * -1);
+    padding-inline-end: #{$gutter};
+    width: calc(100% + #{$gutter});
+  }
+}
+
+/**
+ * Grid classes.
+ */
+.grid {
+  @include grid-col-classes('xs', $layout-mobile-column, var(--layout-mobile-gutter));
+  display: grid;
+  grid-template-columns: repeat($layout-mobile-column, minmax(10px, 1fr));
+  position: relative;
+
+  /**
+   * Gap modifiers.
+   */
+  &.no-gap {
+    gap: 0;
+  }
+
+  &.no-row-gap {
+    row-gap: 0;
+  }
+
+  &.no-column-gap {
+    column-gap: 0;
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: s) {
+    @include grid-col-classes('s', $layout-mobile-column, var(--layout-mobile-gutter));
+  }
+
+  @include mq($from: m) {
+    @include grid-col-classes('m', $layout-tablet-column, var(--layout-tablet-gutter));
+    grid-template-columns: repeat($layout-tablet-column, minmax(10px, 1fr));
+  }
+
+  @include mq($from: l) {
+    @include grid-col-classes('l', $layout-desktop-column, var(--layout-desktop-gutter));
+    grid-template-columns: repeat($layout-desktop-column, minmax(10px, 1fr));
+  }
+
+  @include mq($from: xl) {
+    @include grid-col-classes('xl', $layout-desktop-column, var(--layout-desktop-gutter));
+  }
+}
+
+/**
+ * Column classes.
+ */
+.grid > .col {
+  @include col-classes('xs', $layout-mobile-column, var(--layout-mobile-gutter));
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: s) {
+    @include col-classes('s', $layout-mobile-column, var(--layout-mobile-gutter));
+  }
+
+  @include mq($from: m) {
+    @include col-classes('m', $layout-tablet-column, var(--layout-tablet-gutter));
+  }
+
+  @include mq($from: l) {
+    @include col-classes('l', $layout-desktop-column, var(--layout-desktop-gutter));
+  }
+
+  @include mq($from: xl) {
+    @include col-classes('xl', $layout-desktop-column, var(--layout-desktop-gutter));
+  }
+}

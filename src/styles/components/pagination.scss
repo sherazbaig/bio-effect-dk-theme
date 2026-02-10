@@ -1,0 +1,65 @@
+/**
+ * Component: Pagination (pagination)
+ * -----------------------------------------------------------------------------
+ * Base styles for pagination component.
+ *
+ */
+.pagination {
+  margin: var(--spacing-l) 0;
+  text-align: center;
+
+  &__list {
+    @include list-reset;
+    align-items: center;
+    display: flex;
+    gap: var(--spacing-xs);
+    justify-content: center;
+  }
+
+  &__list-item {
+    &.is-hidden {
+      display: block;
+      opacity: 0;
+      pointer-events: none;
+      user-select: none;
+    }
+  }
+
+  &__part {
+    @include button-reset;
+    @include transition(background-color);
+    border-radius: 4px;
+    display: grid;
+    line-height: var(--line-height-baseline);
+    // Icon height + padding
+    min-height: calc(var(--icon-m) + (var(--spacing-2xs) * 2));
+    // Icon width + padding
+    min-width: calc(var(--icon-m) + (var(--spacing-2xs) * 2));
+    padding: var(--spacing-2xs);
+    place-items: center;
+    text-decoration: unset;
+
+    &.is-active {
+      background-color: var(--color-brand-1-default);
+      color: var(--color-neutral-6);
+
+      &:hover {
+        background-color: var(--color-brand-1-dark);
+      }
+    }
+  }
+
+  &__button:hover {
+    background-color: var(--color-brand-1-dark);
+  }
+
+  &__link {
+    &:hover {
+      background-color: var(--color-neutral-4);
+    }
+  }
+
+  &__text {
+    cursor: default;
+  }
+}

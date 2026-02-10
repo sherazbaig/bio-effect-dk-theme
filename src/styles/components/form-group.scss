@@ -1,0 +1,168 @@
+/**
+ * Component: Form group
+ * -----------------------------------------------------------------------------
+ * Group styling for a combination of form elements within a form.
+ *
+ */
+.form-group {
+  $parent: &;
+  display: grid;
+  gap: 1.25rem;
+  max-width: 600px;
+
+  + #{$parent} {
+    margin-block-start: var(--spacing-l);
+  }
+
+  &__field {
+    display: grid;
+    gap: var(--spacing-xs);
+    position: relative;
+
+    &-default {
+      display: none;
+    }
+  }
+
+  &__label {
+    color: var(--color-grey);
+    display: flex;
+    font-size: var(--font-size-0);
+    left: var(--spacing-s);
+    position: absolute;
+    top: 0.4rem;
+
+    abbr {
+      margin-inline-start: var(--spacing-3xs);
+      text-decoration: none;
+    }
+  }
+
+  &__optional {
+    margin-inline-start: auto;
+  }
+
+  input[type=email],
+  input[type=number],
+  input[type=password],
+  input[type=search],
+  input[type=tel],
+  input[type=text],
+  textarea,
+  select {
+    @include transition(border-color);
+    appearance: none;
+    background-color: var(--color-clouds);
+    border: 1px solid var(--color-gray-text);
+    border-radius: 1px;
+    box-shadow: none;
+    color: var(--color-stone);
+    font-size: var(--font-size-3);
+    outline: none;
+    padding-block-end: var(--spacing-xs);
+    padding-block-start: var(--spacing-l);
+    padding-inline: var(--spacing-s);
+    width: 100%;
+
+    &:focus {
+      border-color: var(--color-black42);
+    }
+
+    &::placeholder {
+      color: var(--color-stone);
+      font-size: var(--font-size-3);
+    }
+
+    &:placeholder-shown {
+      padding-block-end: var(--spacing-m);
+      padding-block-start: var(--spacing-m);
+
+      ~ label {
+        opacity: 0;
+      }
+    }
+  }
+
+  select {
+    background-image: url('data:~icons/directional-navigation/chevron/down.svg');
+    // Can't use variables in background position
+    background-position: 50% right 10px;
+    background-repeat: no-repeat;
+    background-size: var(--icon-m) var(--icon-m);
+  }
+
+  textarea {
+    min-height: 90px;
+  }
+
+  &__footer {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.875rem;
+    justify-content: flex-end;
+    max-width: 900px;
+  }
+
+  &__note {
+    @include transition(color);
+  }
+
+  /**
+   * Modifiers.
+   */
+  &.is-hidden {
+    display: none;
+  }
+
+  &.has-error,
+  &__field.has-error {
+    input, textarea, select {
+      border-color: var(--color-system-error-light-mode);
+    }
+
+    #{$parent}__note {
+      color: var(--color-system-error-light-mode);
+    }
+  }
+
+  &.has-success,
+  &__field.has-success {
+    input, textarea, select {
+      border-color: var(--color-system-success-light-mode);
+    }
+
+    #{$parent}__note {
+      color: var(--color-system-success-light-mode);
+    }
+  }
+
+  /**
+   * RTL.
+   */
+  [dir=rtl] & {
+    select {
+      // Can't use variables in background position
+      background-position: 10px 50%;
+    }
+  }
+
+  @include mq($until: l) {
+    &__footer {
+      flex-direction: column-reverse;
+      gap: var(--spacing-s);
+
+      .button {
+        width: 100%;
+      }
+    }
+  }
+
+  @include mq($from: m) {
+    grid-template: auto/repeat(2, minmax(0, 1fr));
+  }
+
+  @include mq($from: l) {
+    max-width: 900px;
+  }
+}

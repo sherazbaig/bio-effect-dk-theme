@@ -1,0 +1,103 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Customers orders (customers-orders)
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.customers-orders.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign orders_url = routes.account_url | append: '?view=orders'
+-%}
+
+<section
+  class="customers critical-customers-clear"
+  aria-labelledby="template-title"
+  data-component-handle="customers-orders"
+>
+  <div class="customers-orders critical-component-clear liquid">
+
+    <div class="customers__pages-content container grid no-row-gap">
+      <div class="col xs-span l2-13">
+        {% render 'customers-header' with current_url: orders_url %}
+      </div>
+
+      <div class="col xs-span l2-13">
+        <div class="customers-orders__content">
+          <div class="customers-orders__header">
+            <h1
+              id="template-title"
+              class="
+                customers__pages-title
+                text-heading-xl
+                text-heading-2xl-desktop
+              "
+            >
+              {{ 'customers.orders.title' | t }}
+            </h1>
+
+            <p
+              class="
+                customers__pages-text
+                text-body-m-regular
+                text-body-l-regular-desktop
+              "
+            >
+              {% if customer.orders.size == 0 %}
+                {{ 'customers.orders.no_orders_html' | t | replace: '<a', '<a class="text-body-m-underline text-body-l-underline-desktop"' | newline_to_br }}
+              {% else %}
+                {{ 'customers.orders.text_html' | t | replace: '<a', '<a class="text-body-m-underline text-body-l-underline-desktop"' | newline_to_br }}
+              {% endif %}
+            </p>
+
+            <p
+              class="
+                customers-orders__count
+                text-body-m-regular
+                text-body-l-regular-desktop
+              "
+            >
+              {% # Use orders.size instead of orders_count so it includes test orders %}
+              {{ 'customers.orders.order_count' | t: count: customer.orders.size }}
+            </p>
+          </div>
+
+          {% render 'divider-line' %}
+
+          {% comment %}
+          -----------------------------------------------------------------------------
+            Orders display.
+            - Not displayed when no orders and customers CTA not setup.
+          -----------------------------------------------------------------------------
+          {% endcomment %}
+          {%- liquid
+            unless customer.orders.size == 0 and settings.customers_orders_cta_text == blank and settings.customers_orders_cta_url == blank
+              if customer.orders.size == 0
+                if settings.customers_orders_cta_text != blank and settings.customers_orders_cta_url != blank
+                  render 'btn' with class: 'customers-orders__cta', label: settings.customers_orders_cta_text, url: settings.customers_orders_cta_url
+                endif
+
+              else
+                paginate customer.orders by 20
+                  for order in customer.orders
+                    unless forloop.first
+                      render 'divider-line'
+                    endunless
+
+                    render 'order-card' with class: 'customers-orders__order-card', order: order
+                  endfor
+
+                  if paginate.pages > 1
+                    render 'pagination' with paginate: paginate
+                  endif
+                endpaginate
+              endif
+            endunless
+          -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema 'customers-orders' %}

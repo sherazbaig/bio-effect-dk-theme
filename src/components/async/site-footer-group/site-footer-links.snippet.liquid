@@ -1,0 +1,23 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Snippet: Site Footer Links
+
+  @param {Object} [links] - Navigation links object.
+  @param {String} [link_text_class] - Text link class.
+-----------------------------------------------------------------------------
+{% endcomment %}
+{% if links_type == blank %}
+  {% assign links_type = 'li' %}
+{% endif %}
+
+<{{ links_type }} class="site-footer__link-list">
+{% unless hide_title %}
+  <p class="site-footer__link-title text-button">{{ links.title }}</p>
+{% endunless %}
+
+{% for link in links.links %}
+  <a class="{{ link_text_class }} site-footer__link" href="{{ link.url }}">
+    {{ link.title }}
+  </a>
+{% endfor %}
+</{{ links_type }}>

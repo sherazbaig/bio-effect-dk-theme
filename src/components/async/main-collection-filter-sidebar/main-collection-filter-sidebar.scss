@@ -1,0 +1,35 @@
+/**
+ * Styles: main-collection-filter-sidebar (main-collection-filter-sidebar)
+ * -----------------------------------------------------------------------------
+ * Base styles for main-collection-filter-sidebar component.
+ *
+ */
+
+.main-collection__filters {
+  .legend-four-columns {
+    color: var(--color-stone);
+    font-weight: var(--font-weight-semibold);
+    margin-block-end: unset;
+  }
+
+  @include mq($from: l) {
+    .fieldset-four-columns {
+      display: contents;
+    }
+
+    .legend-four-columns {
+      margin-inline-end: calc(var(--spacing-l) + var(--spacing-4xs));
+    }
+  }
+}
+
+.filter-divider {
+  // Only show on desktop/large screens
+  @include mq($from: l) {
+    background-color: var(--color-stone);
+    height: 1px;
+    margin-block-end: var(--spacing-xl);
+    opacity: 0.1;
+    width: 100%;
+  }
+}

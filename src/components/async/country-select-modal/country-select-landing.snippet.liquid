@@ -1,0 +1,67 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Multi-store modal (country-select-landing)
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.country-select-landing.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign continue_string = 'country_select.continue' | t
+  assign change_country_string = 'country_select.change_country' | t
+%}
+
+<section
+  data-component-handle="country-select-landing"
+  data-component-type="trigger"
+>
+  <overlay
+    key="countrySelectLanding"
+    block-class="country-select-landing"
+    direction="up"
+    namespace="countrySelectLanding"
+    type="modal"
+    :template="false"
+  >
+    <template #body="overlay">
+      <country-select-landing
+        v-if="getComponentVisible('country-select-landing')"
+        v-cloak
+        :is-active="isActive"
+        :overlay="overlay"
+      ></country-select-landing>
+
+      {% comment %}
+      ----------------------------------------------------------------------------
+        Loading state.
+      ----------------------------------------------------------------------------
+      {% endcomment %}
+      <div v-if="!getComponentActive('country-select-landing')">
+        <div class="country-select-landing is-loading liquid">
+            <div class="country-select-landing__content-wrapper">
+                <h2 class="country-select-landing__title liquid text-mobile-titles text-h2-desktop"></h2>
+                <ul class="country-select-landing__list liquid">
+                    <li class="country-select-landing__body text-p-desktop text-mobile-p liquid"></li>
+                    <li class="country-select-landing__body text-p-desktop text-mobile-p liquid"></li>
+                </ul>
+            </div>
+            <div class="country-select-landing__bottom-wrapper liquid">
+                {% render 'btn' with
+                  class: 'country-select-landing__continue liquid',
+                  modifiers: 'primary center',
+                  label: continue_string,
+                  type: 'button',
+                  disabled: true,
+                %}
+                {% render 'btn' with
+                  class: 'country-select-landing__change-country liquid',
+                  modifiers: 'secondary center',
+                  label: change_country_string,
+                  type: 'button',
+                  disabled: true,
+                %}
+            </div>
+        </div>
+      </div>
+    </template>
+  </overlay>
+</section>

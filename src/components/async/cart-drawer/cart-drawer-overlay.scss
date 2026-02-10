@@ -1,0 +1,31 @@
+/**
+ * Styles: Cart drawer overlay (cart-drawer)
+ * -----------------------------------------------------------------------------
+ * Override styles for cart drawer overlay.
+ *
+ */
+.cart-drawer-overlay {
+  background-color: var(--color-breeze);
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-block-end: 0;
+  }
+
+  &__header {
+    margin-block-end: var(--spacing-m);
+  }
+
+  &__title {
+    @include text-h5;
+    color: var(--color-stone);
+  }
+
+  &__body {
+    flex: 1;
+    height: 100%;
+    margin-block-start: 0;
+  }
+}

@@ -1,0 +1,25 @@
+{% comment %}
+-----------------------------------------------------------------------------
+  Template: Cart resource
+  - Used in addition to cart.js request to load additional product details.
+  - Do not remove the `key` value, this is used to match line items.
+  - Inspired by Jon Ashcroft's cart.json.liquid for Emma Bridgewater
+  - https://bitbucket.org/we-make-websites/emma-bridgewater/src/master/src/templates/cart.json.liquid
+-----------------------------------------------------------------------------
+{% endcomment %}
+{%- layout none -%}
+[{%- for line_item in cart.items -%}
+  {% assign gwp = line_item.variant.metafields.custom.free_gift_with_purchase.value %}
+
+  {
+    "compare_at_price": {{ line_item.variant.compare_at_price | json }},
+    "compare_at_line_price": {{ line_item.variant.compare_at_price | times: line_item.quantity | json }},
+    "original_line_price": {{ line_item.original_line_price | json }},
+    "key": {{ line_item.key | json }},
+    "inventory_management": {{ line_item.variant.inventory_management | json }},
+    "inventory_policy": {{ line_item.variant.inventory_policy | json }},
+    "inventory_quantity": {{ line_item.variant.inventory_quantity | json }},
+    "tags": {{ line_item.product.tags | json }},
+    "fgwp": {{ gwp.gifts.value | json }}
+  }{%- unless forloop.last -%},{%- endunless -%}
+{%- endfor -%}]

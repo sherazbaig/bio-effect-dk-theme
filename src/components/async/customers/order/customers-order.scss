@@ -1,0 +1,81 @@
+/**
+ * Styles: Customers order (customers-order)
+ * -----------------------------------------------------------------------------
+ * Base styles for customers order component.
+ *
+ */
+.customers-order {
+  &.critical-component-hide {
+    display: block;
+  }
+
+  &.critical-component-clear {
+    opacity: 1;
+  }
+
+  &__content {
+    display: grid;
+    gap: var(--layout-page-spacing);
+  }
+
+  &__cancelled {
+    margin-block-end: var(--layout-page-spacing);
+  }
+
+  &__fulfillment,
+  &__shipping,
+  &__address,
+  &__billing,
+  &__fields {
+    display: grid;
+  }
+
+  /**
+   * Fulfillments.
+   */
+  &__fulfillment {
+    gap: var(--spacing-m);
+  }
+
+  &__track {
+    // Desired margin - grid gap
+    margin-block-start: calc(var(--layout-page-spacing) - var(--spacing-m));
+  }
+
+  /**
+   * Shipping & billing.
+   */
+  &__shipping,
+  &__billing {
+    gap: var(--layout-page-spacing);
+  }
+
+  &__shipping-header,
+  &__billing-header {
+    align-items: baseline;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__address {
+    gap: var(--spacing-2xs);
+  }
+
+  &__fields {
+    gap: var(--spacing-s);
+  }
+
+  &__field {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($from: l) {
+    &__item-cards {
+      gap: var(--layout-page-spacing);
+    }
+  }
+}

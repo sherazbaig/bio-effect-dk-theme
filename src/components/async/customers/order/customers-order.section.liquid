@@ -1,0 +1,357 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Customers order (customers-order)
+  - Tracking buttons are broken out into individual fulfillments.
+  - Static section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.customers-order.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign email_address_string = '<a href="#">#</a>' | replace: '#', shop.email
+  assign order_date = order.created_at | date: format: 'day_full_month_year'
+  assign orders_url = routes.account_url | append: '?view=orders'
+
+  # Status labels
+  assign financial_status_string = 'customers.order_status.#' | replace: '#', order.financial_status
+  assign financial_status = financial_status_string | t
+  assign fulfillment_status_string = 'customers.order_status.#' | replace: '#', order.fulfillment_status
+  assign fulfillment_status = fulfillment_status_string | t
+  assign track_your_order_string = 'customers.order.fulfillment.track_order' | t
+
+  # Fulfillments
+  assign rendered_fulfillments = ''
+  assign shipment_count = 1
+  assign fulfilled = 0
+  assign unfulfilled = 0
+
+  # Cancelled
+  assign cancelled_at = order.cancelled_at | date: format: 'day_full_month_year_time'
+  assign cancelled_title_string = 'customers.order.cancelled.title' | t: date: cancelled_at
+  assign cancelled_text_string = 'customers.order.cancelled.reason' | t: reason: order.cancel_reason_label
+-%}
+
+<section
+  class="customers critical-customers-clear"
+  aria-labelledby="template-title"
+  data-component-handle="customers-order"
+>
+  <div class="customers-order critical-component-clear liquid">
+    {% render 'customers-pages-image' %}
+
+    <div class="customers__pages-content container grid no-row-gap">
+      <div class="col xs-span l2-5">
+        {% render 'customers-header' with current_url: orders_url %}
+      </div>
+
+      <div class="col xs-span l6-11">
+        <div class="customers-order__content">
+          <div class="customers-order__header">
+            {% if order.cancelled %}
+              {% render 'notification-panel' with
+                class: 'customers-order__cancelled',
+                show_close: false,
+                text: cancelled_text_string
+                title: cancelled_title_string,
+                type: 'error',
+              %}
+            {% endif %}
+
+            <h1
+              id="template-title"
+              class="
+                customers__pages-title
+                text-heading-xl
+                text-heading-2xl-desktop
+              "
+            >
+              {{ 'customers.order.title' | t: number: order.order_number }}
+            </h1>
+
+            <p
+              class="
+                customers__pages-text
+                text-body-m-regular
+                text-body-l-regular-desktop
+              "
+            >
+              {{ 'customers.order.text_html' | t: date: order_date | replace: '<a', '<a class="text-body-m-underline text-body-l-underline-desktop"' | newline_to_br }}
+            </p>
+
+            <p
+              class="
+                customers-order__count
+                text-body-m-regular
+                text-body-l-regular-desktop
+              "
+            >
+              {{ 'customers.order.item_count' | t: count: order.item_count }}
+            </p>
+          </div>
+
+          {% render 'divider-line' %}
+
+          {% comment %}
+          -----------------------------------------------------------------------------
+            Order status.
+          -----------------------------------------------------------------------------
+          {% endcomment %}
+          {% if settings.customer_order_status and order.fulfillment_status != 'complete' %}
+            <div class="customers-order__order-status">
+              {% render 'order-status' with order: order %}
+            </div>
+
+            {% render 'divider-line' %}
+          {% endif %}
+
+          {% comment %}
+          -----------------------------------------------------------------------------
+            Fulfillments.
+            - The line items and tracking button for each shipment.
+            - Go through each line item to find unique fulfillments.
+            - Then go through those fulfillments to render line items in each.
+          -----------------------------------------------------------------------------
+          {% endcomment %}
+          {% for line_item in order.line_items %}
+            {%- liquid
+              if line_item.fulfillment == blank
+                assign unfulfilled = unfulfilled | plus: line_item.quantity
+                continue
+              endif
+
+              if rendered_fulfillments contains line_item.fulfillment.created_at
+                continue
+              endif
+
+              assign rendered_fulfillments = rendered_fulfillments | append: line_item.fulfillment.created_at | append: ','
+            -%}
+
+            <div class="customers-order__fulfillment">
+              {% unless line_item.fulfillment.item_count == order.item_count %}
+                <h2 class="text-heading-m text-heading-l-desktop">
+                  {{ 'customers.order.fulfillment.shipment' | t: number: shipment_count }}
+                  {% assign shipment_count = shipment_count | plus: 1 %}
+                </h2>
+              {% endunless %}
+
+              {%- liquid
+                for fulfilled_line_item in line_item.fulfillment.fulfillment_line_items
+                  render 'item-card' with class: 'customers-order__item-card', line_item: fulfilled_line_item.line_item, line_quantity: fulfilled_line_item.quantity
+                  assign fulfilled = fulfilled | plus: fulfilled_line_item.quantity
+                endfor
+
+                if order.fulfillment_status != 'complete' and  line_item.fulfillment.tracking_url != blank
+                  render 'btn' with attributes: 'target="_blank"', class: 'customers-order__track', label: track_your_order_string, modifiers: 'secondary block center', url: line_item.fulfillment.tracking_url
+                endif
+              -%}
+            </div>
+
+            {% render 'divider-line' %}
+          {% endfor %}
+
+          {% comment %}
+          -----------------------------------------------------------------------------
+            Unfulfilled line items.
+          -----------------------------------------------------------------------------
+          {% endcomment %}
+          {% if unfulfilled > 0 or fulfilled != order.item_count %}
+            <div class="customers-order__fulfillment">
+              {% unless unfulfilled == order.item_count %}
+                <h2 class="text-heading-m text-heading-l-desktop">
+                  {{ 'customers.order.fulfillment.not_shipped' | t }}
+                </h2>
+              {% endunless %}
+
+              {%- liquid
+                for line_item in order.line_items
+                  if line_item.fulfillment != blank and line_item.successfully_fulfilled_quantity == line_item.quantity
+                    continue
+                  endif
+
+                  assign remaining_quantity = line_item.quantity | minus: line_item.successfully_fulfilled_quantity
+                  render 'item-card' with class: 'customers-order__item-card', line_item: line_item, line_quantity: remaining_quantity
+                endfor
+              -%}
+            </div>
+
+            {% render 'divider-line' %}
+          {% endif %}
+
+          {% comment %}
+          -----------------------------------------------------------------------------
+            Shipping.
+          -----------------------------------------------------------------------------
+          {% endcomment %}
+          <div class="customers-order__shipping">
+            <div class="customers-order__shipping-header">
+              <h2 class="text-heading-l text-heading-xl-desktop">
+                {{ 'customers.order.shipping.title' | t }}
+              </h2>
+
+              <p class="text-body-s-regular text-body-l-regular-desktop">
+                {{ fulfillment_status }}
+              </p>
+            </div>
+
+            <div class="customers-order__address">
+              <p class="text-body-s-bold text-body-m-bold-desktop">
+                {{ 'customers.order.shipping.shipping_address' | t }}
+              </p>
+
+              {% render 'address-block' with address: order.shipping_address %}
+            </div>
+
+            <div class="customers-order__address">
+              <p class="text-body-s-bold text-body-m-bold-desktop">
+                {{ 'customers.order.shipping.billing_address' | t }}
+              </p>
+
+              {% render 'address-block' with address: order.billing_address %}
+            </div>
+          </div>
+
+          {% render 'divider-line' %}
+
+          {% comment %}
+          -----------------------------------------------------------------------------
+            Billing.
+          -----------------------------------------------------------------------------
+          {% endcomment %}
+          <div class="customers-order__billing">
+            <div class="customers-order__billing-header">
+              <h2 class="text-heading-l text-heading-xl-desktop">
+                {{ 'customers.order.billing.title' | t }}
+              </h2>
+
+              <p class="text-body-s-regular text-body-l-regular-desktop">
+                {{ financial_status }}
+              </p>
+            </div>
+
+            <div class="customers-order__fields">
+              <p
+                class="
+                  customers-order__field
+                  text-body-s-regular
+                  text-body-l-regular-desktop
+                "
+              >
+                {{ 'customers.order.billing.subtotal' | t }}
+
+                <span data-label="{{ 'customers.order.billing.subtotal' | t }}">
+                  {{ order.subtotal_price | money }}
+                </span>
+              </p>
+
+              {% for discount in order.discounts %}
+                <p
+                  class="
+                    customers-order__field
+                    text-body-s-regular
+                    text-body-l-regular-desktop
+                  "
+                >
+                  {{ 'customers.order.billing.discount' | t: discount_code: discount.code }}
+
+                  <span data-label="{{ 'customers.order.billing.discount' | t: discount_code: discount.code }}">
+                    {{ discount.savings | money }}
+                  </span>
+                </p>
+              {% endfor %}
+
+              {% for shipping_method in order.shipping_methods %}
+                <p
+                  class="
+                    customers-order__field
+                    text-body-s-regular
+                    text-body-l-regular-desktop
+                  "
+                >
+                  {{ 'customers.order.billing.shipping' | t: shipping_method: shipping_method.title }}
+
+                  <span data-label="{{ 'customers.order.billing.shipping' | t: shipping_method: shipping_method.title }}">
+                    {% if shipping_method.price > 0 %}
+                      {{ shipping_method.price | money }}
+                    {% else %}
+                      {{ 'product.prices.free' | t }}
+                    {% endif %}
+                  </span>
+                </p>
+              {% endfor %}
+
+              {% for tax_line in order.tax_lines %}
+                {%- capture tax_rate -%}
+                  {{ tax_line.title }} {{ tax_line.rate | times: 100 }}%
+                {%- endcapture -%}
+
+                <p
+                  class="
+                    customers-order__field
+                    text-body-s-regular
+                    text-body-l-regular-desktop
+                  "
+                >
+                  {{ 'customers.order.billing.tax' | t: tax_rate: tax_rate }}
+
+                  <span data-label="{{ 'customers.order.billing.tax' | t: tax_rate: tax_rate }}">
+                    {{ tax_line.price | money }}
+                  </span>
+                </p>
+              {% endfor %}
+            </div>
+
+            <p
+              class="
+                customers-order__field
+                text-body-s-regular
+                text-body-l-regular-desktop
+              "
+            >
+              {{ 'customers.order.billing.total' | t }}
+
+              <span data-label="{{ 'customers.order.billing.total' | t }}">
+                {% if order.total_price > 0 %}
+                  {{ order.total_price | money }}
+                {% else %}
+                  {{ 'product.prices.free' | t }}
+                {% endif %}
+              </span>
+            </p>
+          </div>
+
+          {% render 'divider-line' %}
+
+          {% comment %}
+          -----------------------------------------------------------------------------
+            Need help?
+          -----------------------------------------------------------------------------
+          {% endcomment %}
+          <div class="customers-order__help">
+            <h2
+              class="
+                customers__pages-title
+                text-heading-l
+                text-heading-xl-desktop
+              "
+            >
+              {{ 'customers.order.need_help.title' | t }}
+            </h2>
+
+            <div class="rte">
+              <p class="text-body-m-regular text-body-l-regular-desktop">
+                {{ 'customers.order.need_help.text_html' | t: email_address: email_address_string | replace: '<a', '<a class="text-body-m-underline text-body-l-underline-desktop"' | newline_to_br }}
+              </p>
+
+              {% if settings.customers_returns_url != blank %}
+                <p class="text-body-m-regular text-body-l-regular-desktop">
+                  {{ 'customers.order.need_help.returns_html' | t: returns_url: settings.customers_returns_url | replace: '<a', '<a class="text-body-m-underline text-body-l-underline-desktop"' | newline_to_br }}
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</section>
+
+{% schema 'customers-order' %}

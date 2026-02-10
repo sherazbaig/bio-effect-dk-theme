@@ -1,0 +1,116 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Product upsell carousel (product-upsell-carousel)
+  - Limited interactivity section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.product-upsell-carousel.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign next_string = 'accessibility.carousel.next' | t
+  assign previous_string = 'accessibility.carousel.previous' | t
+  assign title_html_tag = 'h2'
+  assign enable_non_js_carousel = section.settings.enable_non_js_carousel
+
+  if section.settings.make_title_h1 == true
+    assign title_html_tag = 'h1'
+  endif
+
+  capture icon_arrow_left
+    render 'icon-directional-navigation' with icon: 'arrow', direction: 'left'
+  endcapture
+
+  capture icon_arrow_right
+    render 'icon-directional-navigation' with icon: 'arrow', direction: 'right'
+  endcapture
+-%}
+
+<section
+  class="product-upsell-carousel component-section{% if enable_non_js_carousel %} product-upsell-carousel-non-js{% endif %}"
+  :class="{ [$class('active')]: getComponentActive('product-upsell-carousel')}"
+  data-component-animation
+  {% if section.settings.title != blank %}
+    aria-labelledby="section-title-{{ section.id }}"
+  {% endif %}
+  data-component-handle="product-upsell-carousel"
+  data-component-type="scroll"
+  js-product-upsell-carousel="{{ section.id }}"
+>
+  <div class="product-upsell-carousel__container liquid">
+    <div class="container grid">
+      {% if section.settings.title != blank %}
+        <{{ title_html_tag }}
+          id="section-title-{{ section.id }}"
+          class="
+            col xs6 m6 l2-11
+            product-upsell-carousel__title
+            text-h2
+          "
+        >
+          {{ section.settings.title }}
+        </{{ title_html_tag }}>
+      {% endif %}
+
+      <div
+        class="splide col xs6 l14"
+        js-splide="carousel"
+      >
+        <div class="grid">
+          <div class="product-upsell-carousel__track splide__track col xs5 m5 l1-13">
+            <ul class="product-upsell-carousel__carousel splide__list">
+              {% for block in section.blocks %}
+                {% if
+                  block.settings.product == blank or
+                  block.settings.product.metafields.seo.hidden == 1
+                %}
+                  {% continue %}
+                {% endif %}
+
+                <div class="product-upsell-carousel__slide splide__slide">
+                  {% render 'product-card' with product: block.settings.product %}
+                </div>
+              {% endfor %}
+            </ul>
+          </div>
+
+          <div class="product-upsell-carousel__footer col xs6 m6 l2-13">
+            {% if section.settings.cta_text != blank and section.settings.cta_url != blank %}
+              <a
+                href="{{ section.settings.cta_url }}"
+                class="product-upsell-carousel__footer-button button button--primary"
+              >{{ section.settings.cta_text }}</a>
+            {% endif %}
+
+            <div class="splide__arrows">
+              {% render 'btn' with
+                class: 'splide__arrow splide__arrow--prev',
+                icon: icon_arrow_left,
+                label: previous_string,
+                modifiers: 'light reversed text',
+                show_icon: true,
+                type: 'button',
+              %}
+
+              {% render 'btn' with
+                class: 'splide__arrow splide__arrow--next',
+                icon: icon_arrow_right,
+                label: next_string,
+                modifiers: 'light text',
+                show_icon: true,
+                type: 'button',
+              %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<product-upsell-carousel
+  v-if="getComponentVisible('product-upsell-carousel')"
+  v-cloak
+  :section-id="{{ section.id | json | escape }}"
+></product-upsell-carousel>
+
+{% schema 'product-upsell-carousel' %}

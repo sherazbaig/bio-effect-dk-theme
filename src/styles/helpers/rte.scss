@@ -1,0 +1,126 @@
+/**
+ * Helper: RTE
+ * -----------------------------------------------------------------------------
+ * Styles for rich text editor content.
+ *
+ */
+// stylelint-disable unit-disallowed-list
+
+@mixin elements-margin-heading() {
+  + h1, + h2, + h3, + h4 {
+    margin-block-start: var(--spacing-m);
+  }
+}
+
+@mixin elements-margin-body() {
+  + h5, + h6, + p, + ul, + ol, + table, + blockquote {
+    margin-block-start: var(--spacing-m);
+  }
+}
+
+@mixin elements-margin-image() {
+  + img {
+    margin-block-start: var(--spacing-l);
+  }
+}
+
+@include mq($from: l) {
+  .rte {
+    h1 {
+      @include text-h1;
+    }
+
+    h2 {
+      @include text-h2;
+    }
+
+    h3 {
+      @include text-h3;
+    }
+
+    h4 {
+      @include text-h4;
+    }
+
+    h5 {
+      @include text-h5;
+    }
+
+    h6 {
+      @include text-h6;
+    }
+  }
+}
+
+@include mq($until: l) {
+  .rte {
+    h1, h2, h3, h4, h5, h6 {
+      @include text-mobile-titles;
+    }
+  }
+}
+
+.rte {
+  * {
+    color: var(--color-stone);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @include elements-margin-body;
+    @include elements-margin-heading;
+    @include elements-margin-image;
+    margin-block-end: var(--spacing-m);
+  }
+
+  p, ul, ol, table, blockquote {
+    @include elements-margin-body;
+    @include elements-margin-heading;
+    @include elements-margin-image;
+    @include defaults-body;
+  }
+
+  img {
+    + h1, + h2, + h3, + h4, + h5, + h6, + p, + ul, + ol, + table, + blockquote {
+      margin-block-start: var(--spacing-l);
+    }
+  }
+
+  a {
+    color: var(--color-neutral-1);
+    font-size: inherit;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  /**
+   * Default table styles.
+   */
+  table {
+    border-collapse: collapse;
+
+    th, td {
+      border: 1px solid var(--color-neutral-4);
+      padding: var(--spacing-m) var(--spacing-xs);
+      text-align: start;
+    }
+
+    th {
+      background-color: var(--color-neutral-5);
+      font-weight: var(--font-weight-normal);
+    }
+  }
+
+  /**
+   * Resetting list styles to browser default.
+   */
+  ul, ol {
+    list-style: unset;
+    margin-block: 0;
+    // Using em so the margin is proportional to font size
+    margin-inline: 1em;
+    padding-inline-start: 1em;
+  }
+}

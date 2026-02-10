@@ -1,0 +1,66 @@
+/**
+ * Styles: Order card (cards)
+ * -----------------------------------------------------------------------------
+ * Base styles for order card component.
+ *
+ */
+.order-card {
+  display: grid;
+  gap: var(--spacing-m);
+  grid-template-columns: 91px minmax(10px, 1fr);
+
+  &__order-status {
+    grid-column: span 2;
+    // Desired margin - grid gap
+    margin-block-end: calc(var(--layout-page-spacing) - var(--spacing-m));
+  }
+
+  &__image {
+    position: relative;
+  }
+
+  &__image-overlay {
+    background-color: var(--color-overlay);
+    color: var(--color-neutral-6);
+    display: grid;
+    height: 100%;
+    left: 0;
+    place-items: center;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-s);
+  }
+
+  &__footer {
+    display: flex;
+    gap: var(--spacing-s);
+  }
+
+  &__view,
+  &__track {
+    flex: 1;
+  }
+
+  /**
+   * Media queries.
+   */
+  @include mq($until: l) {
+    &__footer {
+      grid-column: span 2;
+    }
+  }
+
+  @include mq($from: l) {
+    grid-template-columns: 151px minmax(10px, 1fr);
+
+    &__image-container {
+      grid-row: span 2;
+    }
+  }
+}

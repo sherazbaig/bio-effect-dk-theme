@@ -1,0 +1,46 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet / Site: Hreflang
+  - Serve alternate languages URLs on search engines.
+  - https://moz.com/learn/seo/hreflang-tag
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  if settings.hreflangs == blank
+    continue
+  endif
+
+  assign hreflangs = settings.hreflangs | newline_to_br
+  assign hreflangs = hreflangs | split: '<br />'
+
+  # Set the current canonical url to use in the hreflang forloop.
+  # - Checks if the root_url is localized.
+  # - If so, removes the localized subdirectory from the canonical url, unless
+  #   the current page is the homepage, in which case replace the localized
+  #   subdirectory with '/'.
+  # - Replace logic manually joins the host and the path to ensure the
+  #   localization replacing does not happen on the host.
+  assign non_localized_canoncial_url = canonical_url
+
+  if routes.root_url != '/'
+    assign string_to_remove = request.host | append: request.path
+    assign updated_path = request.path | replace_first: routes.root_url, ''
+
+    if routes.root_url == request.path
+      assign updated_path = request.path | replace_first: routes.root_url, '/'
+    endif
+
+    assign string_to_add = request.host | append: updated_path
+    assign non_localized_canoncial_url = canonical_url | replace_first: string_to_remove, string_to_add
+  endif
+
+  # Go through each hreflang in setting.
+  for hreflang in hreflangs
+    assign domain = hreflang | split: ':' | first | strip
+    assign locale = hreflang | split: ':' | last | strip
+    assign url = non_localized_canoncial_url | replace: shop.domain, domain
+    assign hreflang_tag = '<link href="url" hreflang="locale" rel="alternate">' | replace: 'url', url | replace: 'locale', locale
+
+    echo hreflang_tag
+  endfor
+-%}

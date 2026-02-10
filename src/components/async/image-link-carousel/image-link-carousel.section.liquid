@@ -1,0 +1,131 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Image with Link Carousel (image-link-carousel)
+  - Limited interactivity section.
+------------------------------------------------------------------------------
+{% endcomment %}
+{{ 'component.image-link-carousel.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign next_string = 'accessibility.carousel.next' | t
+  assign previous_string = 'accessibility.carousel.previous' | t
+  assign background_colour = section.settings.background_colour
+
+  capture icon_arrow_left
+    render 'icon-directional-navigation' with icon: 'arrow', direction: 'left'
+  endcapture
+
+  capture icon_arrow_right
+    render 'icon-directional-navigation' with icon: 'arrow', direction: 'right'
+  endcapture
+-%}
+
+<section
+  class="image-link-carousel component-section"
+  :class="{ [$class('active')]: getComponentActive('image-link-carousel')}"
+  data-component-animation
+  {% if section.settings.title != blank %}
+    aria-labelledby="section-title-{{ section.id }}"
+  {% endif %}
+  data-component-handle="image-link-carousel"
+  data-component-type="scroll"
+  js-image-link-carousel="{{ section.id }}"
+  style="
+    background-color: var({{ background_colour }});
+  "
+>
+  <div class="image-link-carousel__container liquid">
+
+    <div class="container grid">
+      {% if section.settings.title != blank %}
+        <h2
+          id="section-title-{{ section.id }}"
+          class="
+            col xs6 m6 l2-13
+            image-link-carousel__title
+            text-h2
+          "
+        >
+          {{ section.settings.title }}
+        </h2>
+      {% endif %}
+
+      <div
+        class="splide col xs6 l14"
+        js-splide="carousel"
+      >
+        <div class="grid">
+          <div class="image-link-carousel__track splide__track col xs5 m5 l1-14">
+
+            <ul class="image-link-carousel__carousel splide__list">
+              {% for block in section.blocks %}
+                <li class="image-link-carousel__slide splide__slide">
+
+                  {% if block.settings.url != blank %}
+                    <a class="image-link-carousel__link" href="{{ block.settings.url }}">
+                  {% endif %}
+                    <div class="image-link-carousel__image">
+                      {% render 'responsive-image' with
+                        image: block.settings.image,
+                        ratio: '1:1',
+                      %}
+                    </div>
+
+                    <h3 class="image-link-carousel__name text-center text-h6 text-h5-desktop">{{ block.settings.name }}</h3>
+                  {% if block.settings.url != blank %}
+                    </a>
+                  {% endif %}
+
+                </li>
+              {% endfor %}
+            </ul>
+
+          </div>
+
+          <div class="image-link-carousel__footer col xs6 m6 l2-14">
+            {% if section.settings.cta_text != blank and section.settings.cta_url != blank %}
+              <a
+                href="{{ section.settings.cta_url }}"
+                class="image-link-carousel__footer-button button button--primary"
+              >{{ section.settings.cta_text }}</a>
+            {% endif %}
+
+            <div class="splide__arrows">
+              {% render 'btn' with
+                class: 'splide__arrow splide__arrow--prev',
+                icon: icon_arrow_left,
+                label: previous_string,
+                modifiers: 'light reversed text',
+                show_icon: true,
+                type: 'button',
+              %}
+
+              {% render 'btn' with
+                class: 'splide__arrow splide__arrow--next',
+                icon: icon_arrow_right,
+                label: next_string,
+                modifiers: 'light text',
+                show_icon: true,
+                type: 'button',
+              %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% comment %}
+  -----------------------------------------------------------------------------
+    Load Vue component to initialise JS code.
+  -----------------------------------------------------------------------------
+  {% endcomment %}
+  <image-link-carousel
+    v-if="getComponentVisible('image-link-carousel')"
+    v-cloak
+    :section-id="{{ section.id | json | escape }}"
+  ></image-link-carousel>
+</section>
+
+{% schema 'image-link-carousel' %}
+

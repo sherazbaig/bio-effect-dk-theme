@@ -1,0 +1,114 @@
+#import "~graphql/fragments/media.gql"
+#import "~graphql/fragments/image.gql"
+#import "~graphql/fragments/variant.gql"
+
+fragment product on Product {
+  available: availableForSale
+  compareAtPriceRange {
+    minVariantPrice {
+      amount
+      currencyCode
+    }
+    maxVariantPrice {
+      amount
+      currencyCode
+    }
+  }
+  descriptionHtml
+  featuredImages: images(first: 2) {
+    edges {
+      node {
+        ...image
+      }
+    }
+  }
+  giftCard: isGiftCard
+  handle
+  id
+  # Do not enable both images and media
+  # images(first: 20) {
+  #   edges {
+  #     node {
+  #       ...image
+  #     }
+  #   }
+  # }
+  media(first: 20) {
+    edges {
+      node {
+        ...media
+      }
+    }
+  }
+  onlineStoreUrl
+  options {
+    id
+    name
+    values
+  }
+  priceRange {
+    minVariantPrice {
+      amount
+      currencyCode
+    }
+    maxVariantPrice {
+      amount
+      currencyCode
+    }
+  }
+  tags
+  title
+  type: productType
+  variants(first: 100) {
+    edges {
+      node {
+        ...variant
+      }
+    }
+  }
+  vendor
+  excerpt: metafield(namespace: "product", key: "excerpt") {
+    value
+  }
+  awards: metafield(namespace: "product", key: "awards") {
+    references(first: 5) {
+      nodes {
+        ... on MediaImage {
+          image {
+            ...image
+          }
+        }
+      }
+    }
+  }
+  badge: metafield(namespace: "product", key: "badge") {
+    reference {
+      ... on MediaImage {
+        image {
+          ...image
+        }
+      }
+    }
+  }
+  badge_text: metafield(namespace: "product", key: "badge_text") {
+    value
+  }
+  badge_color: metafield(namespace: "product", key: "badge_color") {
+    value
+  }
+  hidden: metafield(namespace: "seo", key: "hidden") {
+    value
+  }
+  upsell_type: metafield(namespace: "product", key: "upsell_type") {
+    value
+  }
+  upsell_title: metafield(namespace: "product", key: "upsell_title") {
+    value
+  }
+  upsell_description: metafield(namespace: "product", key: "upsell_description") {
+    value
+  }
+  upsell_product: metafield(namespace: "product", key: "upsell_product") {
+    value
+  }
+}

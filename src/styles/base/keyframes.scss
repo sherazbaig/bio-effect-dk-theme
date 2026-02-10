@@ -1,0 +1,68 @@
+/**
+ * Base: Keyframes
+ * -----------------------------------------------------------------------------
+ * Keyframes used for animated CSS.
+ *
+ */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes left-to-right {
+  from {
+    translate: -100% 0;
+  }
+
+  to {
+    translate: 100% 0;
+  }
+}
+
+@keyframes image-enter {
+  0% {
+    opacity: 0.75;
+    transform: translate3d(101%, 0, 0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: none;
+  }
+
+  100% {
+    transform: translate3d(-101%, 0, 0);
+  }
+}
+// stylelint-disable function-disallowed-list
+@keyframes loading {
+  0% {
+    transform: translate3d(175%, 0, 0) rotate(60deg);
+  }
+
+  100% {
+    transform: translateZ(0) rotate(60deg);
+  }
+}
+
+// Safari does not support rotating an SVG
+@keyframes spin {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(1turn);
+  }
+}
+// stylelint-enable function-disallowed-list
+
+/**
+ * Import component-specific keyframes.
+ */
+@import '~global/promo-banner/promo-banner-keyframes';
