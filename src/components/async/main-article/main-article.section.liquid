@@ -64,6 +64,9 @@
           {{ article.title }}
         </h1>
 
+        {% assign auth_url = article.metafields.custom.blog_post_author_link.value.url %}
+        <p>{% if auth_url != blank %}<a href="{{ auth_url }}">{% endif %}Af {{ article.metafields.custom.blog_post_author }}{% if auth_url != blank %}</a>{% endif %} - {{ article.published_at | date: "%d/%m/%Y" }}</p>
+
         <div class="main-article__header-bottom">
           {% if show_share_buttons %}
             {% render 'share' with

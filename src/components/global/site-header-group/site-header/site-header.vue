@@ -20,6 +20,14 @@
 
         <!-- Right -->
         <div class="site-header__right">
+          <button
+            id="mobile-header-search"
+            type="button"
+            class="site-header__search icon-button"
+            @click="handleSearchToggle"
+          >
+            <icon-search class="icon-black" />
+          </button>
           <a
             class="site-header__cart icon-button"
             :href="$variable('routes.cart.url')"
@@ -225,6 +233,7 @@ import Overlay from '~global/overlay/overlay'
 import BrandLogo from '~icons/general/brand-logo.svg'
 import IconCart from '~icons/general/cart.svg'
 import IconMenu from '~icons/general/menu.svg'
+import IconSearch from '~icons/general/search-black.svg'
 
 export default {
   name: 'SiteHeader',
@@ -233,6 +242,7 @@ export default {
     BrandLogo,
     IconCart,
     IconMenu,
+    IconSearch,
     MenuDrawer: defineAsyncComponent({
       loader: () => import(
         /* webpackChunkName: 'component.menu-drawer' */
@@ -369,6 +379,14 @@ export default {
         component: 'cart-drawer',
         ignoreDismissed: true,
         namespace: 'cartDrawer',
+      })
+    },
+
+    handleSearchToggle() {
+      this.toggleOverlay({
+        component: 'predictive-search',
+        ignoreDismissed: true,
+        namespace: 'predictiveSearchOverlay',
       })
     },
 

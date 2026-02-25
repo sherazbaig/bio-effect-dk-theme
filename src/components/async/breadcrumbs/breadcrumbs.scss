@@ -4,36 +4,51 @@
  * Base styles for breadcrumbs component.
  *
  */
+
 .breadcrumbs {
-  $parent: &;
+  margin: 30px 0;
+}
 
-  &__list-element {
-    @include list-reset;
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-xs);
+@media all and (width <= 767px) {
+  .breadcrumbs {
+    display: none;
   }
+}
 
-  .icon {
-    // To match design.
-    height: 7px;
-    width: 4px;
-  }
+.breadcrumbs__list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
 
-  &__list-item {
-    align-items: center;
-    color: var(--color-gray-text);
-    display: flex;
-    font-weight: var(--font-weight-medium);
-    gap: var(--spacing-xs);
-  }
+.breadcrumbs__item {
+  display: inline-block;
+}
 
-  &__link {
-    text-decoration: none;
+.breadcrumbs__item:not(:last-child)::after {
+  border-style: solid;
+  border-width: 1px 1px 0 0;
+  content: '';
+  display: inline-block;
+  height: 4;
+  margin: 4;
+  position: relative;
+  rotate: 45deg;
+  vertical-align: middle;
+  width: 4;
+}
 
-    &:hover {
-      color: var(--color-teal);
-    }
-  }
+.breadcrumbs__link {
+  text-decoration: underline;
+}
+
+.breadcrumbs__link[aria-current=page] {
+  color: inherit;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.breadcrumbs__link[aria-current=page]:hover,
+.breadcrumbs__link[aria-current=page]:focus {
+  text-decoration: underline;
 }

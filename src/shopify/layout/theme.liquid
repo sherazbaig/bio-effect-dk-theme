@@ -203,6 +203,19 @@
     {%- unless settings.disable_theme_styles and not_production -%}
       {% render 'theme-styles' with layout: 'theme' %}
     {%- endunless -%}
+
+    {% assign page_handle = page.handle | downcase %}
+    {% if page_handle contains 'faq' %}
+      {% render 'faq-json-ld' %}
+    {% endif %}
+
+    {% if template == 'article' %}
+      {{ article.metafields.custom.schema }}
+    {% endif %}
+
+    {% if template == 'collection' %}
+      {{ collection.metafields.custom.schema }}
+    {% endif %}
   </head>
 
   <body

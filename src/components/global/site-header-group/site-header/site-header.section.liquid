@@ -114,6 +114,13 @@
           </div>
 
           <div class="site-header__right">
+            <button
+              id="mobile-header-search"
+              class="site-header__search icon-button"
+              aria-label="Søg"
+            >
+              {% render 'icon-general' with icon: 'search-black' %}
+            </button>
             <a
               class="site-header__cart icon-button"
               href="{{ routes.cart.url }}"

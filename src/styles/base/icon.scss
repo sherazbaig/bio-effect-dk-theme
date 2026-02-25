@@ -63,6 +63,10 @@
   padding: var(--spacing-xs);
 }
 
+.icon-black g {
+  stroke: rgb(0 0 0);
+}
+
 svg,
 symbol {
   circle,
