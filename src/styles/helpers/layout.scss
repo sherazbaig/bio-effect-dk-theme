@@ -58,3 +58,14 @@
     overflow-x: hidden;
   }
 }
+
+.product-card__variantProduct {
+  border:1px solid var(--color-grey);
+  border-radius:var(--spacing-2xs);
+  color:var(--color-stone);
+  font-size:var(--font-size-0);
+  padding-block:var(--spacing-4xs);
+  padding-inline:var(--spacing-m);
+  text-align:center;
+  text-decoration: none;
+}

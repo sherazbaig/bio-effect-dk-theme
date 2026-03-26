@@ -12,7 +12,7 @@
     <div class="product-card__header">
       <p
         class="product-card__title text-h6 text-h5-desktop"
-        v-text="product.title"
+        v-text="cleanedTitle"
       />
 
       <div
@@ -73,6 +73,19 @@
       </div>
     </div>
     <div class="product-card__footer">
+      <div
+        class="product-card__variant-selector"
+        v-if="variantTags.length"
+      >
+        <a
+          v-for="(tag, index) in variantTags"
+          :key="tag + index"
+          :href="`/products/${encodeURIComponent(tag.replace('variant: ', '').toLowerCase())}`"
+          class="product-card__variantProduct"
+        >
+          {{ formatVariantTag(tag) }}
+        </a>
+      </div>
       <div
         class="product-card__variant-selector"
         :class="{
@@ -194,6 +207,17 @@ export default {
     ...mapGetters({
       getComponentExists: 'components/getExists',
     }),
+    cleanedTitle() {
+      if (!this.product || !this.product.title) return ''
+      // Remove trailing number + "ml"
+      return this.product.title.replace(/\s\d+\s*ml$/, '')
+    },
+    variantTags() {
+      if (!this.product?.tags) return []
+      return this.product.tags.filter(tag =>
+        tag.toLowerCase().startsWith('variant:')
+      )
+    },
   },
 
   watch: {
@@ -246,6 +270,15 @@ export default {
       setUpsellProduct: 'upsell/setUpsellProduct',
       setUpsellType: 'upsell/setUpsellType',
     }),
+
+    formatVariantTag(tag) {
+      if (!tag) return ''
+      // Remove "variant: " prefix
+      let t = tag.replace(/^variant:\s*/i, '')
+      // Extract last part matching your regex
+      const match = t.match(/((\d+-x-\d+|\d+)-?[a-zA-Z]+|[a-zA-Z]+)$/)
+      return (match?.[0] || '').replace(/-/g, ' ')
+    },
 
     /**
      * Add to cart handler

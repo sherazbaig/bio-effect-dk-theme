@@ -144,6 +144,38 @@
               {{ product.description }}
             </div>
 
+            <div class="product-form__tag-variants">
+              {% for tag in product.tags %}
+                {% assign tag_downcase = tag | downcase %}
+
+                {% if tag_downcase contains 'variant:' %}
+
+                  {% assign cleaned = tag | remove: 'variant:' | remove: 'Variant:' | strip %}
+                  {% assign tag_url = cleaned | downcase | url_encode %}
+
+                  {%- comment -%} Extract 15 ml from egf-serum-15-ml {%- endcomment -%}
+                  {% assign parts = cleaned | split: '-' | reverse %}
+                  {% assign label = parts[1] | append: ' ' | append: parts[0] %}
+
+                  {% assign current_path = request.path | downcase %}
+                  {% assign cleaned_downcase = cleaned | downcase %}
+                  {% assign active_class = '' %}
+
+                  {% if current_path contains cleaned_downcase %}
+                    {% assign active_class = 'active' %}
+                  {% endif %}
+
+                  <a
+                    href="/products/{{ tag_url }}"
+                    class="product-form__tag-link {{ active_class }}"
+                  >
+                    {{ label }}
+                  </a>
+
+                {% endif %}
+              {% endfor %}
+            </div>
+
             {% capture product_form %}
               <div
                 {% if product.has_only_default_variant %}

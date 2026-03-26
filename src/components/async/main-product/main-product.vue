@@ -145,6 +145,23 @@
           />
         </div>
 
+        <div
+          class="product-form__tag-variants"
+          v-if="variantTags.length"
+        >
+          <a
+            v-for="(tag, index) in variantTags"
+            :key="tag + index"
+            :href="getTagUrl(tag)"
+            :class="[
+              'product-form__tag-link',
+              { active: isTagActive(tag) }
+            ]"
+          >
+            {{ formatTagLabel(tag) }}
+          </a>
+        </div>
+
         <product-form
           class="main-product__form"
           :product="product || liquid"
@@ -247,6 +264,15 @@ export default {
     ...mapState({
       isMobile: (state) => state.index.screen.mobile,
     }),
+
+    variantTags() {
+      const tags = this.product?.tags || this.liquid?.tags || []
+
+      // if you only want tags starting with variant:
+      return tags.filter(tag =>
+        tag.toLowerCase().startsWith('variant:')
+      )
+    }
   },
 
   watch: {
@@ -463,6 +489,27 @@ export default {
       history.replaceState({
         html: '',
       }, '', url)
+    },
+
+    formatTagLabel(tag) {
+      if (!tag) return ''
+
+      // remove "variant: " prefix if exists
+      const cleaned = tag.replace(/^variant:\s*/i, '')
+
+      const match = cleaned.match(/((\d+-x-\d+|\d+)-?[a-zA-Z]+|[a-zA-Z]+)$/)
+
+      return (match?.[0] || '').replace(/-/g, ' ')
+    },
+
+    getTagUrl(tag) {
+      const cleaned = tag.replace(/^variant:\s*/i, '')
+      return `/products/${encodeURIComponent(cleaned.toLowerCase())}`
+    },
+
+    isTagActive(tag) {
+      const cleaned = tag.replace(/^variant:\s*/i, '').toLowerCase()
+      return window.location.pathname.toLowerCase().includes(cleaned)
     },
 
     /**
