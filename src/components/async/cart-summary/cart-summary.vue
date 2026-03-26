@@ -32,10 +32,6 @@
           v-text="$string('cart.summary.total_label')"
         />
 
-        <small
-          class="text-tags cart-summary__additionalInfo"
-          v-text="$string('cart.summary.additional_info')"
-        />
       </p>
 
       <p
