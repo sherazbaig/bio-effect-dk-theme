@@ -38,15 +38,6 @@
         v-text="desktopMessage"
       />
       <div class="promo-banner__desktop-icons">
-        <button
-          class="promo-banner__search icon-button"
-          type="button"
-          :aria-label="$string('search.title')"
-          @click="openSearch"
-        >
-          <icon-search />
-        </button>
-
         <div
           v-if="displayAccount"
           ref="accountButton"
@@ -63,25 +54,6 @@
       </div>
     </div>
 
-    <!-- Search -->
-    <teleport to="body">
-      <overlay
-        key="predictiveSearchOverlay"
-        block-class="predictive-search-overlay"
-        direction="fade"
-        namespace="predictiveSearchOverlay"
-        :template="false"
-        type="modal"
-      >
-        <template #body="{ isActive }">
-          <predictive-search
-            v-cloak
-            :is-active="isActive"
-            :up-sell-product="liquid.upSellProduct"
-          />
-        </template>
-      </overlay>
-    </teleport>
   </div>
 </template>
 
@@ -107,21 +79,14 @@
 import { mapActions } from 'vuex'
 import breakpoints from '~/config/breakpoints'
 
-import Overlay from '~global/overlay/overlay'
-import PredictiveSearch from '~async/predictive-search/predictive-search'
 import CountrySelect from '~global/country-select/country-select'
-import IconSearch from '~icons/general/search.svg'
 import IconAccount from '~icons/general/account.svg'
-import timings from '~/config/timings'
 
 export default {
   name: 'PromoBanner',
 
   components: {
-    Overlay,
-    PredictiveSearch,
     CountrySelect,
-    IconSearch,
     IconAccount,
   },
 
@@ -191,27 +156,6 @@ export default {
       return block
         .replaceAll('<a', '<a class="text-other-label-s"')
         .replaceAll('<strong', '<strong class="text-other-label-s"')
-    },
-
-    /**
-     * Opens the search overlay
-     */
-    openSearch() {
-      const rect = this.$refs.container.getBoundingClientRect()
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
-      const targetScrollTop = rect.top + scrollTop
-
-      window.scroll({
-        top: targetScrollTop,
-        behavior: 'smooth',
-      })
-
-      setTimeout(() => {
-        this.toggleOverlay({
-          namespace: 'predictiveSearchOverlay',
-          ignoreDismissed: true,
-        })
-      }, timings.normal)
     },
 
     /**

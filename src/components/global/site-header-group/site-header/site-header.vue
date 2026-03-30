@@ -100,6 +100,16 @@
                 </span>
               </a>
             </li>
+            <li class="site-header__navigation-item site-header__navigation-item--search">
+              <button
+                class="site-header__navigation-button icon-button"
+                type="button"
+                :aria-label="$string('search.title')"
+                @click="handleSearchToggle"
+              >
+                <icon-search />
+              </button>
+            </li>
             <li class="site-header__navigation-item">
               <button
                 class="site-header__navigation-button site-header__cart-button"
@@ -150,6 +160,26 @@
         </div>
       </div>
     </header>
+
+    <!-- Search -->
+    <teleport to="body">
+      <overlay
+        key="predictiveSearchOverlay"
+        block-class="predictive-search-overlay"
+        direction="fade"
+        namespace="predictiveSearchOverlay"
+        :template="false"
+        type="modal"
+      >
+        <template #body="{ isActive }">
+          <predictive-search
+            v-cloak
+            :is-active="isActive"
+            :up-sell-product="liquid.upSellProduct"
+          />
+        </template>
+      </overlay>
+    </teleport>
 
     <!-- Mega Nav -->
     <overlay
@@ -229,6 +259,7 @@ import { defineAsyncComponent } from 'vue'
 import { mapActions, mapGetters, mapState } from 'vuex'
 
 import Overlay from '~global/overlay/overlay'
+import PredictiveSearch from '~async/predictive-search/predictive-search'
 
 import BrandLogo from '~icons/general/brand-logo.svg'
 import IconCart from '~icons/general/cart.svg'
@@ -243,6 +274,7 @@ export default {
     IconCart,
     IconMenu,
     IconSearch,
+    PredictiveSearch,
     MenuDrawer: defineAsyncComponent({
       loader: () => import(
         /* webpackChunkName: 'component.menu-drawer' */
@@ -265,6 +297,7 @@ export default {
       type: Object,
       default: () => ({
         sectionId: '',
+        upSellProduct: false,
       }),
     },
     desktop: {

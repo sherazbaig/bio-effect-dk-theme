@@ -157,6 +157,15 @@
                     </li>
                 {% endfor %}
 
+                <li class="site-header__navigation-item site-header__navigation-item--search">
+                  <button
+                    class="site-header__navigation-button icon-button"
+                    type="button"
+                    aria-label="{{ 'search.title' | t }}"
+                  >
+                    {% render 'icon-general' with icon: 'search-black' %}
+                  </button>
+                </li>
                 <li class="site-header__navigation-item">
                   <button
                     class="site-header__navigation-button"

@@ -89,14 +89,6 @@
         </span>
 
       <div class="promo-banner__desktop-icons">
-          <a
-            class="promo-banner__search icon-button"
-            href="/search"
-            aria-label="{{ 'search.title' | t }}"
-          >
-            {% render 'icon-general' with icon: 'search' %}
-          </a>
-
           {% if section.settings.display_account %}
             <div class="promo-banner__account">
               {% render 'icon-general' with icon: 'account' %}
