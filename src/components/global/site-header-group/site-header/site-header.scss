@@ -158,6 +158,7 @@
     }
 
     &__navigation-list {
+      align-items: center;
       color: var(--color-stone);
       display: flex;
       gap: calc((var(--spacing-xl)) - (var(--spacing-3xs)));
