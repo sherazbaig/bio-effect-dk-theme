@@ -2,7 +2,7 @@
   <div
     ref="promoBanner"
     class="promo-banner critical-component-hide"
-    :style="`--autoscroll-timing: ${autoscroll.timing}s;`"
+    :style="`--marquee-duration: ${marqueeDuration}s;`"
   >
     <div
       ref="container"
@@ -13,19 +13,22 @@
         class="visually-hidden"
         v-text="$string('general.site_header.promo_banner')"
       />
-      <ul class="promo-banner__list">
-        <li
-          v-for="(block, index) of blocks"
-          :key="`promo-${index}`"
-          class="promo-banner__list-item text-other-label-s"
+
+      <div class="promo-banner__marquee-wrapper">
+        <ul
+          class="promo-banner__list"
+          :class="{ 'promo-banner__list--static': !autoscroll.enable }"
         >
-          <div
-            v-if="autoscroll.enable"
-            class="promo-banner__autoscroll-snap"
-          />
-          <span v-html="getBlockText(block.title)" />
-        </li>
-      </ul>
+          <li
+            v-for="(block, index) of marqueeBlocks"
+            :key="`promo-${index}`"
+            :aria-hidden="index >= blocks.length ? 'true' : undefined"
+            class="promo-banner__list-item text-other-label-s"
+          >
+            <span v-html="getBlockText(block.title)" />
+          </li>
+        </ul>
+      </div>
 
       <div
         v-if="displayStoreSelector"
@@ -33,10 +36,6 @@
       >
         <country-select />
       </div>
-      <span
-        class="promo-banner__desktop-message"
-        v-text="desktopMessage"
-      />
       <div class="promo-banner__desktop-icons">
         <div
           v-if="displayAccount"
@@ -88,6 +87,24 @@ export default {
   components: {
     CountrySelect,
     IconAccount,
+  },
+
+  computed: {
+    /**
+     * Duplicate blocks for seamless marquee loop.
+     * @returns {Array}
+     */
+    marqueeBlocks() {
+      return [...this.blocks, ...this.blocks]
+    },
+
+    /**
+     * Total marquee duration scaled by number of blocks.
+     * @returns {Number}
+     */
+    marqueeDuration() {
+      return this.autoscroll.timing * Math.max(this.blocks.length, 1)
+    },
   },
 
   props: {
