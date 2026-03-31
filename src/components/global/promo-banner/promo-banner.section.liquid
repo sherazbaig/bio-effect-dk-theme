@@ -63,20 +63,22 @@
     >
       <div class="promo-banner__container container">
         <div class="promo-banner__marquee-wrapper">
-          <ul class="promo-banner__list{% unless section.settings.enable_autoscroll %} promo-banner__list--static{% endunless %}">
-            {% comment %} Render blocks twice for seamless marquee loop {% endcomment %}
-            {% for i in (1..2) %}
-              {% for block in section.blocks %}
-                <li
-                  class="promo-banner__list-item text-other-label-s"
-                  {% if forloop.parentloop.index == 1 %}{{ block.shopify_attributes }}{% endif %}
-                  {% if forloop.parentloop.index == 2 %}aria-hidden="true"{% endif %}
-                >
-                  <span>
-                    {{ block.settings.title | replace: '<a', '<a class="text-other-label-s"' | replace: '<strong', '<strong class="text-other-label-s"' }}
-                  </span>
-                </li>
-              {% endfor %}
+          {%- liquid
+            assign is_rolling = false
+            if section.settings.enable_autoscroll and section.blocks.size > 1
+              assign is_rolling = true
+            endif
+          -%}
+          <ul class="promo-banner__list{% unless is_rolling %} promo-banner__list--static{% endunless %}">
+            {% for block in section.blocks %}
+              <li
+                class="promo-banner__list-item text-other-label-s"
+                {{ block.shopify_attributes }}
+              >
+                <span>
+                  {{ block.settings.title | replace: '<a', '<a class="text-other-label-s"' | replace: '<strong', '<strong class="text-other-label-s"' }}
+                </span>
+              </li>
             {% endfor %}
           </ul>
         </div>

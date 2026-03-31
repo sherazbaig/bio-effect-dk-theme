@@ -17,12 +17,11 @@
       <div class="promo-banner__marquee-wrapper">
         <ul
           class="promo-banner__list"
-          :class="{ 'promo-banner__list--static': !autoscroll.enable }"
+          :class="{ 'promo-banner__list--static': !isRolling }"
         >
           <li
-            v-for="(block, index) of marqueeBlocks"
+            v-for="(block, index) of blocks"
             :key="`promo-${index}`"
-            :aria-hidden="index >= blocks.length ? 'true' : undefined"
             class="promo-banner__list-item text-other-label-s"
           >
             <span v-html="getBlockText(block.title)" />
@@ -91,11 +90,11 @@ export default {
 
   computed: {
     /**
-     * Duplicate blocks for seamless marquee loop.
-     * @returns {Array}
+     * Only roll when autoscroll is enabled and there is more than 1 block.
+     * @returns {Boolean}
      */
-    marqueeBlocks() {
-      return [...this.blocks, ...this.blocks]
+    isRolling() {
+      return this.autoscroll.enable && this.blocks.length > 1
     },
 
     /**

@@ -39,6 +39,7 @@
   &__list {
     color: var(--color-clouds);
     display: flex;
+    flex-wrap: nowrap;
     width: max-content;
     animation: marquee var(--marquee-duration) linear infinite;
 
@@ -52,6 +53,7 @@
   }
 
   &__list-item {
+    flex-shrink: 0;
     padding-inline: var(--spacing-l);
     white-space: nowrap;
 
