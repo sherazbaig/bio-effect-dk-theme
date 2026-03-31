@@ -70,19 +70,32 @@
             endif
           -%}
           <ul class="promo-banner__list{% unless is_rolling %} promo-banner__list--static{% endunless %}">
-            {% for i in (1..2) %}
+            {% if is_rolling %}
+              {% for i in (1..2) %}
+                {% for block in section.blocks %}
+                  <li
+                    class="promo-banner__list-item text-other-label-s"
+                    {% if forloop.parentloop.index == 1 %}{{ block.shopify_attributes }}{% endif %}
+                    {% if forloop.parentloop.index == 2 %}aria-hidden="true"{% endif %}
+                  >
+                    <span>
+                      {{ block.settings.title | replace: '<a', '<a class="text-other-label-s"' | replace: '<strong', '<strong class="text-other-label-s"' }}
+                    </span>
+                  </li>
+                {% endfor %}
+              {% endfor %}
+            {% else %}
               {% for block in section.blocks %}
                 <li
                   class="promo-banner__list-item text-other-label-s"
-                  {% if forloop.parentloop.index == 1 %}{{ block.shopify_attributes }}{% endif %}
-                  {% if forloop.parentloop.index == 2 %}aria-hidden="true"{% endif %}
+                  {{ block.shopify_attributes }}
                 >
                   <span>
                     {{ block.settings.title | replace: '<a', '<a class="text-other-label-s"' | replace: '<strong', '<strong class="text-other-label-s"' }}
                   </span>
                 </li>
               {% endfor %}
-            {% endfor %}
+            {% endif %}
           </ul>
         </div>
 

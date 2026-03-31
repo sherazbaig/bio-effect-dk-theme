@@ -20,7 +20,7 @@
           :class="{ 'promo-banner__list--static': !isRolling }"
         >
           <li
-            v-for="(block, index) of marqueeBlocks"
+            v-for="(block, index) of displayBlocks"
             :key="`promo-${index}`"
             :aria-hidden="index >= blocks.length ? 'true' : undefined"
             class="promo-banner__list-item text-other-label-s"
@@ -91,19 +91,19 @@ export default {
 
   computed: {
     /**
-     * Duplicate blocks for seamless marquee loop.
-     * @returns {Array}
-     */
-    marqueeBlocks() {
-      return [...this.blocks, ...this.blocks]
-    },
-
-    /**
      * Only roll when autoscroll is enabled and there is more than 1 block.
      * @returns {Boolean}
      */
     isRolling() {
       return this.autoscroll.enable && this.blocks.length > 1
+    },
+
+    /**
+     * Returns doubled blocks for seamless loop when rolling, single set when static.
+     * @returns {Array}
+     */
+    displayBlocks() {
+      return this.isRolling ? [...this.blocks, ...this.blocks] : this.blocks
     },
 
     /**
