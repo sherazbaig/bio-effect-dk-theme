@@ -179,7 +179,24 @@
     missingParameter: {{ 'placeholder' | asset_url | split: 'placeholder?' | last }},
   }
 
+  {% assign fgwp = shop.metaobjects.free_samples.free_samples %}
   window.cnvs.fgwp = {
+    gifts: [
+      {% for product in fgwp.list.value %}
+        {
+          id: {{ product.id | json }},
+          name: {{ product.title | json }},
+          price: {{ product.price | json }},
+          featured_image: {
+            src: {{ product.featured_image | img_url: '400x' | json }},
+            alt: {{ product.featured_image.alt | json }}
+          }
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]
+  }
+
+  {% comment %} window.cnvs.fgwp = {
     gifts: [
       {% for gift in shop.metaobjects.gwp.free_gift_threshold.gifts.value %}
         {% assign gift_image = gift.featured_image | default: gift.product.featured_image %}
@@ -202,5 +219,5 @@
       {% endfor %}
     ],
     threshold: {{ shop.metaobjects.gwp.free_gift_threshold.thresholds.value | json }}
-  }
+  } {% endcomment %}
 </script>
