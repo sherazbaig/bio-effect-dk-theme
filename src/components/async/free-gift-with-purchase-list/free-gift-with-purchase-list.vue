@@ -53,6 +53,7 @@
       class="free-gift-with-purchase-list__folding-container"
       :class=" { 'folded': productsHidden, } "
     >
+      <!--
       <div
         v-if="!threshold"
         class="free-gift-with-purchase-list__title-wrapper"
@@ -77,6 +78,7 @@
                           } })"
         />
       </div>
+      -->
 
       <div
         v-if="!shouldCollapseProducts"
@@ -142,6 +144,7 @@
       -->
     </div>
 
+    <!--
     <div
       v-if="!shouldCollapseProducts"
       class="free-gift-with-purchase-list__buttons-wrapper"
@@ -156,6 +159,7 @@
         @click="toggleButton"
       />
     </div>
+    -->
   </div>
 </template>
 

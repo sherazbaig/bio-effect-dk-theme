@@ -22,12 +22,6 @@
           <loading-indicator />
         </div>
 
-        <free-gift-with-purchase-list
-          v-if="showThresholdFGWP"
-          :free-gifts="freeGiftWithPurchase.gifts"
-          :threshold="freeGiftWithPurchase.threshold"
-        />
-
         <div
           class="cart-drawer__line-items--body"
           :class="{ [$class('loading')]: loading }"
@@ -43,9 +37,9 @@
             />
 
             <free-gift-with-purchase-list
-              v-if="checkGiftForItemApplicable(lineItem) && lineItem.fgwp"
-              :free-gifts="lineItem.fgwp"
-              :attached-variant-id="lineItem.variant_id"
+              v-if="showThresholdFGWP"
+              :free-gifts="freeGiftWithPurchase.gifts"
+              :threshold="freeGiftWithPurchase.threshold"
             />
           </template>
 
