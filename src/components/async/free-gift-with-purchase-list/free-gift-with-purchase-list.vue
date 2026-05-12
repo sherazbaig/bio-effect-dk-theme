@@ -82,54 +82,61 @@
 
       <div
         v-if="!shouldCollapseProducts"
-        class="free-gift-with-purchase-list__wrapper"
+        class="free-gift-with-purchase-list__wrapper-outer"
       >
-        <button
-          v-for="giftItem of freeGifts"
-          :key="giftItem.id"
-          class="free-gift-with-purchase-list__item"
-          :class="{ 'selected': selectedItems.includes(giftItem.id) || cartGiftIds.includes(giftItem.id) }"
-          type="button"
-          @click="selectItem(giftItem.id)"
-        >
-          <div class="free-gift-with-purchase-list__left-hand">
-            <div
-              class="free-gift-with-purchase-list__item-image-container"
-            >
-              <responsive-image
-                class="free-gift-with-purchase-list__item-image"
-                :image="giftItem.featured_image"
-                min-max="95-130"
-                ratio="57:78"
-                sizes="(min-width: 1024px) 99px, 95px"
-              />
+        <h6
+          v-if="!threshold"
+          class="free-gift-with-purchase-list__heading text-h6"
+          v-text="$string('cart.free_gift_with_purchase.choose_sample')"
+        />
+        <div class="free-gift-with-purchase-list__wrapper">
+          <button
+            v-for="giftItem of freeGifts"
+            :key="giftItem.id"
+            class="free-gift-with-purchase-list__item"
+            :class="{ 'selected': selectedItems.includes(giftItem.id) || cartGiftIds.includes(giftItem.id) }"
+            type="button"
+            @click="selectItem(giftItem.id)"
+          >
+            <div class="free-gift-with-purchase-list__left-hand">
+              <div
+                class="free-gift-with-purchase-list__item-image-container"
+              >
+                <responsive-image
+                  class="free-gift-with-purchase-list__item-image"
+                  :image="giftItem.featured_image"
+                  min-max="95-130"
+                  ratio="1:1"
+                  sizes="(min-width: 1024px) 99px, 95px"
+                />
+              </div>
+
+              <div class="free-gift-with-purchase-list__item-titles">
+                <p
+                  class="
+                  line-item__title
+                  text-p-bold-desktop
+                  text-mobile-p-bold
+                "
+                  v-text="giftItem.name"
+                />
+
+                <p
+                  class="
+                  line-item__variant
+                  text-tags
+                "
+                  v-text="$formatMoney(giftItem.price)"
+                />
+              </div>
             </div>
 
-            <div class="free-gift-with-purchase-list__item-titles">
-              <p
-                class="
-                line-item__title
-                text-p-bold-desktop
-                text-mobile-p-bold
-              "
-                v-text="giftItem.name"
-              />
-
-              <p
-                class="
-                line-item__variant
-                text-tags
-              "
-                v-text="$formatMoney(giftItem.price)"
-              />
+            <div>
+              <div class="free-gift-with-purchase-list__selection-square" />
+              <icon-check class="free-gift-with-purchase-list__selection-check" />
             </div>
-          </div>
-
-          <div>
-            <div class="free-gift-with-purchase-list__selection-square" />
-            <icon-check class="free-gift-with-purchase-list__selection-check" />
-          </div>
-        </button>
+          </button>
+        </div>
       </div>
 
       <!--

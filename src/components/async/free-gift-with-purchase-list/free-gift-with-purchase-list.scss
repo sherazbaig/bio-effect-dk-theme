@@ -15,6 +15,11 @@
     }
   }
 
+  &__heading {
+    color: var(--color-stone);
+    margin-block: 0 var(--spacing-m);
+  }
+
   &__wrapper {
     display: grid;
     gap: var(--spacing-xs);
