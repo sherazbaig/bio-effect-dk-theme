@@ -1,7 +1,7 @@
 {
   "404": {
-    "title": "404: Page not found",
-    "text_html": "We can't seem to find the page you're looking for. Error code: 404."
+    "title": "404: Siden blev ikke fundet",
+    "text_html": "Vi kan desværre ikke finde den side du leder efter..."
   },
   "accessibility": {
     "youtube_video_player": "Youtube Video Player",
@@ -9,14 +9,14 @@
     "skip_to": "Skip to {{ label }}",
     "sign_posts": {
       "button": "Accessibility information",
-      "information": "Press Option\/Alt + K at any time to jump back to these sign posts, or continue tabbing",
+      "information": "Press Option/Alt + K at any time to jump back to these sign posts, or continue tabbing",
       "site_header": "site header",
       "main_content": "main content"
     },
-    "open": "Open",
-    "close": "Close",
-    "view": "View",
-    "loading": "Loading",
+    "open": "Åben",
+    "close": "Luk",
+    "view": "Vis",
+    "loading": "Loader",
     "carousel": {
       "previous": "Previous slide",
       "next": "Next slide",
@@ -34,35 +34,35 @@
     "bioeffect_logo": "Bioeffect logo"
   },
   "article": {
-    "read": "Read",
-    "reading_time": "{{ time }} minute read"
+    "read": "Læs",
+    "reading_time": "{{ time }} Minutter læst"
   },
   "blog": {
-    "all_category": "All",
-    "show_articles": "Show articles tagged with {{ tag }}",
-    "read_more_html": "Read more <span class=\"visually-hidden\">from {{ title }}<\/span>",
-    "load_more": "Load More"
+    "all_category": "Alle",
+    "show_articles": "Vis artikler tagget med {{ tag }}",
+    "read_more_html": "Læs mere <span class=\"visually-hidden\">fra {{ title }}</span>",
+    "load_more": "Load flere"
   },
   "cart": {
-    "title": "My bag",
+    "title": "Min kurv",
     "item_count": {
-      "one": "{{ count }} item",
-      "other": "{{ count }} items"
+      "one": "{{ count }} produkt",
+      "other": "{{ count }} produkter"
     },
     "line_item": {
-      "item": "Item",
-      "quantity": "Quantity",
+      "item": "Produkter",
+      "quantity": "Antal",
       "total": "Total",
       "variant": "{{ option_name }}: {{ selected_value }}",
-      "price": "Price: ",
+      "price": "Pris: ",
       "decrease_quantity": "Decrease quantity",
       "increase_quantity": "Increase quantity",
-      "remove": "Remove",
+      "remove": "Fjern",
       "loading": "Loading..."
     },
     "notifications": {
       "limited_stock": {
-        "title": "Limited stock",
+        "title": "Begrænset lager",
         "text": {
           "one": "Only {{ count }} item is available, please adjust your quantity before checkout",
           "other": "Only {{ count }} items are available, please adjust your quantity before checkout"
@@ -76,159 +76,160 @@
         }
       }
     },
-    "checkout": "Checkout",
+    "checkout": "KØB NU",
     "empty": {
-      "title": "Your Cart",
+      "title": "Din kurv",
       "text_html": "Your cart is currently empty!\nWhy not try our recommendations below",
-      "drawer_text": "Your bag is currently empty.",
-      "continue_shopping": "Shop Now"
+      "drawer_text": "Din kurv er tom.",
+      "continue_shopping": "Køb nu"
     },
     "details": {
-      "priceLabel": "Subtotal",
+      "priceLabel": "Total",
       "taxLabel": "Tax (calculated in checkout)",
       "taxMessage": "--",
-      "shippingLabel": "Shipping",
-      "shippingMessage": "Free"
+      "shippingLabel": "Fragt",
+      "shippingMessage": "Gratis"
     },
     "summary": {
-      "total_label": "Subtotal",
-      "additional_info": "Excluding tax & shipping",
-      "discount_label": "Savings"
+      "total_label": "Total",
+      "additional_info": "Ekskl. moms",
+      "discount_label": "Besparelse"
     },
     "free_shipping_notification": {
-      "title_amount_to_spend": "Spend {{ amount }} more to get FREE delivery",
-      "title_successful": "Congrats! You've qualified for FREE delivery!"
+      "title_amount_to_spend": "Køb for {{ amount }} mere og få gratis levering",
+      "title_successful": "Tillykke! Du får gratis fragt"
     },
     "free_gift_with_purchase": {
       "title": "You've qualified for a free gift with your Hydrating Cream",
-      "no_thanks": "NO THANKS",
-      "reclaim_gift": "Reclaim your free gift",
-      "add_gift": "Add free gift",
-      "first_threshold": "Spend {{ amount }} to receive a free gift",
-      "second_threshold": "Spend {{ amount }} to receive a second free gift",
-      "gifts_selected": "{{ selected }}/{{ allowed }} free gifts selected",
-      "fgwp": "Free Gift with purchase"
+      "choose_sample": "Vælg din gratis prøve",
+      "no_thanks": "Nej tak",
+      "reclaim_gift": "Få gratis gave",
+      "add_gift": "Tilføj gratis gave",
+      "first_threshold": "Køb for {{ amount }}og vælg gratis luksusprøve",
+      "second_threshold": "Køb for {{ amount }} og få din 2. gratis gave",
+      "gifts_selected": "{{ selected }}/{{ allowed }} gratis gaver valgt",
+      "fgwp": "Gratis gave med køb"
     }
   },
   "collection": {
-    "filter_label": "Filter by category",
-    "clear_filters": "Clear filters",
-    "load_more": "Load More"
+    "filter_label": "Filtrer efter kategori",
+    "clear_filters": "Rens filter",
+    "load_more": "Se flere"
   },
   "customers": {
     "fields": {
       "required": {
-        "label": "Required",
+        "label": "Påkrævet",
         "symbol": "*"
       },
-      "optional": "Optional",
+      "optional": "Valgfri",
       "first_name": {
-        "label": "First name",
-        "placeholder": "First name *"
+        "label": "Fornavn",
+        "placeholder": "Efternavn *"
       },
       "last_name": {
-        "label": "Last name",
-        "placeholder": "Last name *"
+        "label": "Efternavn",
+        "placeholder": "Efternavn *"
       },
       "email": {
-        "label": "Email",
-        "placeholder": "Email *"
+        "label": "E-mail",
+        "placeholder": "E-mail *"
       },
       "password": {
         "label": "Password",
         "placeholder": "Password *"
       },
       "password_new": {
-        "label": "Enter new password",
-        "placeholder": "Enter new password"
+        "label": "Tilføj nyt password",
+        "placeholder": "Tilføj nyt password"
       },
       "password_confirmation": {
-        "label": "Confirm password",
-        "placeholder": "Confirm password"
+        "label": "Bekræft password",
+        "placeholder": "Bekræft password"
       },
       "company": {
-        "label": "Company",
-        "placeholder": "Company"
+        "label": "Virksomhed",
+        "placeholder": "Virksomhed"
       },
       "address1": {
-        "label": "Address line 1",
-        "placeholder": "Address line 1 *"
+        "label": "Adresse 1",
+        "placeholder": "Adresse 1 *"
       },
       "address2": {
-        "label": "Address line 2",
-        "placeholder": "Address line 2"
+        "label": "Adresse 2",
+        "placeholder": "Adresse 2"
       },
       "city": {
-        "label": "City",
-        "placeholder": "City *"
+        "label": "By",
+        "placeholder": "By *"
       },
       "country": {
-        "label": "Country"
+        "label": "Land"
       },
       "province": {
-        "label": "Province"
+        "label": "Region"
       },
       "zip": {
-        "label": "Postcode",
-        "placeholder": "Postcode / zip *"
+        "label": "Postnummer",
+        "placeholder": "Postnummer *"
       },
       "phone": {
-        "label": "Telephone",
-        "placeholder": "Telephone *"
+        "label": "Telefon",
+        "placeholder": "Telefon *"
       }
     },
     "header": {
-      "title": "Welcome {{ name }}",
-      "back_to": "Back to {{ page }}",
-      "log_out": "Log Out",
-      "contact_us_html": "<a href=\"{{ url }}\">Contact us</a> if you need any further information about your account."
+      "title": "Velkommen {{ name }}",
+      "back_to": "Retur tik {{ page }}",
+      "log_out": "Log ud",
+      "contact_us_html": "<a href=\"{{ url }}\">Kontakt os</a> hvis du har brug for mere information om din konto"
     },
     "order_card": {
       "product_count": "+{{ count }}",
-      "order_number": "Order #{{ order_number }}",
+      "order_number": "Ordre #{{ order_number }}",
       "total": "Total: {{ total }}",
-      "track_order": "Track order",
+      "track_order": "Spor din ordre",
       "view_details": "View details",
       "labels": {
-        "order_status": "Order status",
-        "order_number": "Order number",
-        "date_of_order": "Date of order",
+        "order_status": "Se detaljer",
+        "order_number": "Ordrenummer",
+        "date_of_order": "Ordredato",
         "date_of_cancel": "Date of cancel",
-        "payment_status": "Payment status",
-        "total_before_discount": "Total before discount",
-        "discount": "Discount",
-        "shipping": "Shipping (free standard shipping over $30)",
+        "payment_status": "Betalingsstatus",
+        "total_before_discount": "Total før rabat",
+        "discount": "Rabat",
+        "shipping": "Fragt (free standard shipping over $30)",
         "tax": "Tax (calculated in checkout)",
         "total": "Total"
       }
     },
     "order_status": {
-      "authorized": "Payment authorised",
-      "expired": "Card expired",
-      "paid": "Paid",
-      "partially_paid": "Partially paid",
-      "partially_refunded": "Payment partially refunded",
-      "pending": "Payment pending",
-      "refunded": "Payment refunded",
-      "unpaid": "Unpaid",
-      "voided": "Payment voided",
-      "fulfilled": "Shipped",
-      "partial": "Partially shipped",
+      "authorized": "Betaling godkendt",
+      "expired": "Kort udløbet",
+      "paid": "Betalt",
+      "partially_paid": "Delvist betalt",
+      "partially_refunded": "Betaling delvist refunderet",
+      "pending": "Afventer betaling",
+      "refunded": "Betaling refunderet",
+      "unpaid": "Ikke betalt",
+      "voided": "Betaling annulleret",
+      "fulfilled": "Sendt",
+      "partial": "Delvist sendt",
       "restocked": "Order restocked",
       "unfulfilled": "Order not shipped",
-      "cancelled": "Order cancelled"
+      "cancelled": "Ordre annuleret"
     },
     "account": {
-      "title": "Overview",
-      "recently_viewed": "Recently viewed products",
+      "title": "Overblik",
+      "recently_viewed": "Senest sete produkter",
       "recent_orders": {
-        "title": "My orders",
-        "none": "You don’t have any orders. When you do, their status will appear on this page.",
-        "check_status": "Here you can check the status of your orders.",
-        "cta": "Go Shopping"
+        "title": "Mine ordrer",
+        "none": "Du har ingen ordrer. Når du har nogen, vil deres status blive vist på denne side.",
+        "check_status": "Her kan du tjekke status på dine ordrer.",
+        "cta": "SHOP"
       },
       "addresses": {
-        "title": "Addresses",
+        "title": "Adresse",
         "your_saved_addresses": "Your saved addresses",
         "add_address_to_saved": "Add an address to your saved addresses",
         "add_address": "Add address",
@@ -303,7 +304,7 @@
         "cancel": "Cancel",
         "success": "Recovery email sent!"
       },
-      "register_prompt_html": "Don't have an account? <a href=\"{{ url }}\">Create account<\/a>",
+      "register_prompt_html": "Don't have an account? <a href=\"{{ url }}\">Create account</a>",
       "guest": {
         "title": "Continue as a guest",
         "cta": "Continue"
@@ -354,8 +355,8 @@
       },
       "need_help": {
         "title": "Need help?",
-      "text_html": "If there's a problem with any of your kit, or if you'd justs like to talk to one of us, we're always happy to help out if you email {{ email_address }}.",
-        "returns_html": "If you need to exchange or return something, <a href=\"{{ returns_url }}\">just answer a few questions here<\/a> to get started."
+        "text_html": "If there's a problem with any of your kit, or if you'd justs like to talk to one of us, we're always happy to help out if you email {{ email_address }}.",
+        "returns_html": "If you need to exchange or return something, <a href=\"{{ returns_url }}\">just answer a few questions here</a> to get started."
       }
     },
     "orders": {
@@ -373,7 +374,7 @@
       "accepts_marketing_html": "Yes, sign me up for BIOEFFECT's mailing list",
       "privacy_text": "By creating an account, I agree to BIOEFFECT's Privacy Policy",
       "cta": "Create account",
-      "login_prompt_html": "Already have an account? <a href=\"{{ url }}\">Sign in here<\/a>"
+      "login_prompt_html": "Already have an account? <a href=\"{{ url }}\">Sign in here</a>"
     },
     "reset_password": {
       "title": "Reset Account Password",
@@ -388,30 +389,30 @@
       "site_header": "Site header",
       "navigation": "Site navigation",
       "menu": "Toggle menu",
-      "account": "Account",
-      "cart": "My Bag"
+      "account": "Konto",
+      "cart": "Min kurv"
     },
     "site_footer": {
       "copyright": "&copy; {{ year }} BIOEFFECT All rights Reserved Worldwide",
-      "return_home": "Return to home"
+      "return_home": "Retur"
     },
     "menu_drawer": {
-      "back_to": "Back to",
+      "back_to": "Retur til",
       "top_level": "Top level",
-      "account": "Account",
+      "account": "Konto",
       "login": "Login",
-      "register": "Register",
+      "register": "Registrer",
       "title": "Menu"
     },
     "meta": {
-      "page": "Page {{ page }}",
+      "page": "Side {{ page }}",
       "tags": "Tagged \"{{ tags }}\""
     },
     "pagination": {
       "label": "Pagination",
-      "previous": "Previous page",
-      "page": "Page",
-      "next": "Next page"
+      "previous": "Forrige side",
+      "page": "Side",
+      "next": "Næste side"
     },
     "social_sharing": {
       "facebook": "Share to Facebook",
@@ -421,27 +422,27 @@
     },
     "newsletter": {
       "email": {
-        "label": "Email address",
-        "placeholder": "Enter your email"
+        "label": "E-mail",
+        "placeholder": "Spar 15% på dit første køb"
       },
-      "submit": "Sign Up",
+      "submit": "Tilmeld",
       "sign_up": {
-        "email_placeholder": "Email",
+        "email_placeholder": "E-mail",
         "disclaimer_label": "*Offer valid only for new customers. Cannot be combined with other special offers, promotions or discounts."
       },
-      "success": "You have successfully subscribed to our newsletter. An email confirmation should arrive soon.",
-      "error": "Please enter a valid email"
+      "success": "Du har nu tilmeldt dig vores nyhedsbrev. Du modtager en bekræftelse via e-mail.",
+      "error": "Indtast venligst en gyldig e-mail"
     },
-    "title": "Title",
+    "title": "Titel",
     "breadcrumbs": {
-      "home": "Home",
+      "home": "Hjem",
       "label": "Breadcrumbs",
       "separator": ">"
     },
     "faq": {
-      "show_answer": "Show Answer"
+      "show_answer": "Vis resultater"
     },
-    "update": "Update"
+    "update": "Opdater"
   },
   "country_select": {
     "location_set": "Your location is set to {{ country }} ",
@@ -453,23 +454,23 @@
     "cancel": "Cancel"
   },
   "gift_card": {
-    "title": "Here's your gift card!",
-    "expired": "Expired",
-    "gift_card_code": "Gift card code",
+    "title": "Her er dit gavekort!",
+    "expired": "Udløbet",
+    "gift_card_code": "Gavekortskode",
     "copy_message": "Copied code to clipboard",
-    "notice": "Use this code at checkout to redeem your gift card",
-    "expired_notice": "This gift card expired on {{ date }}",
+    "notice": "Brug denne kode i kassen for at indløse dit gavekort",
+    "expired_notice": "Gavekortet udløb {{ date }}",
     "remaining": "Remaining {{ balance }}",
     "qr_image_alt": "Scan this QR code to redeem your gift card",
     "add_to_apple_wallet": "Add to Apple Wallet",
-    "shop_link": "Start shopping",
+    "shop_link": "SHOP",
     "print_gift_card": "Print"
   },
   "list_collections": {
-    "title": "All Collections"
+    "title": "Alle"
   },
   "password_page": {
-    "title": "Opening Soon",
+    "title": "Åbner snart",
     "label": "If you have a password use it below to enter the store",
     "sign_in": "Sign in"
   },
@@ -482,34 +483,34 @@
       "change_image": "Change image"
     },
     "form": {
-      "sold_out": "Out of stock"
+      "sold_out": "Udsolgt"
     },
     "cta": {
-      "add_to_cart": "Add to Bag",
-      "add_to_bag": "Add to Bag",
-      "added_to_cart": "Added to Cart",
-      "added": "Added!"
+      "add_to_cart": "KØB NU",
+      "add_to_bag": "KØB NU",
+      "added_to_cart": "Lagt i kurv",
+      "added": "Tilføjet!"
     },
     "prices": {
-      "sold_out": "Out of stock",
-      "free": "Free",
-      "from": "From"
+      "sold_out": "Udsolgt",
+      "free": "Gratis",
+      "from": "Fra"
     }
   },
   "search": {
-    "title": "Search",
-    "placeholder": "What are you looking for?",
-    "empty_html": "Please enter a search term",
-    "submit": "Search",
-    "load_more": "Load More",
-    "no_results_html": "No results found for your search <span class='text-body-s-bold'>'{query}'<\/span>",
+    "title": "Søg",
+    "placeholder": "Hvad leder du efter?",
+    "empty_html": "Tilføj din søgning",
+    "submit": "Søg",
+    "load_more": "Se flere resultater",
+    "no_results_html": "Vi fandt ingen resultater for <span class='text-body-s-bold'>'{query}'</span>",
     "result_count": {
       "one": "{{ count }} result found",
-      "other": "{{ count }} results found"
+      "other": "{{ count }} søgeresultater fundet"
     }
   },
   "date_formats": {
-    "day_month_year": "%d\/%m\/%Y",
+    "day_month_year": "%d/%m/%Y",
     "day_full_month_year": "%B %d, %Y",
     "day_full_month_year_time": "%B %d, %Y %I:%M%p"
   },
@@ -526,5 +527,228 @@
     "message": "Your message here (f.ex. order number)",
     "submit": "Submit",
     "success_title": "Form posted successfully"
+  },
+  "shopify": {
+    "checkout": {
+      "order_summary": {
+        "more_items_modal": {
+          "search_item": "Søg",
+          "clear_search": "Rens søgning",
+          "empty_results": "Vi fandt ingen resultater for <span class='text-body-s-bold'>'{query}'</span>. Check stavning eller søg igen"
+        },
+        "gift_card_and_discount_title": "Rabatkode eller gavekort?",
+        "gift_card_and_discount_label": "Rabatkode eller gavekort?",
+        "gift_card_and_discount_placeholder": "Rabatkode eller gavekort?",
+        "add_discount_or_gift_card": "Rabatkode eller gavekort?",
+        "apply_discount_button_label": "Tilføj",
+        "enter_shipping_address": "Tilføj leveringsadresse",
+        "free_shipping_discount_label": "Gratis fragt",
+        "applied_free_shipping_discount_label": "Tilføjet",
+        "shipping_label": "Fragt",
+        "free_shipping_total_label": "Gratis",
+        "title": "Ordreoversigt",
+        "discount_discovery": {
+          "add_code": "Tilføj rabatkode"
+        },
+        "vat_label_html": "Inkl. {{amount}} i moms "
+      },
+      "pickup_point": {
+        "search_button": "Søg"
+      },
+      "general": {
+        "error_page_title": "Fejl",
+        "cart": "Kurv",
+        "close_modal_label": "Luk",
+        "close_notice_label": "Luk",
+        "expand_notice_label": "Vis mere",
+        "choose_delivery_strategy": "Vælg leveringsmetode",
+        "continue_to_payment_method": "Fortsæt til betaling",
+        "choose_payment_method": "Vælg betalingsmetode",
+        "pay_now_button_label": "Betal nu",
+        "continue_to_shipping_method": "Fortsæt til levering",
+        "back_to_shipping_method": "retur til leveering",
+        "choose_shipping_method": "Vælg leveringsmetode"
+      },
+      "alternative_payment_method_banner": {
+        "express_checkout": "Hurtig udtjekning"
+      },
+      "contact": {
+        "address_title": "Adressee",
+        "shipping_used_as_billing_notice": "Denne adresse bruges også som fakturaadresse",
+        "delivery_option_title": "Leveringsmuligheder",
+        "contact_method_title": "Kontakt",
+        "email_label": "E-mail",
+        "email_placeholder": "E-mail",
+        "email_or_phone_label": "E-mail eller telefon nummer",
+        "email_or_phone_placeholder": "E-mail eller telefon nummer",
+        "stored_addresses_label": "Gemt adresse",
+        "new_address_label": "Brug en anden adresse",
+        "first_name_label": "Fornavn",
+        "optional_first_name_label": "Fornavn (valgfrit)",
+        "last_name_label": "Efternavn",
+        "company_label": "Virksomhed",
+        "company_attention_label": "Virksomhed/att.:",
+        "optional_company_attention_label": "Virksomhed/att.: (valgfrit)",
+        "optional_company_label": "Virksomhed (valgfrit)",
+        "address1_label": "Adresse",
+        "address2_label": "Lejlighed, dør, etc. (valgfrit)",
+        "optional_address2_label": "Lejlighed, dør, etc. (valgfrit)",
+        "city_label": "By",
+        "country_label": "Land",
+        "province_label": "Region",
+        "phone_label": "Telefon",
+        "optional_phone_label": "Telefon",
+        "phone_placeholder": "Telefon",
+        "zip_code_label": "Postnummer",
+        "zip_code_placeholder": "Postnummer",
+        "postal_code_label": "Postnummer",
+        "postcode_label": "Postnummer",
+        "postcode_placeholder": "Postnummer",
+        "different_shipping_address_label": "Send til en anden adresse"
+      },
+      "payment_errors": {
+        "decision_rule_block": "Der er et problem med kortet,"
+      },
+      "customer_account": {
+        "save_my_information_label": "Gem information til mit næste køb"
+      },
+      "delivery_options": {
+        "free_total_label": "Gratis",
+        "shipping_address": "Leveringsadresse"
+      },
+      "shipping": {
+        "delivery_title": "Levering",
+        "shipping_method_title": "Leveringsmuligheder",
+        "duties_and_taxes_options": {
+          "ddp_title": "Betal nu"
+        },
+        "title": "Fragt"
+      },
+      "marketing": {
+        "accept_marketing_checkbox_label": "Ja tak, til nyhedsbrev med VIP tilbud, aktuel viden, hudplejenyheder og rabatter specielt udvalgt til dig.  ",
+        "disclaimer": {
+          "privacy_policy": "Privatlivspolitik",
+          "terms_of_service": "Handelsbetingelser"
+        },
+        "sms": {
+          "disclaimer": {
+            "privacy_policy": "Privatlivspolitik",
+            "terms_of_service": "Handelsbetingelser"
+          }
+        }
+      },
+      "shipping_errors": {
+        "empty_state": "Indtast din leveringsadresse for at se dine leveringsmetoder."
+      },
+      "thank_you": {
+        "shipping_method_title": "Leveringsmuligheder",
+        "contact_us": "Kontakt os",
+        "contact_us_lowercase": "Kontakt os",
+        "missing_shipping_address_banner": {
+          "contact_us": "Kontakt os"
+        }
+      },
+      "review": {
+        "blocks": {
+          "shipping_method_title": "Leveringsmuligheder",
+          "contact_method_title": "Kontakt"
+        }
+      },
+      "embed": {
+        "payment": {
+          "payment_options": "Se betalingsmetoder"
+        },
+        "shipping": {
+          "shipping_options": "Se leveringsmetoder"
+        }
+      },
+      "payment": {
+        "title": "Betaling",
+        "discount_button_action_label": "Tilføj rabatkode",
+        "gift_card_code_label": "Kode fra dit gavekort",
+        "apply_gift_card_button_label": "Tilføj",
+        "card_number_label": "Kreditkort nummer",
+        "card_number_placeholder": "Kreditkort nummer",
+        "card_pay_with": "Betal med:",
+        "card_security_notice": "Alle transaktioner er sikre og krypterede",
+        "name_on_card_label": "Navn på betalingskort",
+        "name_on_card_placeholder": "Navn på betalingskort",
+        "card_expired": "Udløbet",
+        "card_expiry_label": "Udløbsdato (MM / YY)",
+        "card_expiry_placeholder": "Udløbsdato (MM / YY)",
+        "card_verification_value_label": "CVC",
+        "card_verification_value_placeholder": "CVC",
+        "card_expiration_month_label": "Udløbsmåned",
+        "card_expiration_year_label": "Udløbsår",
+        "same_billing_address_checkbox_label": "Brug leveringsadresse som fakturaadresse",
+        "gift_card_checkbox_label": "Tilføj gavekort",
+        "markets_pro_disclaimer_privacy_policy": "Privatlivspolitik"
+      },
+      "payment_gateway": {
+        "credit_card_label": "Kreditkort"
+      },
+      "order_payment_collection": {
+        "pay_now": "Betal nu"
+      },
+      "field_errors": {
+        "reduction_code_code_not_found": "Indtast en gyldig rabatkode eller gavekort"
+      },
+      "wallets": {
+        "errors": {
+          "invalid": {
+            "reduction_code": "Indtast en gyldig rabatkode eller gavekort"
+          }
+        }
+      },
+      "shop_policies": {
+        "refund_policy": "Returret",
+        "privacy_policy": "Privatlivspolitik",
+        "terms_of_service": "Handelsbetingelser",
+        "contact_information": "Kontakt"
+      },
+      "notice_banner": {
+        "validation_errors_banner": {
+          "section_label": {
+            "contact": "Kontakt"
+          }
+        }
+      }
+    }
+  },
+  "customer_accounts": {
+    "order_details": {
+      "marketing_checkbox_label": "Ja tak, til nyhedsbrev med VIP tilbud, aktuel viden, hudplejenyheder og rabatter specielt udvalgt til dig.  ",
+      "shipping": {
+        "method": "Leveringsmuligheder"
+      },
+      "returns": {
+        "return_and_refund_modal_header": "Returret"
+      },
+      "mobile_summary_toggle_button": {
+        "open": "Vis ordreoversigt",
+        "closed": "Skjul ordreoversigt"
+      },
+      "show_order_summary": "Vis ordreoversigt",
+      "hide_order_summary": "Skjul ordreoversigt",
+      "summary_title": "Ordreoversigt",
+      "taxes_included": "Inkl. {{amount}} i moms "
+    },
+    "payment_methods": {
+      "credit_card_title": "Kreditkort"
+    },
+    "B2B": {
+      "draft_order_details": {
+        "payment_status": {
+          "pay_now": "Betal nu"
+        }
+      }
+    },
+    "orders": {
+      "order_list": {
+        "filter": {
+          "apply": "Tilføj"
+        }
+      }
+    }
   }
 }
