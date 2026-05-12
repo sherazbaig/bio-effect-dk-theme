@@ -179,21 +179,29 @@
     missingParameter: {{ 'placeholder' | asset_url | split: 'placeholder?' | last }},
   }
 
-  {% assign fgwp = shop.metaobjects.free_samples.free_samples %}
+  {% assign free_samples_object = shop.metaobjects.free_samples.free_samples %}
+  {% assign available_free_samples = free_samples_object.list.value | where: 'available', true %}
   window.cnvs.fgwp = {
     gifts: [
-      {% for product in fgwp.list.value %}
+      {% for product in available_free_samples %}
+        {% assign variant = product.selected_or_first_available_variant %}
+        {% assign gift_image = product.featured_image %}
         {
-          id: {{ product.id | json }},
+          id: {{ variant.id | json }},
           name: {{ product.title | json }},
-          price: {{ product.price | json }},
+          price: {{ variant.price | json }},
           featured_image: {
-            src: {{ product.featured_image | img_url: '400x' | json }},
-            alt: {{ product.featured_image.alt | json }}
+            alt: {{ gift_image.alt | default: product.title | json }},
+            aspectRatio: {{ gift_image.aspect_ratio | json }},
+            height: {{ gift_image.height | json }},
+            id: {{ gift_image.id | json }},
+            src: {{ gift_image | img_url: '400x' | json }},
+            width: {{ gift_image.width | json }}
           }
         }{% unless forloop.last %},{% endunless %}
       {% endfor %}
-    ]
+    ],
+    threshold: false
   }
 
   {% comment %} window.cnvs.fgwp = {

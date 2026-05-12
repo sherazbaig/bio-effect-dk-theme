@@ -1,7 +1,7 @@
 <template>
   <div
     class="free-gift-with-purchase-list"
-    :class="[{ 'threshold-not-reached': !isThresholdReached }]"
+    :class="[{ 'threshold-not-reached': threshold && !isThresholdReached }]"
   >
     <div
       v-if="threshold"
@@ -295,6 +295,7 @@ export default {
      */
     ...mapActions({
       addItem: 'cart/addItem',
+      removeItem: 'cart/updateItem',
       closeOverlay: 'overlays/close',
     }),
 
@@ -408,29 +409,48 @@ export default {
       }
 
       this.state = 'adding'
-      const item = this.selectedItems.map((id) => {
-        const properties = {
-          _is_fgwp: true,
-        }
-
-        if (this.threshold) {
-          // eslint-disable-next-line dot-notation
-          properties['_is_threshold_item'] = true
-        }
-
-        if (this.attachedVariantId) {
-          // eslint-disable-next-line dot-notation
-          properties['_parent_variant'] = this.attachedVariantId
-        }
-
-        return {
-          id,
-          quantity: 1,
-          properties,
-        }
-      })
 
       try {
+        /**
+         * Single-select mode (no threshold, no parent).
+         * - Remove any existing standalone free-sample gift first so only
+         *   one can be in the cart at a time.
+         */
+        if (!this.threshold && !this.attachedVariantId) {
+          const existingGifts = this.cart.items.filter((item) => {
+            // eslint-disable-next-line no-underscore-dangle
+            return item.properties?._is_fgwp && !item.properties?._parent_variant
+          })
+
+          if (existingGifts.length) {
+            await this.removeItem(
+              existingGifts.map((gift) => ({ id: gift.key, quantity: 0 })),
+            )
+          }
+        }
+
+        const item = this.selectedItems.map((id) => {
+          const properties = {
+            _is_fgwp: true,
+          }
+
+          if (this.threshold) {
+            // eslint-disable-next-line dot-notation
+            properties['_is_threshold_item'] = true
+          }
+
+          if (this.attachedVariantId) {
+            // eslint-disable-next-line dot-notation
+            properties['_parent_variant'] = this.attachedVariantId
+          }
+
+          return {
+            id,
+            quantity: 1,
+            properties,
+          }
+        })
+
         await this.addItem(item)
 
         this.state = 'ready'

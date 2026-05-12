@@ -344,29 +344,35 @@ export default {
     },
 
     setThresholdGiftData() {
+      if (!window.cnvs?.fgwp?.gifts?.length) {
+        return
+      }
+
       if (window.cnvs.fgwp.threshold?.length) {
         if (window.cnvs.fgwp.threshold.length > 2) {
           window.cnvs.fgwp.threshold = window.cnvs.fgwp.threshold.slice(0, 2)
         }
 
         window.cnvs.fgwp.threshold.sort((a, b) => a - b)
-
-        const giftsTempStorage = window.cnvs.fgwp.gifts
-
-        this.freeGiftWithPurchase = { ...window.cnvs.fgwp }
-        this.freeGiftWithPurchase.gifts =
-          (giftsTempStorage || []).filter((gift) => {
-            return !this.cart.items.some((item) => {
-              return gift.id === item.id
-            })
-          })
       }
+
+      const giftsTempStorage = window.cnvs.fgwp.gifts
+
+      this.freeGiftWithPurchase = { ...window.cnvs.fgwp }
+      this.freeGiftWithPurchase.gifts =
+        (giftsTempStorage || []).filter((gift) => {
+          return !this.cart.items.some((item) => {
+            return gift.id === item.id
+          })
+        })
     },
 
     checkThresholdApplicable() {
       const thresholdData = this.freeGiftWithPurchase.threshold
+      const thresholdGiftsExist = (this.freeGiftWithPurchase.gifts || []).length
 
       if (!thresholdData?.length) {
+        this.showThresholdFGWP = Boolean(thresholdGiftsExist)
         return
       }
 
@@ -393,7 +399,6 @@ export default {
       }
 
       const thresholdPointsExist = (thresholdData || []).length
-      const thresholdGiftsExist = (this.freeGiftWithPurchase.gifts || []).length
 
       this.showThresholdFGWP =
         !(thresholdItemInBasket === thresholdPointsExist) &&
@@ -484,7 +489,7 @@ export default {
 
         // eslint-disable-next-line no-underscore-dangle
         if (item.properties?._is_fgwp && !item.properties?._is_threshold_item &&
-          !giftItemParent) {
+          item.properties?._parent_variant && !giftItemParent) {
           await this.removeItem(item.key)
         }
 
