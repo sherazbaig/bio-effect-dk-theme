@@ -16,9 +16,9 @@
   }
 
   &__wrapper {
-    display: flex;
-    flex-direction: column;
+    display: grid;
     gap: var(--spacing-xs);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     margin-block: var(--spacing-m);
   }
 
@@ -97,43 +97,47 @@
 
   &__item {
     @include button-reset;
-    align-items: center;
     background-color: var(--color-clouds);
-    border: solid 1px transparent;
+    border: 1px solid var(--color-cool);
+    border-radius: 4px;
+    cursor: pointer;
     display: flex;
-    gap: var(--spacing-xs);
-    // matching design
-    height: 100px;
+    flex-direction: column;
+    height: auto;
     justify-content: space-between;
-    padding-inline-end: var(--spacing-l);
-    padding-inline-start: var(--spacing-m);
+    padding: var(--spacing-m) 8px;
+    position: relative;
+    text-align: start;
+    width: 100%;
 
-    #{$parent}__selection-check {
-      color: var(--color-teal);
+    #{$parent}__selection-check,
+    #{$parent}__selection-square {
       display: none;
     }
 
-    #{$parent}__selection-square {
-      border: 1px solid var(--color-grey);
-      height: var(--icon-m);
-      width: var(--icon-m);
-    }
-
     &.selected {
-      border: 1px solid var(--color-teal);
-
-      #{$parent}__selection-square {
-        display: none;
-      }
-
-      #{$parent}__selection-check {
-        display: block;
-      }
+      border-color: var(--color-teal);
     }
+  }
+
+  &__left-hand {
+    align-items: stretch;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--spacing-s);
+    width: 100%;
+  }
+
+  &__item-image-container {
+    width: 100%;
   }
 
   &__item-titles {
     text-align: start;
+
+    .line-item__variant {
+      display: none;
+    }
   }
 
   &__threshold-check-wrapper {
@@ -162,17 +166,6 @@
     }
   }
 
-  &__item-image-container {
-    // matching design
-    width: 59px;
-  }
-
-  &__left-hand {
-    align-items: center;
-    display: flex;
-    gap: var(--spacing-m);
-  }
-
   &__selection-circle {
     border: 1px solid var(--color-grey);
     border-radius: 50%;
@@ -199,4 +192,9 @@
       width: 97%;
     }
   }
+}
+
+.free-gift-with-purchase-list__item-titles .line-item__title {
+  font-size: 14px;
+  line-height: 1.1;
 }

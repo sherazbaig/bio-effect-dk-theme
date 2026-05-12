@@ -88,7 +88,7 @@
           v-for="giftItem of freeGifts"
           :key="giftItem.id"
           class="free-gift-with-purchase-list__item"
-          :class="{ 'selected': selectedItems.includes(giftItem.id) }"
+          :class="{ 'selected': selectedItems.includes(giftItem.id) || cartGiftIds.includes(giftItem.id) }"
           type="button"
           @click="selectItem(giftItem.id)"
         >
@@ -266,6 +266,17 @@ export default {
     isThresholdReached() {
       return this.cart.total_price / 100 >= this.threshold[this.threshold.length - 1]
     },
+
+    /**
+     * IDs of free gifts currently in the cart.
+     * - Used to highlight the matching button in the list.
+     */
+    cartGiftIds() {
+      return this.cart.items
+        // eslint-disable-next-line no-underscore-dangle
+        .filter((item) => item.properties?._is_fgwp)
+        .map((item) => item.id)
+    },
   },
 
   watch: {
@@ -343,6 +354,15 @@ export default {
      * Handle click on list item
      */
     selectItem(itemId) {
+      /**
+       * Standalone mode: clicking the already-selected sample is a no-op.
+       * - Prevents an unnecessary remove + re-add round-trip on the cart API.
+       */
+      if (!this.threshold && !this.attachedVariantId &&
+        this.cartGiftIds.includes(itemId)) {
+        return
+      }
+
       if (this.selectedItems.includes(itemId)) {
         this.selectedItems.splice(this.selectedItems.indexOf(itemId), 1)
 

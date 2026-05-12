@@ -36,16 +36,17 @@
               :line-item="lineItem"
             />
 
-            <free-gift-with-purchase-list
-              v-if="showThresholdFGWP"
-              :free-gifts="freeGiftWithPurchase.gifts"
-              :threshold="freeGiftWithPurchase.threshold"
-            />
           </template>
 
           <free-samples
             class="cart-drawer__freeSamples"
             :loading="loading"
+          />
+
+          <free-gift-with-purchase-list
+            v-if="showThresholdFGWP"
+            :free-gifts="freeGiftWithPurchase.gifts"
+            :threshold="freeGiftWithPurchase.threshold"
           />
 
           <div
@@ -350,15 +351,18 @@ export default {
         window.cnvs.fgwp.threshold.sort((a, b) => a - b)
       }
 
-      const giftsTempStorage = window.cnvs.fgwp.gifts
-
       this.freeGiftWithPurchase = { ...window.cnvs.fgwp }
-      this.freeGiftWithPurchase.gifts =
-        (giftsTempStorage || []).filter((gift) => {
-          return !this.cart.items.some((item) => {
-            return gift.id === item.id
-          })
+
+      /**
+       * Threshold mode: hide gifts already in cart so the user can pick
+       * additional ones up to their tier. Standalone mode keeps all visible
+       * with the in-cart sample highlighted instead.
+       */
+      if (window.cnvs.fgwp.threshold?.length) {
+        this.freeGiftWithPurchase.gifts = (window.cnvs.fgwp.gifts || []).filter((gift) => {
+          return !this.cart.items.some((item) => gift.id === item.id)
         })
+      }
     },
 
     checkThresholdApplicable() {
