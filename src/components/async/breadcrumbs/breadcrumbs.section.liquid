@@ -1,107 +1,62 @@
-{{ 'component.breadcrumbs.css' | asset_url | stylesheet_tag }}
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Breadcrumbs (breadcrumbs)
 
-<section class="container ddd">
+  @param {Array} items - Array of items to construct breadcrumbs.
+  @param {Boolean} [loading] - Display loading state, set to false when
+  displayed in a static component.
+  @param {String} title - Title displayed for current page.
+  @param {String} [additional_class] - Additional class.
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- liquid
+  assign animation_delay = 0
+  assign loading = loading | default: true, allow_false: true
+  assign classes = additional_class | default: ''
+-%}
 
-  {%- unless template == 'index' or template == 'cart' or template == 'list-collections' or template == '404' -%}
-    {%- assign t = template | split: '.' | first -%}
+{%- capture separator -%}
+  {% render 'icon-directional-navigation' with icon: 'arrow-head' %}
+{%- endcapture -%}
 
-    <nav class="breadcrumbs" role="navigation" aria-label="breadcrumbs">
-      <div class="breadcrumbs__list">
-        <span class="breadcrumbs__item">
-          <a class="breadcrumbs__link" href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a>
-        </span>
+<nav
+  class="
+    breadcrumbs
+    {% if loading %}
+      is-loading
+    {% endif %}
+    {{ classes }}
+    liquid
+  "
+  aria-label="{{ 'general.breadcrumbs.label' | t }}"
+>
+  <ol class="breadcrumbs__list-element">
 
-        {%- case t -%}
-          {%- when 'page' -%}
-            <!-- <span class="separator"> / </span> -->
-            <span class="breadcrumbs__item">
-              <a class="breadcrumbs__link" href="{{ page.url }}" aria-current="page">{{ page.title }}</a>
-            </span>
-          {%- when 'product' -%}
-            {%- if collection -%}
-              <span class="breadcrumbs__item">
-                {{ collection.title | link_to: collection.url }}
-              </span>
-            {%- else -%}
-              {% assign collections = product.metafields.custom.breadcrumbs.value %}
-              {% for collection in collections %}
-              <span class="breadcrumbs__item">
-                <a class="breadcrumbs__link" href="{{collection.url}}">{{ collection.title }}</a>
-              </span>
-              {% endfor %}
-            {%- endif -%}
+    {% for item in items %}
+      <li class="breadcrumbs__list-item">
+        <a
+          class="breadcrumbs__link text-button-nav"
+          href="{{ item.url }}"
+        >
+          {{ item.title }}
+        </a>
+      </li>
 
-            <span class="breadcrumbs__item">
-              {{ product.title }}
-              <!-- <a class="breadcrumbs__link" href="{{ product.url }}" aria-current="page">{{ product.title }}</a> -->
-            </span>
-          {%- when 'collection' and collection.handle -%}
-            {%- if current_tags -%}
-              <!-- <span class="separator"> / </span> -->
-              <span class="breadcrumbs__item">
-                {{ collection.title | link_to: collection.url }}
-              </span>
-              <!-- <span class="separator"> / </span> -->
-              <span class="breadcrumbs__item">
-                {%- capture tag_url -%}{{ collection.url }}/{{ current_tags | join: "+"}}{%- endcapture -%}
-                <a class="breadcrumbs__link" href="{{ tag_url }}" aria-current="page">{{ current_tags | join: " + "}}</a>
-              </span>
-            {%- else -%}
-             {% assign collections = collection.metafields.custom.breadcrumbs.value %}
-              {% for collection in collections %}
-              <span class="breadcrumbs__item">
-                <a class="breadcrumbs__link" href="{{collection.url}}">{{ collection.title }}</a>
-              </span>
-              {% endfor %}
-              <span class="breadcrumbs__item">
-                {{ collection.title }}
-                <!-- <a class="breadcrumbs__link" href="{{ collection.url }}" aria-current="page">{{ collection.title }}</a> -->
-              </span>
-            {%- endif -%}
-          {%- when 'blog' -%}
-            {%- if current_tags -%}
-              <!-- <span class="separator"> / </span> -->
-              <span class="breadcrumbs__item">
-                {{ blog.title | link_to: blog.url }}
-              </span>
-              <!-- <span class="separator"> / </span> -->
-              <span class="breadcrumbs__item">
-                {%- capture tag_url -%}{{blog.url}}/tagged/{{ current_tags | join: "+" }}{%- endcapture -%}
-                <a class="breadcrumbs__link" href="{{ tag_url }}" aria-current="page">{{ current_tags | join: " + " }}</a>
-              </span>
-            {%- else -%}
-              <!-- <span class="separator"> / </span> -->
-              <span class="breadcrumbs__item">
-                <a class="breadcrumbs__link"
-                  {% if blog.handle contains 'ingrediensoversigt' %}
-                    href="{{ blog.url | replace: '/blogs/', '/pages/' }}"
-                  {% else %}
-                    href="{{ blog.url }}"
-                  {% endif %}
-                  aria-current="page">{{ blog.title }}</a>
-              </span>
-            {%- endif -%}
-          {%- when 'article' -%}
-            <!-- <span class="separator"> / </span> -->
-            <span class="breadcrumbs__item">
-              <a class="breadcrumbs__link"
-                {% if blog.handle contains 'ingrediensoversigt' %}
-                  href="{{ blog.url | replace: '/blogs/', '/pages/' }}"
-                {% else %}
-                  href="{{ blog.url }}"
-                {% endif %}
-                aria-current="page">{{ blog.title }}</a>
-            </span>
-            <!-- <span class="separator"> / </span> -->
-            <span class="breadcrumbs__item">
-              <a class="breadcrumbs__link" href="{{ article.url }}" aria-current="page">{{ article.title }}</a>
-            </span>
-          {%- else -%}
-            <span class="breadcrumbs__item">
-              <a class="breadcrumbs__link" href="{{ request.path }}" aria-current="page">{{ page_title }}</a>
-            </span>
-        {%- endcase -%}
-      </div>
-    </nav>
-  {%- endunless -%}
-</section>
+      {% unless forloop.last %} {{ separator }} {% endunless %}
+    {% endfor %}
+
+    <li class="breadcrumbs__list-item">
+      {% if items != blank %}
+        {{ separator }}
+      {%endif%}
+
+      <a
+        aria-current="page"
+        class="breadcrumbs__link text-button-nav"
+        href=""
+      >
+        {{ title }}
+      </a>
+    </li>
+  </ol>
+</nav>

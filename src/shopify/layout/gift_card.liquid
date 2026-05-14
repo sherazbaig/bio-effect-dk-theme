@@ -1,3 +1,4 @@
+{% include 'shogun-content-handler' %}
 {% comment %}
 -----------------------------------------------------------------------------
   Layout: Gift card
@@ -75,7 +76,9 @@
     {% unless settings.disable_theme_styles and not_production %}
       {% render 'theme-styles' with layout: 'gift_card' %}
     {% endunless %}
-  </head>
+  
+  {% render 'shogun-head' %}
+</head>
 
   <body
     id="{{ page_title | handle }}"
