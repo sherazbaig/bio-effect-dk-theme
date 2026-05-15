@@ -102,13 +102,12 @@
               <div
                 class="free-gift-with-purchase-list__item-image-container"
               >
-                <responsive-image
+                <img
                   class="free-gift-with-purchase-list__item-image"
-                  :image="giftItem.featured_image"
-                  min-max="95-130"
-                  ratio="1:1"
-                  sizes="(min-width: 1024px) 99px, 95px"
-                />
+                  :src="giftItem.featured_image.src"
+                  :alt="giftItem.featured_image.alt || giftItem.name"
+                  loading="lazy"
+                >
               </div>
 
               <div class="free-gift-with-purchase-list__item-titles">
@@ -178,7 +177,6 @@
  * List of items for FGWP.
  *
  */
-import ResponsiveImage from '~global/images/responsive-image'
 import IconPrize from '~icons/general/prize.svg'
 import Btn from '~global/btn/btn'
 import IconCheck from '~icons/general/check.svg'
@@ -188,7 +186,6 @@ export default {
   name: 'FreeGiftWithPurchaseList',
 
   components: {
-    ResponsiveImage,
     IconPrize,
     Btn,
     IconCheck,

@@ -31,17 +31,12 @@
             :key="getCartItemKey(lineItem)"
           >
             <line-item
-              v-if="!lineItem.properties?.['_gift']"
+              v-if="!lineItem.properties?.['_gift'] && !lineItem.properties?.['_is_fgwp']"
               class="cart-drawer__line-item"
               :line-item="lineItem"
             />
 
           </template>
-
-          <free-samples
-            class="cart-drawer__freeSamples"
-            :loading="loading"
-          />
 
           <free-gift-with-purchase-list
             v-if="showThresholdFGWP"
@@ -142,7 +137,6 @@ import FreeGiftWithPurchaseList from '~async/free-gift-with-purchase-list/free-g
 import Btn from '~global/btn/btn'
 import LoadingIndicator from '~async/loading-indicator/loading-indicator'
 import FreeShippingNotification from '~async/free-shipping-notification/free-shipping-notification'
-import FreeSamples from '~async/free-samples/free-samples'
 
 export default {
   name: 'CartDrawer',
@@ -154,7 +148,6 @@ export default {
     Btn,
     LoadingIndicator,
     FreeShippingNotification,
-    FreeSamples,
   },
 
   props: {
@@ -477,6 +470,27 @@ export default {
       // Do not run if cart still updating.
       if (this.loading) {
         return
+      }
+
+      /**
+       * Standalone free samples: if the cart has no real products left,
+       * remove the free sample so a customer can't checkout with only a gift.
+       */
+      const nonGiftItems = this.cart.items.filter((item) => {
+        // eslint-disable-next-line no-underscore-dangle
+        return !item.properties?._is_fgwp && !item.properties?._gift
+      })
+
+      if (nonGiftItems.length === 0) {
+        const orphanGifts = this.cart.items.filter((item) => {
+          // eslint-disable-next-line no-underscore-dangle
+          return item.properties?._is_fgwp && !item.properties?._parent_variant
+        })
+
+        if (orphanGifts.length) {
+          this.removeItem(orphanGifts.map((gift) => ({ id: gift.key, quantity: 0 })))
+          return
+        }
       }
 
       this.cart.items.forEach(async item => {
