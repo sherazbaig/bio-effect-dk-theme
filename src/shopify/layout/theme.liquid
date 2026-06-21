@@ -1,4 +1,3 @@
-{% include 'shogun-content-handler' %}
 {% comment %}
 -----------------------------------------------------------------------------
   Layout: Theme
@@ -217,9 +216,7 @@
     {% if template == 'collection' %}
       {{ collection.metafields.custom.schema }}
     {% endif %}
-  
-  {% render 'shogun-head' %}
-</head>
+  </head>
 
   <body
     id="{{ page_title | handle }}"

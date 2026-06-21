@@ -88,7 +88,7 @@
       "taxLabel": "Tax (calculated in checkout)",
       "taxMessage": "--",
       "shippingLabel": "Fragt",
-      "shippingMessage": "Vises i kassen"
+      "shippingMessage": "Gratis"
     },
     "summary": {
       "total_label": "Total",
@@ -97,7 +97,7 @@
     },
     "free_shipping_notification": {
       "title_amount_to_spend": "Køb for {{ amount }} mere og få gratis levering",
-      "title_successful": "Køb for 499 og få gratis levering "
+      "title_successful": "Tillykke! Du får gratis fragt"
     },
     "free_gift_with_purchase": {
       "title": "You've qualified for a free gift with your Hydrating Cream",
@@ -550,9 +550,7 @@
         "discount_discovery": {
           "add_code": "Tilføj rabatkode"
         },
-        "vat_label_html": "Inkl. {{amount}} i moms ",
-        "order_name_label": "Ordre {{name}}",
-        "free_total_label": "Gratis"
+        "vat_label_html": "Inkl. {{amount}} i moms "
       },
       "pickup_point": {
         "search_button": "Søg"
@@ -648,12 +646,7 @@
         "contact_us_lowercase": "Kontakt os",
         "missing_shipping_address_banner": {
           "contact_us": "Kontakt os"
-        },
-        "title": "Tak for dit køb",
-        "order_status_confirmed_order_local": "Vi er ved at gøre din ordre klar til at sende.",
-        "order_status_confirmed_order_local_pick_up": "Vi er ved at gøre din ordre klar til at sende.",
-        "order_status_confirmed_order_local_payment": "Vi er ved at gøre din ordre klar til at sende.",
-        "breadcrumbs_confirmed": "Godkendt"
+        }
       },
       "review": {
         "blocks": {
@@ -667,9 +660,6 @@
         },
         "shipping": {
           "shipping_options": "Se leveringsmetoder"
-        },
-        "header": {
-          "review_order": "Se din ordre"
         }
       },
       "payment": {
