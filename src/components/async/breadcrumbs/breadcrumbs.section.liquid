@@ -94,7 +94,8 @@
             </span>
             <!-- <span class="separator"> / </span> -->
             <span class="breadcrumbs__item">
-              <a class="breadcrumbs__link" href="{{ article.url }}" aria-current="page">{{ article.title }}</a>
+              {{ article.title }}
+              {% comment %} <a class="breadcrumbs__link" href="{{ article.url }}" aria-current="page">{{ article.title }}</a> {% endcomment %}
             </span>
           {%- else -%}
             <span class="breadcrumbs__item">
