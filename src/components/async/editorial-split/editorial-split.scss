@@ -199,7 +199,7 @@
 
     &--text-left {
       #{$parent}__text {
-        grid-column: 2 / 7;
+        grid-column: 2 / 8;
         grid-row: 1;
       }
 
@@ -245,7 +245,7 @@
 
       &:not(.fitted) .images {
         // According to design.
-        height: rem-calc(905px);
+        height: rem-calc(705px);
       }
     }
 

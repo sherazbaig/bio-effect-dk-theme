@@ -12,14 +12,14 @@
   {% endif %}
   data-component-handle="text-subtext"
 >
-  <div class="text-subtext critical-component-clear liquid">
+  <div class="text-subtext critical-component-clear liquid mb-2xl">
     <div class="container grid no-gap">
       {% for block in section.blocks %}
         {% if
           block.settings.title != blank or
           block.settings.subtext != blank
         %}
-          <div class="text-subtext__cell col xs-span l3-12 mt-2xl mb-3xl">
+          <div class="text-subtext__cell col xs-span l2-14 mt-2xl">
             {% if block.settings.title != blank %}
               <h2
                 id="section-title-{{ section.id }}"

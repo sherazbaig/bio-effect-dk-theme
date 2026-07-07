@@ -42,7 +42,7 @@
 
   @include mq($from: l) {
     &__cell {
-      margin-block-end: var(--spacing-10xl);
+      // margin-block-end: var(--spacing-10xl);
       margin-block-start: var(--spacing-9xl);
     }
 
