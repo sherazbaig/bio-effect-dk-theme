@@ -72,7 +72,9 @@
                 >
                   {%- liquid
                     for line_item in cart.items
+
                         render 'line-item' with class: 'cart-drawer__line-item', line_item: line_item
+
                     endfor
                   -%}
 
