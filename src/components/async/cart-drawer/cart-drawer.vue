@@ -31,7 +31,6 @@
             :key="getCartItemKey(lineItem)"
           >
             <line-item
-              v-if="!lineItem.properties?.['_gift'] && !lineItem.properties?.['_is_fgwp']"
               class="cart-drawer__line-item"
               :line-item="lineItem"
             />

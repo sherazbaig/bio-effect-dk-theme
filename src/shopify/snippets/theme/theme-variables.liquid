@@ -181,6 +181,7 @@
 
   {% assign free_samples_object = shop.metaobjects.free_samples.free_samples %}
   {% assign available_free_samples = free_samples_object.list.value | where: 'available', true %}
+  {% comment %}
   window.cnvs.fgwp = {
     gifts: [
       {% for product in available_free_samples %}
@@ -203,8 +204,9 @@
     ],
     threshold: false
   }
+  {% endcomment %}
 
-  {% comment %} window.cnvs.fgwp = {
+  window.cnvs.fgwp = {
     gifts: [
       {% for gift in shop.metaobjects.gwp.free_gift_threshold.gifts.value %}
         {% assign gift_image = gift.featured_image | default: gift.product.featured_image %}
@@ -227,5 +229,5 @@
       {% endfor %}
     ],
     threshold: {{ shop.metaobjects.gwp.free_gift_threshold.thresholds.value | json }}
-  } {% endcomment %}
+  }
 </script>
