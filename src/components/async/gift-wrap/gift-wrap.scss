@@ -1,0 +1,77 @@
+/**
+ * Styles: Gift wrap (gift-wrap)
+ * -----------------------------------------------------------------------------
+ * Base styles for gift wrap tile component.
+ *
+ */
+.gift-wrap {
+  $parent: &;
+  margin-block-end: var(--spacing-xl);
+
+  &__title {
+    color: var(--color-stone);
+    margin-block: 0 var(--spacing-m);
+  }
+
+  &__item {
+    @include button-reset;
+    background-color: var(--color-clouds);
+    border: 1px solid var(--color-cool);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-s);
+    height: auto;
+    justify-content: space-between;
+    max-width: 33%;
+    padding: var(--spacing-m);
+    position: relative;
+    text-align: start;
+
+    #{$parent}__selection-check,
+    #{$parent}__selection-square {
+      display: none;
+    }
+
+    &.selected {
+      border-color: var(--color-teal);
+    }
+  }
+
+  &__left-hand {
+    align-items: stretch;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--spacing-s);
+    width: 100%;
+  }
+
+  &__item-image-container {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  &__item-image {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  &__item-titles {
+    text-align: start;
+
+    .line-item__variant {
+      display: none;
+    }
+  }
+}
+
+.gift-wrap__item-titles .line-item__title {
+  color: rgb(65, 65, 65);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 20px;
+}

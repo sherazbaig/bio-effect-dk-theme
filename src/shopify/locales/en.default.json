@@ -109,6 +109,10 @@
       "second_threshold": "Køb for {{ amount }} og få din 2. gratis gave",
       "gifts_selected": "{{ selected }}\/{{ allowed }} gratis gaver valgt",
       "fgwp": "Gratis gave med køb"
+    },
+    "gift_wrap": {
+      "label": "Tilføj gratis gaveindpakning",
+      "heading": "Skal vi pakke dine Bioeffect julegaver smukt ind?"
     }
   },
   "collection": {

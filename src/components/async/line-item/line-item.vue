@@ -50,7 +50,7 @@
         </div>
 
         <quantity-selector
-          v-if="!lineItem.properties?._is_fgwp"
+          v-if="!isGiftItem"
           class="line-item__quantity-selector"
           :line-item="lineItem"
           :quantity="quantity"
@@ -61,7 +61,7 @@
       </div>
 
       <product-prices
-        v-if="!lineItem.properties?._is_fgwp"
+        v-if="!isGiftItem"
         class="line-item__total"
         class-price="text-mobile-p-bold"
         price-first
@@ -161,6 +161,16 @@ export default {
       }
 
       return false
+    },
+
+    /**
+     * Compute if line item is a free gift (FGWP or gift wrap).
+     * - Gift items hide the quantity selector and show a free-price treatment.
+     * @returns {Boolean}
+     */
+    isGiftItem() {
+      // eslint-disable-next-line no-underscore-dangle
+      return Boolean(this.lineItem.properties?._is_fgwp || this.lineItem.properties?._is_gift_wrap)
     },
 
     /**

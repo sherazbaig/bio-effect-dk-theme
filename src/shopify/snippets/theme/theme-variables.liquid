@@ -230,4 +230,27 @@
     ],
     threshold: {{ shop.metaobjects.gwp.free_gift_threshold.thresholds.value | json }}
   }
+
+  {% assign gift_wrap_object = shop.metaobjects.free_samples['free-gift-wrapping'] %}
+  {% assign gift_wrap_product = gift_wrap_object.list.value | where: 'available', true | first %}
+
+  window.cnvs.giftWrap = {
+    {% if gift_wrap_product %}
+      {% assign gift_wrap_variant = gift_wrap_product.selected_or_first_available_variant %}
+      {% assign gift_wrap_image = gift_wrap_product.featured_image %}
+      id: {{ gift_wrap_variant.id | json }},
+      name: {{ gift_wrap_product.title | json }},
+      price: {{ gift_wrap_variant.price | json }},
+      featured_image: {
+        alt: {{ gift_wrap_image.alt | default: gift_wrap_product.title | json }},
+        aspectRatio: {{ gift_wrap_image.aspect_ratio | json }},
+        height: {{ gift_wrap_image.height | json }},
+        id: {{ gift_wrap_image.id | json }},
+        src: {{ gift_wrap_image | img_url: '400x' | json }},
+        width: {{ gift_wrap_image.width | json }}
+      }
+    {% else %}
+      id: false
+    {% endif %}
+  }
 </script>

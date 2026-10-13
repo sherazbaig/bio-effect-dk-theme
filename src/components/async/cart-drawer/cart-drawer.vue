@@ -43,6 +43,11 @@
             :threshold="freeGiftWithPurchase.threshold"
           />
 
+          <gift-wrap
+            v-if="showGiftWrap"
+            :gift-wrap="giftWrap"
+          />
+
           <div
             class="cart-drawer__details"
             :class="{ [$class('loading')]: loading }"
@@ -133,6 +138,7 @@ import { mapActions, mapState } from 'vuex'
 import CartSummary from '~async/cart-summary/cart-summary'
 import LineItem from '~async/line-item/line-item'
 import FreeGiftWithPurchaseList from '~async/free-gift-with-purchase-list/free-gift-with-purchase-list'
+import GiftWrap from '~async/gift-wrap/gift-wrap'
 import Btn from '~global/btn/btn'
 import LoadingIndicator from '~async/loading-indicator/loading-indicator'
 import FreeShippingNotification from '~async/free-shipping-notification/free-shipping-notification'
@@ -144,6 +150,7 @@ export default {
     CartSummary,
     LineItem,
     FreeGiftWithPurchaseList,
+    GiftWrap,
     Btn,
     LoadingIndicator,
     FreeShippingNotification,
@@ -172,6 +179,8 @@ export default {
       cartMutatingStates: ['loading', 'adding', 'removing', 'clearing', 'updating'],
       freeGiftWithPurchase: false,
       showThresholdFGWP: false,
+      giftWrap: false,
+      showGiftWrap: false,
     }
   },
 
@@ -268,6 +277,8 @@ export default {
   },
 
   mounted() {
+    this.setGiftWrapData()
+
     if (!this.overlay.isActive) {
       return
     }
@@ -328,6 +339,18 @@ export default {
      */
     shopifySectionDeselect() {
       this.overlay.close()
+    },
+
+    /**
+     * Read gift wrap variant data injected by Liquid into window.cnvs.
+     */
+    setGiftWrapData() {
+      if (!window.cnvs?.giftWrap?.id) {
+        return
+      }
+
+      this.giftWrap = window.cnvs.giftWrap
+      this.showGiftWrap = true
     },
 
     setThresholdGiftData() {
@@ -477,13 +500,15 @@ export default {
        */
       const nonGiftItems = this.cart.items.filter((item) => {
         // eslint-disable-next-line no-underscore-dangle
-        return !item.properties?._is_fgwp && !item.properties?._gift
+        return !item.properties?._is_fgwp && !item.properties?._gift &&
+          !item.properties?._is_gift_wrap
       })
 
       if (nonGiftItems.length === 0) {
         const orphanGifts = this.cart.items.filter((item) => {
           // eslint-disable-next-line no-underscore-dangle
-          return item.properties?._is_fgwp && !item.properties?._parent_variant
+          return (item.properties?._is_fgwp && !item.properties?._parent_variant) ||
+            item.properties?._is_gift_wrap
         })
 
         if (orphanGifts.length) {
