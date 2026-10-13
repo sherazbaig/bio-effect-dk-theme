@@ -79,10 +79,7 @@
                   {{ 'customers.addresses.default' | t }}
                 </h2>
 
-                {% render 'address-block' with
-                  address: customer.default_address,
-                  form_id: customer.default_address.id,
-                %}
+                {% render 'address-block' with address, address: customer.default_address, form_id: customer.default_address.id %}
               </div>
 
               {% render 'divider-line' %}
@@ -100,19 +97,14 @@
                       continue
                     endif
 
-                    render 'address-block' with address: address, form_id: address.id, set_default_address: true
+                    render 'address-block' with address, address: address, form_id: address.id, set_default_address: true
                   endfor
                 -%}
               </div>
 
             {% endif %}
 
-            {% render 'btn' with
-              attributes: 'js-addresses="add"',
-              class: 'customers-addresses__add',
-              label: add_new_address_string,
-              type: 'button',
-            %}
+            {% render 'btn' with attributes, attributes: 'js-addresses="add"', class: 'customers-addresses__add', label: add_new_address_string, type: 'button' %}
           </div>
         </div>
 
@@ -126,7 +118,7 @@
           js-addresses="formContainer"
         >
           {%- liquid
-            render 'address-form' with address: customer.new_address, form_id: 'new'
+            render 'address-form' with address, address: customer.new_address, form_id: 'new'
 
             for address in customer.addresses
               assign default_address = false
@@ -135,7 +127,7 @@
                 assign default_address = true
               endif
 
-              render 'address-form' with address: address, default_address: default_address, form_id: address.id
+              render 'address-form' with address, address: address, default_address: default_address, form_id: address.id
             endfor
           -%}
         </div>
@@ -161,20 +153,9 @@
       </p>
 
       <div class="customers-addresses__modal-buttons">
-        {% render 'btn' with
-          attributes: 'js-addresses="defaultConfirm"',
-          class: 'customers-addresses__modal-confirm',
-          label: default_confirm_string,
-          type: 'button',
-        %}
+        {% render 'btn' with attributes, attributes: 'js-addresses="defaultConfirm"', class: 'customers-addresses__modal-confirm', label: default_confirm_string, type: 'button' %}
 
-        {% render 'btn' with
-          attributes: 'js-addresses="defaultCancel"',
-          class: 'customers-addresses__modal-cancel',
-          label: default_cancel_string,
-          modifiers: 'secondary block center',
-          type: 'button',
-        %}
+        {% render 'btn' with attributes, attributes: 'js-addresses="defaultCancel"', class: 'customers-addresses__modal-cancel', label: default_cancel_string, modifiers: 'secondary block center', type: 'button' %}
       </div>
     </template>
   </overlay>
@@ -197,20 +178,9 @@
       </p>
 
       <div class="customers-addresses__modal-buttons">
-        {% render 'btn' with
-          attributes: 'js-addresses="deleteConfirm"',
-          class: 'customers-addresses__modal-confirm',
-          label: delete_confirm_string,
-          type: 'button',
-        %}
+        {% render 'btn' with attributes, attributes: 'js-addresses="deleteConfirm"', class: 'customers-addresses__modal-confirm', label: delete_confirm_string, type: 'button' %}
 
-        {% render 'btn' with
-          attributes: 'js-addresses="deleteCancel"',
-          class: 'customers-addresses__modal-cancel',
-          label: delete_cancel_string,
-          modifiers: 'secondary block center',
-          type: 'button',
-        %}
+        {% render 'btn' with attributes, attributes: 'js-addresses="deleteCancel"', class: 'customers-addresses__modal-cancel', label: delete_cancel_string, modifiers: 'secondary block center', type: 'button' %}
       </div>
     </template>
   </overlay>
@@ -227,3 +197,89 @@
 </section>
 
 {% schema 'customers-addresses' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'address-block' with
+                      address: customer.default_address,
+                      form_id: customer.default_address.id,
+                    %}
+  to: "{% render 'address-block' with address, address: customer.default_address,
+    form_id: customer.default_address.id %}"
+  position: 3159..3273
+- from: "                    render 'address-block' with address: address, form_id:
+    address.id, set_default_address: true"
+  to: "                    render 'address-block' with address, address: address,
+    form_id: address.id, set_default_address: true"
+  position: 3821..3942
+- from: |-
+    {% render 'btn' with
+                  attributes: 'js-addresses="add"',
+                  class: 'customers-addresses__add',
+                  label: add_new_address_string,
+                  type: 'button',
+                %}
+  to: '{% render ''btn'' with attributes, attributes: ''js-addresses="add"'', class:
+    ''customers-addresses__add'', label: add_new_address_string, type: ''button''
+    %}'
+  position: 4047..4197
+- from: 'render ''address-form'' with address: customer.new_address, form_id: ''new'''
+  to: 'render ''address-form'' with address, address: customer.new_address, form_id:
+    ''new'''
+  position: 4626..4707
+- from: "              render 'address-form' with address: address, default_address:
+    default_address, form_id: address.id"
+  to: "              render 'address-form' with address, address: address, default_address:
+    default_address, form_id: address.id"
+  position: 4921..5042
+- from: |-
+    {% render 'btn' with
+              attributes: 'js-addresses="defaultConfirm"',
+              class: 'customers-addresses__modal-confirm',
+              label: default_confirm_string,
+              type: 'button',
+            %}
+  to: '{% render ''btn'' with attributes, attributes: ''js-addresses="defaultConfirm"'',
+    class: ''customers-addresses__modal-confirm'', label: default_confirm_string,
+    type: ''button'' %}'
+  position: 5880..6051
+- from: |-
+    {% render 'btn' with
+              attributes: 'js-addresses="defaultCancel"',
+              class: 'customers-addresses__modal-cancel',
+              label: default_cancel_string,
+              modifiers: 'secondary block center',
+              type: 'button',
+            %}
+  to: '{% render ''btn'' with attributes, attributes: ''js-addresses="defaultCancel"'',
+    class: ''customers-addresses__modal-cancel'', label: default_cancel_string, modifiers:
+    ''secondary block center'', type: ''button'' %}'
+  position: 6061..6266
+- from: |-
+    {% render 'btn' with
+              attributes: 'js-addresses="deleteConfirm"',
+              class: 'customers-addresses__modal-confirm',
+              label: delete_confirm_string,
+              type: 'button',
+            %}
+  to: '{% render ''btn'' with attributes, attributes: ''js-addresses="deleteConfirm"'',
+    class: ''customers-addresses__modal-confirm'', label: delete_confirm_string, type:
+    ''button'' %}'
+  position: 7052..7221
+- from: |-
+    {% render 'btn' with
+              attributes: 'js-addresses="deleteCancel"',
+              class: 'customers-addresses__modal-cancel',
+              label: delete_cancel_string,
+              modifiers: 'secondary block center',
+              type: 'button',
+            %}
+  to: '{% render ''btn'' with attributes, attributes: ''js-addresses="deleteCancel"'',
+    class: ''customers-addresses__modal-cancel'', label: delete_cancel_string, modifiers:
+    ''secondary block center'', type: ''button'' %}'
+  position: 7231..7434
+{% endcomment %}

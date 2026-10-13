@@ -51,7 +51,7 @@
     assign edit_attributes = 'data-form-id="#" js-addresses="edit"' | replace: '#', form_id
 
     capture edit_icon
-      render 'icon-general' with icon: 'edit'
+      render 'icon-general' with icon, icon: 'edit'
     endcapture
   endif
 
@@ -67,13 +67,38 @@
   {% if form_id != blank %}
     <div class="address-block__actions mt-m">
       {%- liquid
-        render 'btn' with attributes: edit_attributes, label: edit_address_string, modifiers: 'text', type: 'button', url: edit_address_url, class_label: 'text-tags'
+        render 'btn' with attributes, attributes: edit_attributes, label: edit_address_string, modifiers: 'text', type: 'button', url: edit_address_url, class_label: 'text-tags'
 
         unless overview
-          render 'btn' with attributes: default_attributes, label: default_address_string, modifiers: 'text', type: 'button', class_label: 'text-tags'
-          render 'btn' with attributes: delete_attributes, label: delete_address_string, modifiers: 'text', type: 'button', class_label: 'text-tags'
+          render 'btn' with attributes, attributes: default_attributes, label: default_address_string, modifiers: 'text', type: 'button', class_label: 'text-tags'
+          render 'btn' with attributes, attributes: delete_attributes, label: delete_address_string, modifiers: 'text', type: 'button', class_label: 'text-tags'
         endunless
       -%}
     </div>
   {% endif %}
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "      render 'icon-general' with icon: 'edit'"
+  to: "      render 'icon-general' with icon, icon: 'edit'"
+  position: 2269..2320
+- from: 'render ''btn'' with attributes: edit_attributes, label: edit_address_string,
+    modifiers: ''text'', type: ''button'', url: edit_address_url, class_label: ''text-tags'''
+  to: 'render ''btn'' with attributes, attributes: edit_attributes, label: edit_address_string,
+    modifiers: ''text'', type: ''button'', url: edit_address_url, class_label: ''text-tags'''
+  position: 2840..3009
+- from: "          render 'btn' with attributes: default_attributes, label: default_address_string,
+    modifiers: 'text', type: 'button', class_label: 'text-tags'"
+  to: "          render 'btn' with attributes, attributes: default_attributes, label:
+    default_address_string, modifiers: 'text', type: 'button', class_label: 'text-tags'"
+  position: 3035..3197
+- from: "          render 'btn' with attributes: delete_attributes, label: delete_address_string,
+    modifiers: 'text', type: 'button', class_label: 'text-tags'"
+  to: "          render 'btn' with attributes, attributes: delete_attributes, label:
+    delete_address_string, modifiers: 'text', type: 'button', class_label: 'text-tags'"
+  position: 3198..3358
+{% endcomment %}

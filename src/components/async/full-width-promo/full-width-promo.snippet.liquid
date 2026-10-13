@@ -31,13 +31,7 @@
 -%}
 
 <div class="full-width-promo liquid full-width {{ loading_class }}">
-  {% render 'art-direction' with
-    image_desktop: image_desktop,
-    image: image_mobile,
-    alt: image_desktop.alt,
-    ratio: '343:283',
-    ratio_desktop: '1170:541'
-  %}
+  {% render 'art-direction' with image_desktop, image_desktop: image_desktop, image: image_mobile, alt: image_desktop.alt, ratio: '343:283', ratio_desktop: '1170:541' %}
 
   <div class="
     full-width-promo__copy
@@ -57,11 +51,35 @@
     {% endif %}
 
     {% if loading_animation or cta_url and cta_text %}
-      {% render 'btn' with
-        class: 'full-width-promo__cta text-button'
-        label: cta_text,
-        url: cta_url,
-      %}
+      {% render 'btn' with class, class: 'full-width-promo__cta text-button', label: cta_text, url: cta_url %}
     {% endif %}
   </div>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'art-direction' with
+        image_desktop: image_desktop,
+        image: image_mobile,
+        alt: image_desktop.alt,
+        ratio: '343:283',
+        ratio_desktop: '1170:541'
+      %}
+  to: "{% render 'art-direction' with image_desktop, image_desktop: image_desktop,
+    image: image_mobile, alt: image_desktop.alt, ratio: '343:283', ratio_desktop:
+    '1170:541' %}"
+  position: 1163..1330
+- from: |-
+    {% render 'btn' with
+            class: 'full-width-promo__cta text-button'
+            label: cta_text,
+            url: cta_url,
+          %}
+  to: "{% render 'btn' with class, class: 'full-width-promo__cta text-button', label:
+    cta_text, url: cta_url %}"
+  position: 1839..1943
+{% endcomment %}

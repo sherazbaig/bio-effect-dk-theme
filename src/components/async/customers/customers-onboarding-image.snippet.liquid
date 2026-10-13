@@ -12,12 +12,25 @@
 
 <div class="customers__onboarding-image-column">
   <div class="customers__onboarding-image">
-    {% render 'responsive-image' with
-      image: settings.customers_onboarding_image,
-      lazyload: false,
-      min_max: '350-1200',
-      padding: false,
-      sizes: '(min-width: 1024px) 50vw, 100vw',
-    %}
+    {% render 'responsive-image' with image, image: settings.customers_onboarding_image, lazyload: false, min_max: '350-1200', padding: false, sizes: '(min-width: 1024px) 50vw, 100vw' %}
   </div>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+          image: settings.customers_onboarding_image,
+          lazyload: false,
+          min_max: '350-1200',
+          padding: false,
+          sizes: '(min-width: 1024px) 50vw, 100vw',
+        %}
+  to: "{% render 'responsive-image' with image, image: settings.customers_onboarding_image,
+    lazyload: false, min_max: '350-1200', padding: false, sizes: '(min-width: 1024px)
+    50vw, 100vw' %}"
+  position: 471..653
+{% endcomment %}

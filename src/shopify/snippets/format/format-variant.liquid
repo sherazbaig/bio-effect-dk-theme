@@ -17,7 +17,7 @@
   endunless
 
   capture image
-    render 'format-image' with image: variant.featured_image
+    render 'format-image' with image, image: variant.featured_image
   endcapture
 %}
 
@@ -30,12 +30,12 @@
     endif
   -%}
   available: {{ variant.available | json | escape }},
-  compareAtPrice: {% render 'format-price' with price: 'compare_at_price', object: variant %},
+  compareAtPrice: {% render 'format-price' with price, price: 'compare_at_price', object: variant %},
   id: {{ variant.id }},
   image: {{ image }},
   inventory: {{ variant.inventory_quantity | json | escape  }},
   liquid: {{ true | json | escape }},
-  price: {% render 'format-price' with price: 'price', object: variant %},
+  price: {% render 'format-price' with price, price: 'price', object: variant %},
   selectedOptions: [
     {%- for option in variant.options -%}
       {
@@ -50,3 +50,21 @@
 {%- endcapture -%}
 
 { {{ data | strip | strip_newlines }} }{%- if forloop and forloop.last == false -%},{%- endif -%}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "    render 'format-image' with image: variant.featured_image"
+  to: "    render 'format-image' with image, image: variant.featured_image"
+  position: 638..705
+- from: "{% render 'format-price' with price: 'compare_at_price', object: variant
+    %}"
+  to: "{% render 'format-price' with price, price: 'compare_at_price', object: variant
+    %}"
+  position: 948..1030
+- from: "{% render 'format-price' with price: 'price', object: variant %}"
+  to: "{% render 'format-price' with price, price: 'price', object: variant %}"
+  position: 1189..1260
+{% endcomment %}

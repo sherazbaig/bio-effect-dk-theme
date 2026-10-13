@@ -14,7 +14,7 @@
   content: {{ article.content | strip_html | strip_newlines | json | escape }},
   excerpt: {{ article.excerpt_or_content | strip_html | newline_to_br | truncatewords: 16, '...' | json | escape }},
   handle: {{ article.handle | json | escape }},
-  image: {% render 'format-image' with image: article.image %},
+  image: {% render 'format-image' with image, image: article.image %},
   liquid: {{ true | json | escape }},
   tags: {{ article.tags | json | escape }},
   publishedAt: {{ article.published_at | date: format: 'day_month_shortened_year' | json | escape }},
@@ -23,3 +23,13 @@
 {%- endcapture -%}
 
 { {{ data | strip | strip_newlines }} }{%- if forloop and forloop.last == false -%},{%- endif -%}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'format-image' with image: article.image %}"
+  to: "{% render 'format-image' with image, image: article.image %}"
+  position: 765..825
+{% endcomment %}

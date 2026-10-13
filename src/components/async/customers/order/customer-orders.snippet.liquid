@@ -18,17 +18,13 @@
       {{ 'customers.order_card.order_number' | t: order_number: order.order_number }}
     </div>
 
-    {% render 'icon-directional-navigation' with icon: 'outlined-plus' %}
-    {% render 'icon-directional-navigation' with icon: 'outlined-minus' %}
+    {% render 'icon-directional-navigation' with icon, icon: 'outlined-plus' %}
+    {% render 'icon-directional-navigation' with icon, icon: 'outlined-minus' %}
   </div>
 
   <div class="customers-account__accordion-answer">
     {% for line_item in order.line_items %}
-      {% render 'item-card' with
-        class: 'customers-order__item-card',
-        line_item: line_item,
-        line_quantity: line_item.quantity
-      %}
+      {% render 'item-card' with class, class: 'customers-order__item-card', line_item: line_item, line_quantity: line_item.quantity %}
     {% endfor %}
 
     <div class="customers-account__order-overview-wrapper mb-s">
@@ -126,3 +122,25 @@
     </div>
   </div>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'icon-directional-navigation' with icon: 'outlined-plus' %}"
+  to: "{% render 'icon-directional-navigation' with icon, icon: 'outlined-plus' %}"
+  position: 724..799
+- from: "{% render 'icon-directional-navigation' with icon: 'outlined-minus' %}"
+  to: "{% render 'icon-directional-navigation' with icon, icon: 'outlined-minus' %}"
+  position: 804..880
+- from: |-
+    {% render 'item-card' with
+            class: 'customers-order__item-card',
+            line_item: line_item,
+            line_quantity: line_item.quantity
+          %}
+  to: "{% render 'item-card' with class, class: 'customers-order__item-card', line_item:
+    line_item, line_quantity: line_item.quantity %}"
+  position: 993..1122
+{% endcomment %}

@@ -10,7 +10,7 @@
 {% assign slide_count_to_show = 0 %}
 
 {% capture pagination_icon %}
-  {% render 'icon-general' with icon: 'circle' %}
+  {% render 'icon-general' with icon, icon: 'circle' %}
 {% endcapture %}
 
 <section
@@ -82,15 +82,7 @@
                       }}
 
                     {% else %}
-                      {% render 'art-direction' with
-                        class: 'hero-banner__image',
-                        image: block.settings.mobile_image,
-                        image_desktop: block.settings.desktop_image,
-                        padding: true,
-                        lazyload: false,
-                        ratio: '1:1',
-                        ratio_desktop: '1442:768',
-                      %}
+                      {% render 'art-direction' with class, class: 'hero-banner__image', image: block.settings.mobile_image, image_desktop: block.settings.desktop_image, padding: true, lazyload: false, ratio: '1:1', ratio_desktop: '1442:768' %}
                     {% endif %}
                   </div>
 
@@ -115,15 +107,7 @@
                       }}
 
                     {% else %}
-                      {% render 'art-direction' with
-                        class: 'hero-banner__image',
-                        image: block.settings.mobile_image,
-                        image_desktop: block.settings.desktop_image,
-                        padding: true,
-                        lazyload: false,
-                        ratio: '1:1',
-                        ratio_desktop: '1442:768',
-                      %}
+                      {% render 'art-direction' with class, class: 'hero-banner__image', image: block.settings.mobile_image, image_desktop: block.settings.desktop_image, padding: true, lazyload: false, ratio: '1:1', ratio_desktop: '1442:768' %}
                     {% endif %}
                   </div>
 
@@ -182,13 +166,7 @@
                       block.settings.cta_url != blank and
                       block.settings.cta_text != blank
                     %}
-                      {% render 'btn' with
-                        class: 'hero-banner__button third-entering-item no-drag',
-                        label: block.settings.cta_text,
-                        url: block.settings.cta_url,
-                        modifiers: 'primary',
-                        show_icon: false,
-                      %}
+                      {% render 'btn' with class, class: 'hero-banner__button third-entering-item no-drag', label: block.settings.cta_text, url: block.settings.cta_url, modifiers: 'primary', show_icon: false %}
                     {% endif %}
                   </div>
                 </li>
@@ -207,7 +185,7 @@
             aria-label="{{ 'accessibility.carousel.previous' | t }}"
             class="splide__arrow splide__arrow--prev"
           >
-            {% render 'icon-directional-navigation' with icon: 'arrow', direction: 'left' %}
+            {% render 'icon-directional-navigation' with icon, icon: 'arrow', direction: 'left' %}
           </button>
         </div>
 
@@ -216,7 +194,7 @@
             aria-label="{{ 'accessibility.carousel.next' | t }}"
             class="splide__arrow splide__arrow--next"
           >
-            {% render 'icon-directional-navigation' with icon: 'arrow', direction: 'right' %}
+            {% render 'icon-directional-navigation' with icon, icon: 'arrow', direction: 'right' %}
           </button>
         </div>
       </div>
@@ -258,3 +236,63 @@
 </section>
 
 {% schema 'hero-banner' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'icon-general' with icon: 'circle' %}"
+  to: "{% render 'icon-general' with icon, icon: 'circle' %}"
+  position: 449..502
+- from: |-
+    {% render 'art-direction' with
+                            class: 'hero-banner__image',
+                            image: block.settings.mobile_image,
+                            image_desktop: block.settings.desktop_image,
+                            padding: true,
+                            lazyload: false,
+                            ratio: '1:1',
+                            ratio_desktop: '1442:768',
+                          %}
+  to: "{% render 'art-direction' with class, class: 'hero-banner__image', image: block.settings.mobile_image,
+    image_desktop: block.settings.desktop_image, padding: true, lazyload: false, ratio:
+    '1:1', ratio_desktop: '1442:768' %}"
+  position: 3336..3558
+- from: |-
+    {% render 'art-direction' with
+                            class: 'hero-banner__image',
+                            image: block.settings.mobile_image,
+                            image_desktop: block.settings.desktop_image,
+                            padding: true,
+                            lazyload: false,
+                            ratio: '1:1',
+                            ratio_desktop: '1442:768',
+                          %}
+  to: "{% render 'art-direction' with class, class: 'hero-banner__image', image: block.settings.mobile_image,
+    image_desktop: block.settings.desktop_image, padding: true, lazyload: false, ratio:
+    '1:1', ratio_desktop: '1442:768' %}"
+  position: 4564..4786
+- from: |-
+    {% render 'btn' with
+                            class: 'hero-banner__button third-entering-item no-drag',
+                            label: block.settings.cta_text,
+                            url: block.settings.cta_url,
+                            modifiers: 'primary',
+                            show_icon: false,
+                          %}
+  to: "{% render 'btn' with class, class: 'hero-banner__button third-entering-item
+    no-drag', label: block.settings.cta_text, url: block.settings.cta_url, modifiers:
+    'primary', show_icon: false %}"
+  position: 7011..7199
+- from: "{% render 'icon-directional-navigation' with icon: 'arrow', direction: 'left'
+    %}"
+  to: "{% render 'icon-directional-navigation' with icon, icon: 'arrow', direction:
+    'left' %}"
+  position: 7673..7759
+- from: "{% render 'icon-directional-navigation' with icon: 'arrow', direction: 'right'
+    %}"
+  to: "{% render 'icon-directional-navigation' with icon, icon: 'arrow', direction:
+    'right' %}"
+  position: 8023..8110
+{% endcomment %}

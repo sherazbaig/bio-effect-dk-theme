@@ -34,7 +34,7 @@
   endif
 
   capture back_to_icon
-    render 'icon-directional-navigation' with icon: 'arrow', direction: 'left'
+    render 'icon-directional-navigation' with icon, icon: 'arrow', direction: 'left'
   endcapture
 
   assign back_to_string = 'customers.header.back_to' | t: page: back_to_page
@@ -107,3 +107,14 @@
     {% endfor %}
   </ul>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "    render 'icon-directional-navigation' with icon: 'arrow', direction: 'left'"
+  to: "    render 'icon-directional-navigation' with icon, icon: 'arrow', direction:
+    'left'"
+  position: 1196..1280
+{% endcomment %}

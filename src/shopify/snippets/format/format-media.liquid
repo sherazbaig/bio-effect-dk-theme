@@ -23,11 +23,11 @@
     {%- when 'external_video' -%}
       embedUrl: {{ media | external_video_url | json | escape }},
       host: {{ media.host | json | escape }},
-      previewImage: {% render 'format-image' with image: media.preview_image %}
+      previewImage: {% render 'format-image' with image, image: media.preview_image %}
     {%- when 'image' -%}
-      image: {% render 'format-image' with image: media.image %}
+      image: {% render 'format-image' with image, image: media.image %}
     {%- when 'model' -%}
-      previewImage: {% render 'format-image' with image: media.preview_image %},
+      previewImage: {% render 'format-image' with image, image: media.preview_image %},
       sources: [
         {%- for model_source in media.sources -%}
           {
@@ -39,9 +39,28 @@
         {%- endfor -%}
       ]
     {%- when 'video' -%}
-      previewImage: {% render 'format-image' with image: media.preview_image %},
+      previewImage: {% render 'format-image' with image, image: media.preview_image %},
       sources: [{% render 'format-video-source' for media.sources as video_source %}]
   {% endcase %}
 {%- endcapture -%}
 
 { {{ data | strip | strip_newlines }} }{%- if forloop and forloop.last == false -%},{%- endif -%}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'format-image' with image: media.preview_image %}"
+  to: "{% render 'format-image' with image, image: media.preview_image %}"
+  position: 988..1054
+- from: "{% render 'format-image' with image: media.image %}"
+  to: "{% render 'format-image' with image, image: media.image %}"
+  position: 1093..1151
+- from: "{% render 'format-image' with image: media.preview_image %}"
+  to: "{% render 'format-image' with image, image: media.preview_image %}"
+  position: 1197..1263
+- from: "{% render 'format-image' with image: media.preview_image %}"
+  to: "{% render 'format-image' with image, image: media.preview_image %}"
+  position: 1712..1778
+{% endcomment %}

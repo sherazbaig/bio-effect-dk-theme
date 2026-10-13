@@ -60,7 +60,17 @@
       disabled
     >
       <span class="visually-hidden">{{ 'general.newsletter.submit' | t }}</span>
-      {% render 'icon-directional-navigation' with icon: 'link-arrow' %}
+      {% render 'icon-directional-navigation' with icon, icon: 'link-arrow' %}
     </button>
   </div>
 </form>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'icon-directional-navigation' with icon: 'link-arrow' %}"
+  to: "{% render 'icon-directional-navigation' with icon, icon: 'link-arrow' %}"
+  position: 1638..1710
+{% endcomment %}

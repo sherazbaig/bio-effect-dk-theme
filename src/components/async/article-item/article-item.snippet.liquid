@@ -25,10 +25,7 @@
 <div class="article-item">
   <a href="{{ article.url }}">
     <div class="article-item__image mb-l mb-xl-desktop">
-      {% render 'responsive-image' with
-        image: article.image,
-        ratio: '10:11',
-      %}
+      {% render 'responsive-image' with image, image: article.image, ratio: '10:11' %}
     </div>
   </a>
 
@@ -61,3 +58,18 @@
     </div>
   </a>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+            image: article.image,
+            ratio: '10:11',
+          %}
+  to: "{% render 'responsive-image' with image, image: article.image, ratio: '10:11'
+    %}"
+  position: 892..972
+{% endcomment %}

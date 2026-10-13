@@ -15,15 +15,35 @@
     description: {{ collection.description | json | escape }},
     handle: {{ collection.handle | json | escape }},
     id: {{ collection.id | json | escape }},
-    image: {% render 'format-image' with image: collection.image %},
+    image: {% render 'format-image' with image, image: collection.image %},
     liquid: {{ true | json | escape }},
     {%- if page_info -%}
-      pageInfo: {% render 'format-paginate' with collection: collection, paginate: paginate %},
+      pageInfo: {% render 'format-paginate' with collection, collection: collection, paginate: paginate %},
     {%- endif -%}
-    products: [{% render 'format-product' for collection.products as product, with collection: collection, full_data: false %}],
+    products: [{% render 'format-product' for collection.products as product, collection: collection, full_data: false %}],
     title: {{ collection.title | json | escape }},
     url: {{ collection.url | json | escape }}
   {%- endpaginate -%}
 {%- endcapture -%}
 
 { {{ data | strip | strip_newlines }} }
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'format-image' with image: collection.image %}"
+  to: "{% render 'format-image' with image, image: collection.image %}"
+  position: 833..896
+- from: "{% render 'format-paginate' with collection: collection, paginate: paginate
+    %}"
+  to: "{% render 'format-paginate' with collection, collection: collection, paginate:
+    paginate %}"
+  position: 979..1069
+- from: "{% render 'format-product' for collection.products as product, with collection:
+    collection, full_data: false %}"
+  to: "{% render 'format-product' for collection.products as product, collection:
+    collection, full_data: false %}"
+  position: 1104..1210
+{% endcomment %}

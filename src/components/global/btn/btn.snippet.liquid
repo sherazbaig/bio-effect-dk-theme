@@ -20,7 +20,7 @@
 {% endcomment %}
 {%- liquid
   capture default_icon
-    render 'icon-directional-navigation' with icon: 'arrow', direction: 'right'
+    render 'icon-directional-navigation' with icon, icon: 'arrow', direction: 'right'
   endcapture
 
   assign attributes = attributes | split: ' '
@@ -103,3 +103,14 @@
     </span>
   {% endif %}
 </{{ element }}>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "    render 'icon-directional-navigation' with icon: 'arrow', direction: 'right'"
+  to: "    render 'icon-directional-navigation' with icon, icon: 'arrow', direction:
+    'right'"
+  position: 1093..1178
+{% endcomment %}

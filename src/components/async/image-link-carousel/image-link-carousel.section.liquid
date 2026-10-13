@@ -12,11 +12,11 @@
   assign background_colour = section.settings.background_colour
 
   capture icon_arrow_left
-    render 'icon-directional-navigation' with icon: 'arrow', direction: 'left'
+    render 'icon-directional-navigation' with icon, icon: 'arrow', direction: 'left'
   endcapture
 
   capture icon_arrow_right
-    render 'icon-directional-navigation' with icon: 'arrow', direction: 'right'
+    render 'icon-directional-navigation' with icon, icon: 'arrow', direction: 'right'
   endcapture
 -%}
 
@@ -65,10 +65,7 @@
                     <a class="image-link-carousel__link" href="{{ block.settings.url }}">
                   {% endif %}
                     <div class="image-link-carousel__image">
-                      {% render 'responsive-image' with
-                        image: block.settings.image,
-                        ratio: '1:1',
-                      %}
+                      {% render 'responsive-image' with image, image: block.settings.image, ratio: '1:1' %}
                     </div>
 
                     <h3 class="image-link-carousel__name text-center text-h6 text-h5-desktop">{{ block.settings.name }}</h3>
@@ -91,23 +88,9 @@
             {% endif %}
 
             <div class="splide__arrows">
-              {% render 'btn' with
-                class: 'splide__arrow splide__arrow--prev',
-                icon: icon_arrow_left,
-                label: previous_string,
-                modifiers: 'light reversed text',
-                show_icon: true,
-                type: 'button',
-              %}
+              {% render 'btn' with class, class: 'splide__arrow splide__arrow--prev', icon: icon_arrow_left, label: previous_string, modifiers: 'light reversed text', show_icon: true, type: 'button' %}
 
-              {% render 'btn' with
-                class: 'splide__arrow splide__arrow--next',
-                icon: icon_arrow_right,
-                label: next_string,
-                modifiers: 'light text',
-                show_icon: true,
-                type: 'button',
-              %}
+              {% render 'btn' with class, class: 'splide__arrow splide__arrow--next', icon: icon_arrow_right, label: next_string, modifiers: 'light text', show_icon: true, type: 'button' %}
             </div>
           </div>
         </div>
@@ -129,3 +112,52 @@
 
 {% schema 'image-link-carousel' %}
 
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "    render 'icon-directional-navigation' with icon: 'arrow', direction: 'left'"
+  to: "    render 'icon-directional-navigation' with icon, icon: 'arrow', direction:
+    'left'"
+  position: 578..662
+- from: "    render 'icon-directional-navigation' with icon: 'arrow', direction: 'right'"
+  to: "    render 'icon-directional-navigation' with icon, icon: 'arrow', direction:
+    'right'"
+  position: 704..789
+- from: |-
+    {% render 'responsive-image' with
+                            image: block.settings.image,
+                            ratio: '1:1',
+                          %}
+  to: "{% render 'responsive-image' with image, image: block.settings.image, ratio:
+    '1:1' %}"
+  position: 2298..2383
+- from: |-
+    {% render 'btn' with
+                    class: 'splide__arrow splide__arrow--prev',
+                    icon: icon_arrow_left,
+                    label: previous_string,
+                    modifiers: 'light reversed text',
+                    show_icon: true,
+                    type: 'button',
+                  %}
+  to: "{% render 'btn' with class, class: 'splide__arrow splide__arrow--prev', icon:
+    icon_arrow_left, label: previous_string, modifiers: 'light reversed text', show_icon:
+    true, type: 'button' %}"
+  position: 3181..3368
+- from: |-
+    {% render 'btn' with
+                    class: 'splide__arrow splide__arrow--next',
+                    icon: icon_arrow_right,
+                    label: next_string,
+                    modifiers: 'light text',
+                    show_icon: true,
+                    type: 'button',
+                  %}
+  to: "{% render 'btn' with class, class: 'splide__arrow splide__arrow--next', icon:
+    icon_arrow_right, label: next_string, modifiers: 'light text', show_icon: true,
+    type: 'button' %}"
+  position: 3384..3559
+{% endcomment %}

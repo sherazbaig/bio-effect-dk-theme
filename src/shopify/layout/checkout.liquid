@@ -22,6 +22,8 @@
   lang="{{ locale }}"
 >
   <head>
+  {% comment %}Loads Shogun Analytics. Removing this will disrupt analytics data collection.{% endcomment %}
+  <script type="text/javascript" async src="https://na.shgcdn3.com/pixel-collector.js"></script>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1, height=device-height, minimum-scale=1" name="viewport">
     <meta content="origin" name="referrer">
@@ -119,5 +121,15 @@
     Theme scripts.
   ----------------------------------------------------------------------------
   {% endcomment %}
-  {% render 'theme-scripts' with layout: 'checkout' %}
+  {% render 'theme-scripts' with layout, layout: 'checkout' %}
 </html>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'theme-scripts' with layout: 'checkout' %}"
+  to: "{% render 'theme-scripts' with layout, layout: 'checkout' %}"
+  position: 3642..3702
+{% endcomment %}

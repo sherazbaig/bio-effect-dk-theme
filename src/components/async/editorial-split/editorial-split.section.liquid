@@ -14,11 +14,11 @@
   assign is_autoplay = false
 
   capture play_icon
-    render 'icon-general' with icon: 'play'
+    render 'icon-general' with icon, icon: 'play'
   endcapture
 
   capture pause_icon
-    render 'icon-general' with icon: 'pause'
+    render 'icon-general' with icon, icon: 'pause'
   endcapture
 %}
 
@@ -93,13 +93,7 @@
                 {% endif %}
 
               {% elsif block.settings.content_image %}
-                {% render 'responsive-image' with
-                  image: block.settings.content_image,
-                  alt: block.settings.content_image.alt,
-                  padding: false,
-                  min_max: '350-900',
-                  sizes: '(min-width: 1024px) 900px, 350px',
-                %}
+                {% render 'responsive-image' with image, image: block.settings.content_image, alt: block.settings.content_image.alt, padding: false, min_max: '350-900', sizes: '(min-width: 1024px) 900px, 350px' %}
               {% endif %}
             </div>
           {%endif%}
@@ -122,13 +116,7 @@
               }}
 
             {% elsif block.settings.main_image %}
-              {% render 'responsive-image' with
-                image: block.settings.main_image,
-                alt: block.settings.main_image.alt,
-                padding: false,
-                min_max: '350-1200',
-                sizes: '(min-width: 1024px) 1200px, 350px',
-              %}
+              {% render 'responsive-image' with image, image: block.settings.main_image, alt: block.settings.main_image.alt, padding: false, min_max: '350-1200', sizes: '(min-width: 1024px) 1200px, 350px' %}
             {% endif %}
           </div>
 
@@ -168,13 +156,7 @@
                 block.settings.cta_text != blank and
                 block.settings.cta_url != blank
               %}
-                {% render 'btn' with
-                  class: 'editorial-split__button',
-                  label: block.settings.cta_text,
-                  url: block.settings.cta_url,
-                  modifiers: 'primary',
-                  show_icon: false,
-                %}
+                {% render 'btn' with class, class: 'editorial-split__button', label: block.settings.cta_text, url: block.settings.cta_url, modifiers: 'primary', show_icon: false %}
               {% endif %}
             </div>
           </div>
@@ -196,3 +178,51 @@
 </section>
 
 {% schema 'editorial-split' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "    render 'icon-general' with icon: 'play'"
+  to: "    render 'icon-general' with icon, icon: 'play'"
+  position: 612..661
+- from: "    render 'icon-general' with icon: 'pause'"
+  to: "    render 'icon-general' with icon, icon: 'pause'"
+  position: 697..747
+- from: |-
+    {% render 'responsive-image' with
+                      image: block.settings.content_image,
+                      alt: block.settings.content_image.alt,
+                      padding: false,
+                      min_max: '350-900',
+                      sizes: '(min-width: 1024px) 900px, 350px',
+                    %}
+  to: "{% render 'responsive-image' with image, image: block.settings.content_image,
+    alt: block.settings.content_image.alt, padding: false, min_max: '350-900', sizes:
+    '(min-width: 1024px) 900px, 350px' %}"
+  position: 3094..3291
+- from: |-
+    {% render 'responsive-image' with
+                    image: block.settings.main_image,
+                    alt: block.settings.main_image.alt,
+                    padding: false,
+                    min_max: '350-1200',
+                    sizes: '(min-width: 1024px) 1200px, 350px',
+                  %}
+  to: "{% render 'responsive-image' with image, image: block.settings.main_image,
+    alt: block.settings.main_image.alt, padding: false, min_max: '350-1200', sizes:
+    '(min-width: 1024px) 1200px, 350px' %}"
+  position: 3982..4175
+- from: |-
+    {% render 'btn' with
+                      class: 'editorial-split__button',
+                      label: block.settings.cta_text,
+                      url: block.settings.cta_url,
+                      modifiers: 'primary',
+                      show_icon: false,
+                    %}
+  to: "{% render 'btn' with class, class: 'editorial-split__button', label: block.settings.cta_text,
+    url: block.settings.cta_url, modifiers: 'primary', show_icon: false %}"
+  position: 5332..5496
+{% endcomment %}

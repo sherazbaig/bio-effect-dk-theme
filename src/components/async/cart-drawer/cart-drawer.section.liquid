@@ -73,7 +73,7 @@
                   {%- liquid
                     for line_item in cart.items
 
-                        render 'line-item' with class: 'cart-drawer__line-item', line_item: line_item
+                        render 'line-item' with class, class: 'cart-drawer__line-item', line_item: line_item
 
                     endfor
                   -%}
@@ -135,12 +135,7 @@
             >
               <p class="text-h6">{{ 'cart.empty.drawer_text' | t }}</p>
 
-              {% render 'btn' with
-                attributes: 'name="checkbox"',
-                class: 'cart-drawer__close text-button'
-                label: continue_shopping_string,
-                type: 'button',
-              %}
+              {% render 'btn' with attributes, attributes: 'name="checkbox"', class: 'cart-drawer__close text-button', label: continue_shopping_string, type: 'button' %}
             </div>
           {% endif %}
         </div>
@@ -150,3 +145,26 @@
 </section>
 
 {% schema 'cart-drawer' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "                        render 'line-item' with class: 'cart-drawer__line-item',
+    line_item: line_item"
+  to: "                        render 'line-item' with class, class: 'cart-drawer__line-item',
+    line_item: line_item"
+  position: 2396..2504
+- from: |-
+    {% render 'btn' with
+                    attributes: 'name="checkbox"',
+                    class: 'cart-drawer__close text-button'
+                    label: continue_shopping_string,
+                    type: 'button',
+                  %}
+  to: '{% render ''btn'' with attributes, attributes: ''name="checkbox"'', class:
+    ''cart-drawer__close text-button'', label: continue_shopping_string, type: ''button''
+    %}'
+  position: 4588..4743
+{% endcomment %}

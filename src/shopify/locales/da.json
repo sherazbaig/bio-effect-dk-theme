@@ -105,7 +105,7 @@
       "no_thanks": "Nej tak",
       "reclaim_gift": "Få gratis gave",
       "add_gift": "Tilføj gratis gave",
-      "first_threshold": "Køb for {{ amount }}og vælg gratis luksusprøve",
+      "first_threshold": "Køb for {{ amount }} og klik på din gratis luksusprøve",
       "second_threshold": "Køb for {{ amount }} og få din 2. gratis gave",
       "gifts_selected": "{{ selected }}\/{{ allowed }} gratis gaver valgt",
       "fgwp": "Gratis gave med køb"

@@ -38,13 +38,7 @@
               class="main-list-collections__card"
               href="{{ collection.url }}"
             >
-              {% render 'responsive-image' with
-                class: 'main-list-collections__image-container',
-                alt: alt,
-                image: image,
-                min_max: '300-800',
-                ratio: '3:2',
-              %}
+              {% render 'responsive-image' with class, class: 'main-list-collections__image-container', alt: alt, image: image, min_max: '300-800', ratio: '3:2' %}
 
               <h2 class="text-heading-m">
                 {{ collection.title }}
@@ -55,10 +49,31 @@
       </div>
 
       {% if paginate.pages > 1 %}
-        {% render 'pagination' with paginate: paginate %}
+        {% render 'pagination' with paginate, paginate: paginate %}
       {% endif %}
     {% endpaginate %}
   </div>
 </section>
 
 {% schema 'main-list-collections' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+                    class: 'main-list-collections__image-container',
+                    alt: alt,
+                    image: image,
+                    min_max: '300-800',
+                    ratio: '3:2',
+                  %}
+  to: "{% render 'responsive-image' with class, class: 'main-list-collections__image-container',
+    alt: alt, image: image, min_max: '300-800', ratio: '3:2' %}"
+  position: 1373..1522
+- from: "{% render 'pagination' with paginate: paginate %}"
+  to: "{% render 'pagination' with paginate, paginate: paginate %}"
+  position: 1736..1795
+{% endcomment %}

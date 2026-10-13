@@ -23,7 +23,7 @@
   <main-product
     v-if="getComponentVisible('main-product')"
     v-cloak
-    :liquid="{% render 'format-product' with media: true, product: product %}"
+    :liquid="{% render 'format-product' with media, media: true, product: product %}"
     :categories="{{ product_categories }}"
     :product="product"
     :variant="variant"
@@ -47,26 +47,14 @@
         >
           {% if product.featured_image != blank %}
             <div class="main-product__featured-images">
-              {% render 'responsive-image' with
-                image: product.featured_image,
-                lazyload: false,
-                class: 'main-product__main-image',
-                ratio: '7:5',
-                min_max: '343-770'
-              %}
+              {% render 'responsive-image' with image, image: product.featured_image, lazyload: false, class: 'main-product__main-image', ratio: '7:5', min_max: '343-770' %}
 
               {% if product.metafields.product.badge.value %}
                 <div
                   class="main-product__badge"
                   style="background-color: {{ product.metafields.product.badge_color.value }}"
                 >
-                  {% render 'responsive-image' with
-                    image: product.metafields.product.badge.value,
-                    lazyload: true,
-                    padding: false,
-                    ratio: '1:1',
-                    min_max: '124-124'
-                  %}
+                  {% render 'responsive-image' with image, image: product.metafields.product.badge.value, lazyload: true, padding: false, ratio: '1:1', min_max: '124-124' %}
                 </div>
 
               {% elsif product.metafields.product.badge_text.value %}
@@ -104,13 +92,7 @@
                   {% assign class_string = 'main-product__image main-product__image--active' %}
                 {% endif %}
 
-                {% render 'responsive-image' with
-                  image: product.media[forloop.index0],
-                  lazyload: false,
-                  class: class_string,
-                  ratio: '8:5',
-                  min_max: '70-160',
-                %}
+                {% render 'responsive-image' with image, image: product.media[forloop.index0], lazyload: false, class: class_string, ratio: '8:5', min_max: '70-160' %}
               {% endfor %}
 
             {% endif %}
@@ -121,11 +103,7 @@
           {% assign breadcrumbs = product.metafields.product.categories.value %}
 
           {% if product_categories %}
-            {% render 'breadcrumbs' with
-              items: breadcrumbs,
-              title: product.title,
-              additional_class: 'mb-xl mt-xs'
-            %}
+            {% render 'breadcrumbs' with items, items: breadcrumbs, title: product.title, additional_class: 'mb-xl mt-xs' %}
           {% endif %}
 
           <div class="main-product__details">
@@ -188,7 +166,7 @@
                     assign label = 'accessibility.loading' | t
 
                     for i in (1..5)
-                      render 'selection-tab' with class: 'product-form__variant', id: forloop.index0, label: label, loading: true, name: 'id', value: forloop.index0
+                      render 'selection-tab' with class, class: 'product-form__variant', id: forloop.index0, label: label, loading: true, name: 'id', value: forloop.index0
                     endfor
 
                   else
@@ -213,7 +191,7 @@
                         assign label = label | append: '<span class="visually-hidden">#</span>' | replace: '#', sold_out_string
                       endif
 
-                      render 'selection-tab' with checked: checked, class: 'product-form__variant', disabled: disabled, id: id, label: label, loading: true, name: 'id', value: variant.id
+                      render 'selection-tab' with checked, checked: checked, class: 'product-form__variant', disabled: disabled, id: id, label: label, loading: true, name: 'id', value: variant.id
                     endfor
                   endif
                 -%}
@@ -222,22 +200,10 @@
 
             {{ product_form }}
 
-            {% render 'product-prices' with
-              available: product.selected_or_first_available_variant.available,
-              class: 'main-product__prices-container',
-              compare_at_price: product.selected_or_first_available_variant.compare_at_price,
-              price: product.selected_or_first_available_variant.price,
-              price_first: false,
-              varies: product.selected_or_first_available_variant.price_varies,
-              class_price: 'text-h4-desktop text-h6',
-              class_compare_at_price: 'text-h4-desktop text-h6 main-product__compare-at-price',
-            %}
+            {% render 'product-prices' with available, available: product.selected_or_first_available_variant.available, class: 'main-product__prices-container', compare_at_price: product.selected_or_first_available_variant.compare_at_price, price: product.selected_or_first_available_variant.price, price_first: false, varies: product.selected_or_first_available_variant.price_varies, class_price: 'text-h4-desktop text-h6', class_compare_at_price: 'text-h4-desktop text-h6 main-product__compare-at-price' %}
           </div>
 
-          {% render 'product-form' with
-            class: 'main-product__form',
-            product: product
-          %}
+          {% render 'product-form' with class, class: 'main-product__form', product: product %}
         </div>
       </div>
     </div>
@@ -245,3 +211,93 @@
 </section>
 
 {% schema 'main-product' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'format-product' with media: true, product: product %}"
+  to: "{% render 'format-product' with media, media: true, product: product %}"
+  position: 750..821
+- from: |-
+    {% render 'responsive-image' with
+                    image: product.featured_image,
+                    lazyload: false,
+                    class: 'main-product__main-image',
+                    ratio: '7:5',
+                    min_max: '343-770'
+                  %}
+  to: "{% render 'responsive-image' with image, image: product.featured_image, lazyload:
+    false, class: 'main-product__main-image', ratio: '7:5', min_max: '343-770' %}"
+  position: 1647..1806
+- from: |-
+    {% render 'responsive-image' with
+                        image: product.metafields.product.badge.value,
+                        lazyload: true,
+                        padding: false,
+                        ratio: '1:1',
+                        min_max: '124-124'
+                      %}
+  to: "{% render 'responsive-image' with image, image: product.metafields.product.badge.value,
+    lazyload: true, padding: false, ratio: '1:1', min_max: '124-124' %}"
+  position: 2068..2223
+- from: |-
+    {% render 'responsive-image' with
+                      image: product.media[forloop.index0],
+                      lazyload: false,
+                      class: class_string,
+                      ratio: '8:5',
+                      min_max: '70-160',
+                    %}
+  to: "{% render 'responsive-image' with image, image: product.media[forloop.index0],
+    lazyload: false, class: class_string, ratio: '8:5', min_max: '70-160' %}"
+  position: 3615..3766
+- from: |-
+    {% render 'breadcrumbs' with
+                  items: breadcrumbs,
+                  title: product.title,
+                  additional_class: 'mb-xl mt-xs'
+                %}
+  to: "{% render 'breadcrumbs' with items, items: breadcrumbs, title: product.title,
+    additional_class: 'mb-xl mt-xs' %}"
+  position: 4021..4133
+- from: "                      render 'selection-tab' with class: 'product-form__variant',
+    id: forloop.index0, label: label, loading: true, name: 'id', value: forloop.index0"
+  to: "                      render 'selection-tab' with class, class: 'product-form__variant',
+    id: forloop.index0, label: label, loading: true, name: 'id', value: forloop.index0"
+  position: 6277..6448
+- from: "                      render 'selection-tab' with checked: checked, class:
+    'product-form__variant', disabled: disabled, id: id, label: label, loading: true,
+    name: 'id', value: variant.id"
+  to: "                      render 'selection-tab' with checked, checked: checked,
+    class: 'product-form__variant', disabled: disabled, id: id, label: label, loading:
+    true, name: 'id', value: variant.id"
+  position: 7443..7638
+- from: |-
+    {% render 'product-prices' with
+                  available: product.selected_or_first_available_variant.available,
+                  class: 'main-product__prices-container',
+                  compare_at_price: product.selected_or_first_available_variant.compare_at_price,
+                  price: product.selected_or_first_available_variant.price,
+                  price_first: false,
+                  varies: product.selected_or_first_available_variant.price_varies,
+                  class_price: 'text-h4-desktop text-h6',
+                  class_compare_at_price: 'text-h4-desktop text-h6 main-product__compare-at-price',
+                %}
+  to: "{% render 'product-prices' with available, available: product.selected_or_first_available_variant.available,
+    class: 'main-product__prices-container', compare_at_price: product.selected_or_first_available_variant.compare_at_price,
+    price: product.selected_or_first_available_variant.price, price_first: false,
+    varies: product.selected_or_first_available_variant.price_varies, class_price:
+    'text-h4-desktop text-h6', class_compare_at_price: 'text-h4-desktop text-h6 main-product__compare-at-price'
+    %}"
+  position: 7805..8302
+- from: |-
+    {% render 'product-form' with
+                class: 'main-product__form',
+                product: product
+              %}
+  to: "{% render 'product-form' with class, class: 'main-product__form', product:
+    product %}"
+  position: 8331..8416
+{% endcomment %}

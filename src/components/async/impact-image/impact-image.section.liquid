@@ -67,13 +67,7 @@
             {% endif %}
 
           {% elsif section.settings.desktop_image != blank %}
-            {% render 'art-direction' with
-              image_desktop: section.settings.desktop_image,
-              image: section.settings.mobile_image,
-              alt: section.settings.desktop_image.alt,
-              ratio: '16:9',
-              ratio_desktop: '16:9'
-            %}
+            {% render 'art-direction' with image_desktop, image_desktop: section.settings.desktop_image, image: section.settings.mobile_image, alt: section.settings.desktop_image.alt, ratio: '16:9', ratio_desktop: '16:9' %}
           {% endif %}
         </div>
 
@@ -104,13 +98,7 @@
               section.settings.cta_url != blank and
               section.settings.cta_text != blank
             %}
-              {% render 'btn' with
-                class: 'impact-image__button',
-                label: section.settings.cta_text,
-                url: section.settings.cta_url,
-                modifiers: 'primary',
-                show_icon: false,
-              %}
+              {% render 'btn' with class, class: 'impact-image__button', label: section.settings.cta_text, url: section.settings.cta_url, modifiers: 'primary', show_icon: false %}
             {% endif %}
           </div>
         </div>
@@ -120,3 +108,33 @@
 </section>
 
 {% schema 'impact-image' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'art-direction' with
+                  image_desktop: section.settings.desktop_image,
+                  image: section.settings.mobile_image,
+                  alt: section.settings.desktop_image.alt,
+                  ratio: '16:9',
+                  ratio_desktop: '16:9'
+                %}
+  to: "{% render 'art-direction' with image_desktop, image_desktop: section.settings.desktop_image,
+    image: section.settings.mobile_image, alt: section.settings.desktop_image.alt,
+    ratio: '16:9', ratio_desktop: '16:9' %}"
+  position: 2424..2635
+- from: |-
+    {% render 'btn' with
+                    class: 'impact-image__button',
+                    label: section.settings.cta_text,
+                    url: section.settings.cta_url,
+                    modifiers: 'primary',
+                    show_icon: false,
+                  %}
+  to: "{% render 'btn' with class, class: 'impact-image__button', label: section.settings.cta_text,
+    url: section.settings.cta_url, modifiers: 'primary', show_icon: false %}"
+  position: 3618..3783
+{% endcomment %}

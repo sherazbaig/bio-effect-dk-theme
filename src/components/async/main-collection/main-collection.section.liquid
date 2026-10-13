@@ -63,13 +63,7 @@
   >
     {% if banner_desktop_image != nil or banner_mobile_image != nil %}
       <div class="main-collection__banner col xs6 l1-14">
-        {% render 'art-direction' with
-          image_desktop: banner_desktop_image,
-          image: banner_mobile_image,
-          alt: banner_desktop_image.alt,
-          ratio: '340:213',
-          ratio_desktop: '1371:286'
-        %}
+        {% render 'art-direction' with image_desktop, image_desktop: banner_desktop_image, image: banner_mobile_image, alt: banner_desktop_image.alt, ratio: '340:213', ratio_desktop: '1371:286' %}
 
         <div class="main-collection__bannerCopy {{ banner_text_theme }}">
           {% if banner_title %}
@@ -91,21 +85,14 @@
           {% endif %}
 
           {% if banner_cta_text and banner_cta_url %}
-            {% render 'btn' with
-              class: 'main-collection__bannerCTA text-button',
-              label: banner_cta_text,
-              modifiers: 'primary',
-              url: banner_cta_url,
-            %}
+            {% render 'btn' with class, class: 'main-collection__bannerCTA text-button', label: banner_cta_text, modifiers: 'primary', url: banner_cta_url %}
           {% endif %}
         </div>
       </div>
     {% endif %}
 
     {% if filters_layout == 'yes' and settings.collection_columns == '3' %}
-      {% render 'main-collection-filter-sidebar' with featured_collections: featured_collections
-        , product_type_filter_values: product_type_filter_values
-      %}
+      {% render 'main-collection-filter-sidebar' with featured_collections, featured_collections: featured_collections, product_type_filter_values: product_type_filter_values %}
     {% endif %}
 
     <div class="main-collection__content col xs6 {% if settings.collection_columns == '4' %}l1-14{% else %}l3-14{% endif %}">
@@ -131,7 +118,7 @@
               rte
             "
           >
-            {% render 'rte' with content: collection.description %}
+            {% render 'rte' with content, content: collection.description %}
           </div>
         {% endif %}
 
@@ -144,13 +131,7 @@
                     <li class="main-collection__link-card {% if non_JS_loading %}non-js-loading{% endif %}">
                       <a href="{{ banner_card.settings.url }}" class="main-collection__link-card-link">
                         {% if banner_card.settings.image %}
-                          {% render 'art-direction' with
-                            image_desktop: banner_card.settings.image,
-                            image: banner_card.settings.image,
-                            alt: banner_card.settings.title,
-                            ratio: '1:1',
-                            ratio_desktop: '1:1'
-                          %}
+                          {% render 'art-direction' with image_desktop, image_desktop: banner_card.settings.image, image: banner_card.settings.image, alt: banner_card.settings.title, ratio: '1:1', ratio_desktop: '1:1' %}
                         {% endif %}
 
                         <span class="main-collection__link-card-title">
@@ -178,9 +159,7 @@
         {% endif %}
 
         {% if filters_layout == 'yes' and settings.collection_columns == '4' %}
-          {% render 'main-collection-filter-sidebar' with featured_collections: featured_collections
-            , product_type_filter_values: product_type_filter_values
-          %}
+          {% render 'main-collection-filter-sidebar' with featured_collections, featured_collections: featured_collections, product_type_filter_values: product_type_filter_values %}
         {% endif %}
       </div>
 
@@ -192,13 +171,7 @@
             {% assign product_index = forloop.index0 %}
             {% comment %} Inject Promo Cards Start {% endcomment %}
             {% capture formatted_promos_content %}
-              {%
-                render 'format-promos' with
-                promos: promos,
-                product_index: product_index,
-                in_grid_promos_count: in_grid_promos_count,
-                loading_animation: true
-              %}
+              {% render 'format-promos' with promos, promos: promos, product_index: product_index, in_grid_promos_count: in_grid_promos_count, loading_animation: true %}
             {% endcapture %}
 
             {% assign formatted_promos = formatted_promos_content
@@ -215,13 +188,7 @@
 
             {% comment %} Inject Full Width Promos Start {% endcomment %}
             {% capture formatted_full_width_promos_content %}
-              {%
-                render 'format-full-width-promos' with
-                promos: full_width_promos,
-                product_index: product_index,
-                in_grid_promos_count: in_grid_promos_count,
-                loading_animation: true
-              %}
+              {% render 'format-full-width-promos' with promos, promos: full_width_promos, product_index: product_index, in_grid_promos_count: in_grid_promos_count, loading_animation: true %}
             {% endcapture %}
 
             {% assign formatted_full_width_promos =
@@ -239,18 +206,10 @@
             {% comment %} Inject Full Width Promos End {% endcomment %}
 
             {% if collection_non_JS %}
-              {% render 'product-card' with
-                product: product,
-                loading_animation: false,
-                non_JS_loading_animation: non_JS_loading
-              %}
+              {% render 'product-card' with product, product: product, loading_animation: false, non_JS_loading_animation: non_JS_loading %}
 
             {% else %}
-              {% render 'product-card' with
-                product: false,
-                loading_animation: true,
-                non_JS_loading_animation: false
-              %}
+              {% render 'product-card' with product, product: false, loading_animation: true, non_JS_loading_animation: false %}
             {% endif %}
           {% endfor %}
         </div>
@@ -313,8 +272,8 @@
       ]"
       {% if banner_desktop_image != nil or banner_mobile_image != nil %}
         :banner="{
-          desktopImage: {% render 'format-image' with image: banner_desktop_image %},
-          mobileImage: {% render 'format-image' with image: banner_mobile_image %},
+          desktopImage: {% render 'format-image' with image, image: banner_desktop_image %},
+          mobileImage: {% render 'format-image' with image, image: banner_mobile_image %},
           title: {{ banner_title | json | escape }},
           description: {{ banner_description | json | escape }},
           textTheme: {{ banner_text_theme | json | escape }},
@@ -333,7 +292,7 @@
             title: {{ promo.settings.title | json | escape }},
             description: {{ promo.settings.description | json | escape }},
             url: {{ promo.settings.url | json | escape }},
-            image: {% render 'format-image' with image: promo.settings.image %},
+            image: {% render 'format-image' with image, image: promo.settings.image %},
             positionIndex: {{ promo.settings.position_index | json | escape }},
           }
           {% unless forloop.last %},{% endunless %}
@@ -348,12 +307,8 @@
             ctaText: {{ promo.settings.cta_text | json | escape }},
             theme: {{ promo.settings.theme | json | escape }},
             alignment: {{ promo.settings.alignment | json | escape }},
-            imageMobile: {% render 'format-image' with
-              image: promo.settings.image_mobile
-            %},
-            imageDesktop: {% render 'format-image' with
-              image: promo.settings.image_desktop
-            %},
+            imageMobile: {% render 'format-image' with image, image: promo.settings.image_mobile %},
+            imageDesktop: {% render 'format-image' with image, image: promo.settings.image_desktop %},
             rowIndex: {{ promo.settings.row_index | json | escape }},
           }
           {% unless forloop.last %},{% endunless %}
@@ -364,9 +319,7 @@
           {
             title: {{ banner_card.settings.title | json | escape }},
             url: {{ banner_card.settings.url | json | escape }},
-            image: {% render 'format-image' with
-              image: banner_card.settings.image
-            %}
+            image: {% render 'format-image' with image, image: banner_card.settings.image %}
           }
           {% unless forloop.last %},{% endunless %}
         {%- endfor -%}
@@ -378,3 +331,129 @@
 </section>
 
 {% schema 'main-collection' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'art-direction' with
+              image_desktop: banner_desktop_image,
+              image: banner_mobile_image,
+              alt: banner_desktop_image.alt,
+              ratio: '340:213',
+              ratio_desktop: '1371:286'
+            %}
+  to: "{% render 'art-direction' with image_desktop, image_desktop: banner_desktop_image,
+    image: banner_mobile_image, alt: banner_desktop_image.alt, ratio: '340:213', ratio_desktop:
+    '1371:286' %}"
+  position: 2736..2924
+- from: |-
+    {% render 'btn' with
+                  class: 'main-collection__bannerCTA text-button',
+                  label: banner_cta_text,
+                  modifiers: 'primary',
+                  url: banner_cta_url,
+                %}
+  to: "{% render 'btn' with class, class: 'main-collection__bannerCTA text-button',
+    label: banner_cta_text, modifiers: 'primary', url: banner_cta_url %}"
+  position: 3547..3692
+- from: |-
+    {% render 'main-collection-filter-sidebar' with featured_collections: featured_collections
+            , product_type_filter_values: product_type_filter_values
+          %}
+  to: "{% render 'main-collection-filter-sidebar' with featured_collections, featured_collections:
+    featured_collections, product_type_filter_values: product_type_filter_values %}"
+  position: 3842..4013
+- from: "{% render 'rte' with content: collection.description %}"
+  to: "{% render 'rte' with content, content: collection.description %}"
+  position: 4691..4755
+- from: |-
+    {% render 'art-direction' with
+                                image_desktop: banner_card.settings.image,
+                                image: banner_card.settings.image,
+                                alt: banner_card.settings.title,
+                                ratio: '1:1',
+                                ratio_desktop: '1:1'
+                              %}
+  to: "{% render 'art-direction' with image_desktop, image_desktop: banner_card.settings.image,
+    image: banner_card.settings.image, alt: banner_card.settings.title, ratio: '1:1',
+    ratio_desktop: '1:1' %}"
+  position: 5470..5664
+- from: |-
+    {% render 'main-collection-filter-sidebar' with featured_collections: featured_collections
+                , product_type_filter_values: product_type_filter_values
+              %}
+  to: "{% render 'main-collection-filter-sidebar' with featured_collections, featured_collections:
+    featured_collections, product_type_filter_values: product_type_filter_values %}"
+  position: 6803..6974
+- from: |-
+    {%
+                    render 'format-promos' with
+                    promos: promos,
+                    product_index: product_index,
+                    in_grid_promos_count: in_grid_promos_count,
+                    loading_animation: true
+                  %}
+  to: "{% render 'format-promos' with promos, promos: promos, product_index: product_index,
+    in_grid_promos_count: in_grid_promos_count, loading_animation: true %}"
+  position: 7453..7608
+- from: |-
+    {%
+                    render 'format-full-width-promos' with
+                    promos: full_width_promos,
+                    product_index: product_index,
+                    in_grid_promos_count: in_grid_promos_count,
+                    loading_animation: true
+                  %}
+  to: "{% render 'format-full-width-promos' with promos, promos: full_width_promos,
+    product_index: product_index, in_grid_promos_count: in_grid_promos_count, loading_animation:
+    true %}"
+  position: 8171..8348
+- from: |-
+    {% render 'product-card' with
+                    product: product,
+                    loading_animation: false,
+                    non_JS_loading_animation: non_JS_loading
+                  %}
+  to: "{% render 'product-card' with product, product: product, loading_animation:
+    false, non_JS_loading_animation: non_JS_loading %}"
+  position: 8892..9018
+- from: |-
+    {% render 'product-card' with
+                    product: false,
+                    loading_animation: true,
+                    non_JS_loading_animation: false
+                  %}
+  to: "{% render 'product-card' with product, product: false, loading_animation: true,
+    non_JS_loading_animation: false %}"
+  position: 9057..9171
+- from: "{% render 'format-image' with image: banner_desktop_image %}"
+  to: "{% render 'format-image' with image, image: banner_desktop_image %}"
+  position: 11322..11389
+- from: "{% render 'format-image' with image: banner_mobile_image %}"
+  to: "{% render 'format-image' with image, image: banner_mobile_image %}"
+  position: 11414..11480
+- from: "{% render 'format-image' with image: promo.settings.image %}"
+  to: "{% render 'format-image' with image, image: promo.settings.image %}"
+  position: 12293..12360
+- from: |-
+    {% render 'format-image' with
+                  image: promo.settings.image_mobile
+                %}
+  to: "{% render 'format-image' with image, image: promo.settings.image_mobile %}"
+  position: 13056..13130
+- from: |-
+    {% render 'format-image' with
+                  image: promo.settings.image_desktop
+                %}
+  to: "{% render 'format-image' with image, image: promo.settings.image_desktop %}"
+  position: 13158..13233
+- from: |-
+    {% render 'format-image' with
+                  image: banner_card.settings.image
+                %}
+  to: "{% render 'format-image' with image, image: banner_card.settings.image %}"
+  position: 13637..13710
+{% endcomment %}

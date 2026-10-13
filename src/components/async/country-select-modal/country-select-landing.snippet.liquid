@@ -45,23 +45,42 @@
                 </ul>
             </div>
             <div class="country-select-landing__bottom-wrapper liquid">
-                {% render 'btn' with
-                  class: 'country-select-landing__continue liquid',
-                  modifiers: 'primary center',
-                  label: continue_string,
-                  type: 'button',
-                  disabled: true,
-                %}
-                {% render 'btn' with
-                  class: 'country-select-landing__change-country liquid',
-                  modifiers: 'secondary center',
-                  label: change_country_string,
-                  type: 'button',
-                  disabled: true,
-                %}
+                {% render 'btn' with class, class: 'country-select-landing__continue liquid', modifiers: 'primary center', label: continue_string, type: 'button', disabled: true %}
+                {% render 'btn' with class, class: 'country-select-landing__change-country liquid', modifiers: 'secondary center', label: change_country_string, type: 'button', disabled: true %}
             </div>
         </div>
       </div>
     </template>
   </overlay>
 </section>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'btn' with
+                      class: 'country-select-landing__continue liquid',
+                      modifiers: 'primary center',
+                      label: continue_string,
+                      type: 'button',
+                      disabled: true,
+                    %}
+  to: "{% render 'btn' with class, class: 'country-select-landing__continue liquid',
+    modifiers: 'primary center', label: continue_string, type: 'button', disabled:
+    true %}"
+  position: 1893..2057
+- from: |-
+    {% render 'btn' with
+                      class: 'country-select-landing__change-country liquid',
+                      modifiers: 'secondary center',
+                      label: change_country_string,
+                      type: 'button',
+                      disabled: true,
+                    %}
+  to: "{% render 'btn' with class, class: 'country-select-landing__change-country
+    liquid', modifiers: 'secondary center', label: change_country_string, type: 'button',
+    disabled: true %}"
+  position: 2074..2252
+{% endcomment %}

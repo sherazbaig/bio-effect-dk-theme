@@ -50,12 +50,7 @@
 
           {% unless stamp == blank %}
             <li class="info-stamps__image">
-              {% render 'responsive-image' with
-                image: stamp,
-                lazyload: false,
-                padding: true,
-                ratio: '0.94',
-              %}
+              {% render 'responsive-image' with image, image: stamp, lazyload: false, padding: true, ratio: '0.94' %}
             </li>
           {% endunless %}
         {% endfor %}
@@ -64,12 +59,7 @@
         {% for stamp in product_metafield_stamps %}
           {% unless stamp == blank %}
             <li class="info-stamps__image">
-              {% render 'responsive-image' with
-                image: stamp,
-                lazyload: false,
-                padding: true,
-                ratio: '0.94',
-              %}
+              {% render 'responsive-image' with image, image: stamp, lazyload: false, padding: true, ratio: '0.94' %}
             </li>
           {% endunless %}
         {% endfor %}
@@ -107,7 +97,7 @@
                 {{ section_subtext }}
               </span>
               <span class="info-stamps__arrow-icon">
-                {% render 'icon-directional-navigation' with icon: 'link-arrow' %}
+                {% render 'icon-directional-navigation' with icon, icon: 'link-arrow' %}
               </span>
             </a>
 
@@ -125,3 +115,33 @@
 </section>
 
 {% schema 'info-stamps' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+                    image: stamp,
+                    lazyload: false,
+                    padding: true,
+                    ratio: '0.94',
+                  %}
+  to: "{% render 'responsive-image' with image, image: stamp, lazyload: false, padding:
+    true, ratio: '0.94' %}"
+  position: 1793..1896
+- from: |-
+    {% render 'responsive-image' with
+                    image: stamp,
+                    lazyload: false,
+                    padding: true,
+                    ratio: '0.94',
+                  %}
+  to: "{% render 'responsive-image' with image, image: stamp, lazyload: false, padding:
+    true, ratio: '0.94' %}"
+  position: 2128..2231
+- from: "{% render 'icon-directional-navigation' with icon: 'link-arrow' %}"
+  to: "{% render 'icon-directional-navigation' with icon, icon: 'link-arrow' %}"
+  position: 3125..3197
+{% endcomment %}

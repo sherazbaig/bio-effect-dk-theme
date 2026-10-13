@@ -16,7 +16,7 @@
   class="text-mobile-p account-forms__error is-hidden mb-m"
   js-account="login-error"
 >
-  {% render 'icon-general' with icon: 'info-circle' %}
+  {% render 'icon-general' with icon, icon: 'info-circle' %}
   <span class="account-forms__error-text ml-s"></span>
 </p>
 
@@ -80,10 +80,7 @@
   {% endif %}
 
   <div class="customers__onboarding-form-footer form-group__footer">
-    {% render 'form-errors' with
-      form: form,
-      namespace: 'login',
-    %}
+    {% render 'form-errors' with form, form: form, namespace: 'login' %}
 
     {% render 'btn'
       attributes: 'js-forgot-password="toggle"',
@@ -134,10 +131,32 @@
   </h2>
 
   {% form 'guest_login', class: 'customers-login__guest-form' %}
-    {% render 'btn' with
-      class: 'customers__button',
-      label: guest_cta_string,
-      type: 'submit',
-    %}
+    {% render 'btn' with class, class: 'customers__button', label: guest_cta_string, type: 'submit' %}
   {% endform %}
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'icon-general' with icon: 'info-circle' %}"
+  to: "{% render 'icon-general' with icon, icon: 'info-circle' %}"
+  position: 626..684
+- from: |-
+    {% render 'form-errors' with
+          form: form,
+          namespace: 'login',
+        %}
+  to: "{% render 'form-errors' with form, form: form, namespace: 'login' %}"
+  position: 2471..2539
+- from: |-
+    {% render 'btn' with
+          class: 'customers__button',
+          label: guest_cta_string,
+          type: 'submit',
+        %}
+  to: "{% render 'btn' with class, class: 'customers__button', label: guest_cta_string,
+    type: 'submit' %}"
+  position: 3703..3801
+{% endcomment %}

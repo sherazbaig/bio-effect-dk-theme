@@ -50,7 +50,7 @@
           <span class="main-search__submit--label text-p-small">
             {{ search_submit }}
           </span>
-          {% render 'icon-directional-navigation' with icon: 'link-arrow' %}
+          {% render 'icon-directional-navigation' with icon, icon: 'link-arrow' %}
         </button>
       </form>
     </div>
@@ -62,7 +62,7 @@
             {%- liquid
               case result.object_type
                 when 'article', 'product', 'page'
-                  render 'inline-card' with data: result
+                  render 'inline-card' with data, data: result
               endcase
             -%}
           {% endfor %}
@@ -75,7 +75,7 @@
                 {% continue %}
               {% endif %}
 
-              {% render 'product-card' with product: false, loading_animation: true %}
+              {% render 'product-card' with product, product: false, loading_animation: true %}
             {% endfor %}
           </div>
         {% endif %}
@@ -106,7 +106,7 @@
                 {% continue %}
               {% endif %}
 
-              {% render 'format-product' with product: product %}
+              {% render 'format-product' with product, product: product %}
               {% unless forloop.last %},{% endunless %}
             {% endfor %}
           ]
@@ -117,3 +117,23 @@
 </section>
 
 {% schema 'main-search' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'icon-directional-navigation' with icon: 'link-arrow' %}"
+  to: "{% render 'icon-directional-navigation' with icon, icon: 'link-arrow' %}"
+  position: 1556..1628
+- from: "                  render 'inline-card' with data: result"
+  to: "                  render 'inline-card' with data, data: result"
+  position: 1982..2044
+- from: "{% render 'product-card' with product: false, loading_animation: true %}"
+  to: "{% render 'product-card' with product, product: false, loading_animation: true
+    %}"
+  position: 2461..2542
+- from: "{% render 'format-product' with product: product %}"
+  to: "{% render 'format-product' with product, product: product %}"
+  position: 3482..3542
+{% endcomment %}

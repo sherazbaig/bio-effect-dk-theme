@@ -42,7 +42,7 @@
 
   # Cancel icon
   capture cancel_icon
-    render 'icon-directional-navigation' with icon: 'arrow', direction: 'left'
+    render 'icon-directional-navigation' with icon, icon: 'arrow', direction: 'left'
   endcapture
 -%}
 
@@ -62,11 +62,7 @@
     %}
   </div>
 
-  {% render 'form-errors' with
-    class: 'is-hidden',
-    form: form,
-    form_id: form_id,
-  %}
+  {% render 'form-errors' with class, class: 'is-hidden', form: form, form_id: form_id %}
 
   {% form 'customer_address', address, js-addresses: 'form', return_to: routes.account_url %}
     <div class="form-group">
@@ -108,12 +104,7 @@
           </abbr>
         </label>
 
-        {% render 'form-errors' with
-          class: 'form-group__note',
-          form: form,
-          namespace: namespace,
-          type: error_type,
-        %}
+        {% render 'form-errors' with class, class: 'form-group__note', form: form, namespace: namespace, type: error_type %}
       </div>
 
       <div class="form-group__field">
@@ -154,12 +145,7 @@
           </abbr>
         </label>
 
-        {% render 'form-errors' with
-          class: 'form-group__note',
-          form: form,
-          namespace: namespace,
-          type: error_type,
-        %}
+        {% render 'form-errors' with class, class: 'form-group__note', form: form, namespace: namespace, type: error_type %}
       </div>
 
       <div class="form-group__field">
@@ -194,12 +180,7 @@
           {{ 'customers.fields.company.label' | t }}
         </label>
 
-        {% render 'form-errors' with
-          class: 'form-group__note',
-          form: form,
-          namespace: namespace,
-          type: error_type,
-        %}
+        {% render 'form-errors' with class, class: 'form-group__note', form: form, namespace: namespace, type: error_type %}
       </div>
 
   <div class="form-group__field">
@@ -239,12 +220,7 @@
           </abbr>
         </label>
 
-        {% render 'form-errors' with
-          class: 'form-group__note',
-          form: form,
-          namespace: namespace,
-          type: error_type,
-        %}
+        {% render 'form-errors' with class, class: 'form-group__note', form: form, namespace: namespace, type: error_type %}
       </div>
 
       <div class="form-group__field">
@@ -284,12 +260,7 @@
           </abbr>
         </label>
 
-        {% render 'form-errors' with
-          class: 'form-group__note',
-          form: form,
-          namespace: namespace,
-          type: error_type,
-        %}
+        {% render 'form-errors' with class, class: 'form-group__note', form: form, namespace: namespace, type: error_type %}
       </div>
 
       <div class="form-group__field">
@@ -324,12 +295,7 @@
           {{ 'customers.fields.address2.label' | t }}
         </label>
 
-        {% render 'form-errors' with
-          class: 'form-group__note',
-          form: form,
-          namespace: namespace,
-          type: error_type,
-        %}
+        {% render 'form-errors' with class, class: 'form-group__note', form: form, namespace: namespace, type: error_type %}
       </div>
 
       <div class="form-group__field">
@@ -369,12 +335,7 @@
           </abbr>
         </label>
 
-        {% render 'form-errors' with
-          class: 'form-group__note',
-          form: form,
-          namespace: namespace,
-          type: error_type,
-        %}
+        {% render 'form-errors' with class, class: 'form-group__note', form: form, namespace: namespace, type: error_type %}
       </div>
 
       <div class="form-group__field">
@@ -413,12 +374,7 @@
           </abbr>
         </label>
 
-        {% render 'form-errors' with
-          class: 'form-group__note',
-          form: form,
-          namespace: namespace,
-          type: error_type,
-        %}
+        {% render 'form-errors' with class, class: 'form-group__note', form: form, namespace: namespace, type: error_type %}
       </div>
 
       <div
@@ -451,12 +407,7 @@
           {{ 'customers.fields.province.label' | t }}
         </label>
 
-        {% render 'form-errors' with
-          class: 'form-group__note',
-          form: form,
-          namespace: namespace,
-          type: error_type,
-        %}
+        {% render 'form-errors' with class, class: 'form-group__note', form: form, namespace: namespace, type: error_type %}
       </div>
 
       <div class="form-group__field">
@@ -496,22 +447,11 @@
           </abbr>
         </label>
 
-        {% render 'form-errors' with
-          class: 'form-group__note',
-          form: form,
-          namespace: namespace,
-          type: error_type,
-        %}
+        {% render 'form-errors' with class, class: 'form-group__note', form: form, namespace: namespace, type: error_type %}
       </div>
 
       <div class="form-group__field form-group__field-default">
-        {% render 'checkbox-input' with
-          checked: set_as_default_checked,
-          disabled: set_as_default_disabled,
-          id: set_as_default_id,
-          input: form.set_as_default_checkbox,
-          label: set_as_default_string,
-        %}
+        {% render 'checkbox-input' with checked, checked: set_as_default_checked, disabled: set_as_default_disabled, id: set_as_default_id, input: form.set_as_default_checkbox, label: set_as_default_string %}
       </div>
     </div>
 
@@ -525,12 +465,149 @@
         type: 'button',
       %}
 
-      {% render 'btn' with
-        class: 'customers-addresses__submit',
-        label: confirm_string_cta,
-        type: 'submit',
-        modifiers: 'primary center'
-      %}
+      {% render 'btn' with class, class: 'customers-addresses__submit', label: confirm_string_cta, type: 'submit', modifiers: 'primary center' %}
     </div>
   {% endform %}
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "    render 'icon-directional-navigation' with icon: 'arrow', direction: 'left'"
+  to: "    render 'icon-directional-navigation' with icon, icon: 'arrow', direction:
+    'left'"
+  position: 1830..1914
+- from: |-
+    {% render 'form-errors' with
+        class: 'is-hidden',
+        form: form,
+        form_id: form_id,
+      %}
+  to: "{% render 'form-errors' with class, class: 'is-hidden', form: form, form_id:
+    form_id %}"
+  position: 2292..2379
+- from: |-
+    {% render 'form-errors' with
+              class: 'form-group__note',
+              form: form,
+              namespace: namespace,
+              type: error_type,
+            %}
+  to: "{% render 'form-errors' with class, class: 'form-group__note', form: form,
+    namespace: namespace, type: error_type %}"
+  position: 3722..3838
+- from: |-
+    {% render 'form-errors' with
+              class: 'form-group__note',
+              form: form,
+              namespace: namespace,
+              type: error_type,
+            %}
+  to: "{% render 'form-errors' with class, class: 'form-group__note', form: form,
+    namespace: namespace, type: error_type %}"
+  position: 5065..5181
+- from: |-
+    {% render 'form-errors' with
+              class: 'form-group__note',
+              form: form,
+              namespace: namespace,
+              type: error_type,
+            %}
+  to: "{% render 'form-errors' with class, class: 'form-group__note', form: form,
+    namespace: namespace, type: error_type %}"
+  position: 6198..6314
+- from: |-
+    {% render 'form-errors' with
+              class: 'form-group__note',
+              form: form,
+              namespace: namespace,
+              type: error_type,
+            %}
+  to: "{% render 'form-errors' with class, class: 'form-group__note', form: form,
+    namespace: namespace, type: error_type %}"
+  position: 7472..7588
+- from: |-
+    {% render 'form-errors' with
+              class: 'form-group__note',
+              form: form,
+              namespace: namespace,
+              type: error_type,
+            %}
+  to: "{% render 'form-errors' with class, class: 'form-group__note', form: form,
+    namespace: namespace, type: error_type %}"
+  position: 8784..8900
+- from: |-
+    {% render 'form-errors' with
+              class: 'form-group__note',
+              form: form,
+              namespace: namespace,
+              type: error_type,
+            %}
+  to: "{% render 'form-errors' with class, class: 'form-group__note', form: form,
+    namespace: namespace, type: error_type %}"
+  position: 9932..10048
+- from: |-
+    {% render 'form-errors' with
+              class: 'form-group__note',
+              form: form,
+              namespace: namespace,
+              type: error_type,
+            %}
+  to: "{% render 'form-errors' with class, class: 'form-group__note', form: form,
+    namespace: namespace, type: error_type %}"
+  position: 11214..11330
+- from: |-
+    {% render 'form-errors' with
+              class: 'form-group__note',
+              form: form,
+              namespace: namespace,
+              type: error_type,
+            %}
+  to: "{% render 'form-errors' with class, class: 'form-group__note', form: form,
+    namespace: namespace, type: error_type %}"
+  position: 12466..12582
+- from: |-
+    {% render 'form-errors' with
+              class: 'form-group__note',
+              form: form,
+              namespace: namespace,
+              type: error_type,
+            %}
+  to: "{% render 'form-errors' with class, class: 'form-group__note', form: form,
+    namespace: namespace, type: error_type %}"
+  position: 13495..13611
+- from: |-
+    {% render 'form-errors' with
+              class: 'form-group__note',
+              form: form,
+              namespace: namespace,
+              type: error_type,
+            %}
+  to: "{% render 'form-errors' with class, class: 'form-group__note', form: form,
+    namespace: namespace, type: error_type %}"
+  position: 14773..14889
+- from: |-
+    {% render 'checkbox-input' with
+              checked: set_as_default_checked,
+              disabled: set_as_default_disabled,
+              id: set_as_default_id,
+              input: form.set_as_default_checkbox,
+              label: set_as_default_string,
+            %}
+  to: "{% render 'checkbox-input' with checked, checked: set_as_default_checked, disabled:
+    set_as_default_disabled, id: set_as_default_id, input: form.set_as_default_checkbox,
+    label: set_as_default_string %}"
+  position: 14976..15176
+- from: |-
+    {% render 'btn' with
+            class: 'customers-addresses__submit',
+            label: confirm_string_cta,
+            type: 'submit',
+            modifiers: 'primary center'
+          %}
+  to: "{% render 'btn' with class, class: 'customers-addresses__submit', label: confirm_string_cta,
+    type: 'submit', modifiers: 'primary center' %}"
+  position: 15498..15637
+{% endcomment %}

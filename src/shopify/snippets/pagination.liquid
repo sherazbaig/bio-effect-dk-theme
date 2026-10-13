@@ -43,7 +43,7 @@
           {{ 'general.pagination.previous' | t }}
         </span>
 
-        {% render 'icon-directional-navigation' with icon: 'chevron', direction: 'left' %}
+        {% render 'icon-directional-navigation' with icon, icon: 'chevron', direction: 'left' %}
       </a>
     </li>
 
@@ -102,8 +102,25 @@
           {{ 'general.pagination.next' | t }}
         </span>
 
-        {% render 'icon-directional-navigation' with icon: 'chevron', direction: 'right' %}
+        {% render 'icon-directional-navigation' with icon, icon: 'chevron', direction: 'right' %}
       </a>
     </li>
   </ul>
 </nav>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'icon-directional-navigation' with icon: 'chevron', direction:
+    'left' %}"
+  to: "{% render 'icon-directional-navigation' with icon, icon: 'chevron', direction:
+    'left' %}"
+  position: 1068..1156
+- from: "{% render 'icon-directional-navigation' with icon: 'chevron', direction:
+    'right' %}"
+  to: "{% render 'icon-directional-navigation' with icon, icon: 'chevron', direction:
+    'right' %}"
+  position: 2685..2774
+{% endcomment %}

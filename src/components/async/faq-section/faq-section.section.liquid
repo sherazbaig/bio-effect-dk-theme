@@ -53,7 +53,7 @@
                   {{ block.settings.question }}
                 </div>
 
-                {% render 'icon-directional-navigation' with icon: 'outlined-plus' %}
+                {% render 'icon-directional-navigation' with icon, icon: 'outlined-plus' %}
               </div>
             </div>
 
@@ -65,3 +65,13 @@
 </section>
 
 {% schema 'faq-section' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'icon-directional-navigation' with icon: 'outlined-plus' %}"
+  to: "{% render 'icon-directional-navigation' with icon, icon: 'outlined-plus' %}"
+  position: 1984..2059
+{% endcomment %}

@@ -32,9 +32,9 @@
           tabTitle: {{ block.settings.tab_title | json | escape }},
           contentHeading: {{ block.settings.tab_content_heading | json | escape }},
           tabContent: {{ block.settings.tab_content | json | escape }},
-          beforeImage: {% render 'format-image' with image: block.settings.before_image %},
+          beforeImage: {% render 'format-image' with image, image: block.settings.before_image %},
           beforeImageText: {{ block.settings.before_image_text | json | escape }},
-          afterImage: {% render 'format-image' with image: block.settings.after_image %},
+          afterImage: {% render 'format-image' with image, image: block.settings.after_image %},
           afterImageText: {{ block.settings.after_image_text | json | escape }},
           tabType: {{ block.type | json | escape }},
           products: [
@@ -43,7 +43,7 @@
               {% assign product = block.settings[product_string] %}
 
               {% if product != blank %}
-                {% render 'format-product' with product: product %}
+                {% render 'format-product' with product, product: product %}
                 {% unless forloop.last %},{% endunless %}
               {% endif %}
             {% endfor %}
@@ -80,7 +80,7 @@
                     {% assign tab_title_lowercase = block.settings.tab_title | downcase %}
 
                     {% if tab_title_lowercase contains 'info sheet' %}
-                      {% render 'icon-general' with icon: 'info-sheet' %}
+                      {% render 'icon-general' with icon, icon: 'info-sheet' %}
                     {% endif %}
                   </a>
                 </li>
@@ -113,7 +113,7 @@
                   {% assign tab_title_lowercase = first_block.settings.tab_title | downcase %}
 
                   {% if tab_title_lowercase contains 'info sheet' %}
-                    {% render 'icon-general' with icon: 'info-sheet' %}
+                    {% render 'icon-general' with icon, icon: 'info-sheet' %}
                   {% endif %}
                 </p>
               {% endif %}
@@ -143,17 +143,9 @@
               %}
                 <div class="tabbed-info__before-after col l6-14 xs-span">
                         <div class="tabbed-info__before-after-images">
-                          {% render 'responsive-image' with
-                            image: first_block.settings.before_image,
-                            class: 'tabbed-info__before-image',
-                            padding: false,
-                          %}
+                          {% render 'responsive-image' with image, image: first_block.settings.before_image, class: 'tabbed-info__before-image', padding: false %}
 
-                          {% render 'responsive-image' with
-                            image: first_block.settings.after_image,
-                            class: 'tabbed-info__after-image',
-                            padding: false,
-                          %}
+                          {% render 'responsive-image' with image, image: first_block.settings.after_image, class: 'tabbed-info__after-image', padding: false %}
 
                           <input
                             class="tabbed-info__range-input"
@@ -201,7 +193,7 @@
 
                         {% if product != blank %}
                           <li class="info__content splide__slide">
-                            {% render 'product-card' with product: product %}
+                            {% render 'product-card' with product, product: product %}
                           </li>
                         {% endif %}
                       {% endfor %}
@@ -218,3 +210,46 @@
 </section>
 
 {% schema 'tabbed-info' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'format-image' with image: block.settings.before_image %}"
+  to: "{% render 'format-image' with image, image: block.settings.before_image %}"
+  position: 1104..1178
+- from: "{% render 'format-image' with image: block.settings.after_image %}"
+  to: "{% render 'format-image' with image, image: block.settings.after_image %}"
+  position: 1285..1358
+- from: "{% render 'format-product' with product: product %}"
+  to: "{% render 'format-product' with product, product: product %}"
+  position: 1749..1809
+- from: "{% render 'icon-general' with icon: 'info-sheet' %}"
+  to: "{% render 'icon-general' with icon, icon: 'info-sheet' %}"
+  position: 3232..3289
+- from: "{% render 'icon-general' with icon: 'info-sheet' %}"
+  to: "{% render 'icon-general' with icon, icon: 'info-sheet' %}"
+  position: 4553..4610
+- from: |-
+    {% render 'responsive-image' with
+                                image: first_block.settings.before_image,
+                                class: 'tabbed-info__before-image',
+                                padding: false,
+                              %}
+  to: "{% render 'responsive-image' with image, image: first_block.settings.before_image,
+    class: 'tabbed-info__before-image', padding: false %}"
+  position: 5674..5810
+- from: |-
+    {% render 'responsive-image' with
+                                image: first_block.settings.after_image,
+                                class: 'tabbed-info__after-image',
+                                padding: false,
+                              %}
+  to: "{% render 'responsive-image' with image, image: first_block.settings.after_image,
+    class: 'tabbed-info__after-image', padding: false %}"
+  position: 5838..5972
+- from: "{% render 'product-card' with product: product %}"
+  to: "{% render 'product-card' with product, product: product %}"
+  position: 8116..8174
+{% endcomment %}

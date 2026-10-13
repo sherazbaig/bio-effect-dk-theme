@@ -19,16 +19,16 @@
 {% else %}
   {%- capture data -%}
     available: {{ product.available | json | escape }},
-    badge: {% render 'format-image' with image: product.metafields.product.badge.value, width: 120 %},
+    badge: {% render 'format-image' with image, image: product.metafields.product.badge.value, width: 120 %},
     badge_text: {{ product.metafields.product.badge_text.value | json | escape }},
     badge_color: {{ product.metafields.product.badge_color.value | json | escape }},
-    compareAtPrice: {% render 'format-price' with price: 'compare_at_price', object: product %},
-    featuredImage: {% render 'format-image' with image: product.featured_image %},
+    compareAtPrice: {% render 'format-price' with price, price: 'compare_at_price', object: product %},
+    featuredImage: {% render 'format-image' with image, image: product.featured_image %},
     handle: {{ product.handle | json | escape }},
     liquid: {{ true | json | escape }},
-    price: {% render 'format-price' with price: 'price', object: product %},
+    price: {% render 'format-price' with price, price: 'price', object: product %},
     {%- if product.images.size > 1 -%}
-      secondaryImage: {% render 'format-image' with image: product.images[1] %},
+      secondaryImage: {% render 'format-image' with image, image: product.images[1] %},
     {%- endif -%}
     tags: {{ product.tags | json | escape }},
     title: {{ product.title | json | escape }},
@@ -41,7 +41,7 @@
     vendor: {{ product.vendor | json | escape }},
     awards: [
       {%- for award in product.metafields.product.awards.value limit: 5 -%}
-        {% render 'format-image' with image: award, width: 120 %}
+        {% render 'format-image' with image, image: award, width: 120 %}
         {% unless forloop.last %},{% endunless %}
       {%- endfor -%}
     ]
@@ -61,10 +61,49 @@
       {%- endif -%}
       media: [{% render 'format-media' for product.media as media %}],
       options: [{% render 'format-option' for product.options_with_values as product_option %}],
-      selectedOrFirstAvailableVariant: {% render 'format-variant' with variant: product.selected_or_first_available_variant, product: product%},
-      variants: [{% render 'format-variant' for product.variants as variant, with product: product %}]
+      selectedOrFirstAvailableVariant: {% render 'format-variant' with variant, variant: product.selected_or_first_available_variant, product: product %},
+      variants: [{% render 'format-variant' for product.variants as variant, product: product %}]
     {%- endunless -%}
   {%- endcapture -%}
 
   { {{ data | strip | strip_newlines }} }{%- if forloop and forloop.last == false -%},{%- endif -%}
 {% endunless %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'format-image' with image: product.metafields.product.badge.value,
+    width: 120 %}"
+  to: "{% render 'format-image' with image, image: product.metafields.product.badge.value,
+    width: 120 %}"
+  position: 809..906
+- from: "{% render 'format-price' with price: 'compare_at_price', object: product
+    %}"
+  to: "{% render 'format-price' with price, price: 'compare_at_price', object: product
+    %}"
+  position: 1096..1178
+- from: "{% render 'format-image' with image: product.featured_image %}"
+  to: "{% render 'format-image' with image, image: product.featured_image %}"
+  position: 1199..1268
+- from: "{% render 'format-price' with price: 'price', object: product %}"
+  to: "{% render 'format-price' with price, price: 'price', object: product %}"
+  position: 1371..1442
+- from: "{% render 'format-image' with image: product.images[1] %}"
+  to: "{% render 'format-image' with image, image: product.images[1] %}"
+  position: 1505..1569
+- from: "{% render 'format-image' with image: award, width: 120 %}"
+  to: "{% render 'format-image' with image, image: award, width: 120 %}"
+  position: 2310..2374
+- from: "{% render 'format-variant' with variant: product.selected_or_first_available_variant,
+    product: product%}"
+  to: "{% render 'format-variant' with variant, variant: product.selected_or_first_available_variant,
+    product: product %}"
+  position: 3291..3405
+- from: "{% render 'format-variant' for product.variants as variant, with product:
+    product %}"
+  to: "{% render 'format-variant' for product.variants as variant, product: product
+    %}"
+  position: 3424..3503
+{% endcomment %}

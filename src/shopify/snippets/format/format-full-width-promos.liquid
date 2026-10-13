@@ -11,21 +11,12 @@
   {% for promo in promos %}
     {% assign position_index = promo.settings.row_index | times: 3 %}
     {% if position_index == promo_index %}
-      {% render 'full-width-promo' with
-        cardData: promo.settings,
-        loading_animation: loading_animation
-      %}
+      {% render 'full-width-promo' with cardData, cardData: promo.settings, loading_animation: loading_animation %}
 
       {% assign in_grid_promos_count = in_grid_promos_count | plus: 3 %}
 
       {% capture formatted_full_width_promos_content %}
-        {%
-          render 'format-full-width-promos' with
-          promos: promos,
-          product_index: product_index,
-          in_grid_promos_count: in_grid_promos_count
-          loading_animation: loading_animation
-        %}
+        {% render 'format-full-width-promos' with promos, promos: promos, product_index: product_index, in_grid_promos_count: in_grid_promos_count, loading_animation: loading_animation %}
       {% endcapture %}
 
       {% assign nested_full_width_promos = formatted_full_width_promos_content
@@ -46,4 +37,30 @@
 
 {{ formatted_full_width_promos }}
 #########
-{{ in_grid_promos_count }}
+{{ in_grid_promos_count }}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'full-width-promo' with
+            cardData: promo.settings,
+            loading_animation: loading_animation
+          %}
+  to: "{% render 'full-width-promo' with cardData, cardData: promo.settings, loading_animation:
+    loading_animation %}"
+  position: 633..742
+- from: |-
+    {%
+              render 'format-full-width-promos' with
+              promos: promos,
+              product_index: product_index,
+              in_grid_promos_count: in_grid_promos_count
+              loading_animation: loading_animation
+            %}
+  to: "{% render 'format-full-width-promos' with promos, promos: promos, product_index:
+    product_index, in_grid_promos_count: in_grid_promos_count, loading_animation:
+    loading_animation %}"
+  position: 882..1061
+{%- endcomment -%}

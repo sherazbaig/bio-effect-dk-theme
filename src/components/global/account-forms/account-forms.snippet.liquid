@@ -92,19 +92,9 @@
         {{ 'customers.login.hi' | t }}
       </h2>
 
-      {% render 'btn' with
-        class: 'account-forms__my-account',
-        label: go_to_my_account_string,
-        modifiers: 'primary block center',
-        url: routes.account_url,
-      %}
+      {% render 'btn' with class, class: 'account-forms__my-account', label: go_to_my_account_string, modifiers: 'primary block center', url: routes.account_url %}
 
-      {% render 'btn' with
-        class: 'account-forms__signout mt-m',
-        label: sign_out_string,
-        modifiers: 'secondary block center',
-        url:  routes.account_logout_url,
-      %}
+      {% render 'btn' with class, class: 'account-forms__signout mt-m', label: sign_out_string, modifiers: 'secondary block center', url: routes.account_logout_url %}
     </div>
   </div>
 </div>
@@ -119,3 +109,30 @@
   v-cloak
 >
 </account-forms>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'btn' with
+            class: 'account-forms__my-account',
+            label: go_to_my_account_string,
+            modifiers: 'primary block center',
+            url: routes.account_url,
+          %}
+  to: "{% render 'btn' with class, class: 'account-forms__my-account', label: go_to_my_account_string,
+    modifiers: 'primary block center', url: routes.account_url %}"
+  position: 3050..3207
+- from: |-
+    {% render 'btn' with
+            class: 'account-forms__signout mt-m',
+            label: sign_out_string,
+            modifiers: 'secondary block center',
+            url:  routes.account_logout_url,
+          %}
+  to: "{% render 'btn' with class, class: 'account-forms__signout mt-m', label: sign_out_string,
+    modifiers: 'secondary block center', url: routes.account_logout_url %}"
+  position: 3215..3375
+{% endcomment %}

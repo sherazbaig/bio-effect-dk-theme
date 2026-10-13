@@ -19,7 +19,7 @@
 
     <div class="customers__pages-content container grid no-row-gap">
       <div class="col xs-span l2-13">
-        {% render 'customers-header' with current_url: orders_url %}
+        {% render 'customers-header' with current_url, current_url: orders_url %}
       </div>
 
       <div class="col xs-span l2-13">
@@ -74,7 +74,7 @@
             unless customer.orders.size == 0 and settings.customers_orders_cta_text == blank and settings.customers_orders_cta_url == blank
               if customer.orders.size == 0
                 if settings.customers_orders_cta_text != blank and settings.customers_orders_cta_url != blank
-                  render 'btn' with class: 'customers-orders__cta', label: settings.customers_orders_cta_text, url: settings.customers_orders_cta_url
+                  render 'btn' with class, class: 'customers-orders__cta', label: settings.customers_orders_cta_text, url: settings.customers_orders_cta_url
                 endif
 
               else
@@ -84,11 +84,11 @@
                       render 'divider-line'
                     endunless
 
-                    render 'order-card' with class: 'customers-orders__order-card', order: order
+                    render 'order-card' with class, class: 'customers-orders__order-card', order: order
                   endfor
 
                   if paginate.pages > 1
-                    render 'pagination' with paginate: paginate
+                    render 'pagination' with paginate, paginate: paginate
                   endif
                 endpaginate
               endif
@@ -101,3 +101,26 @@
 </section>
 
 {% schema 'customers-orders' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'customers-header' with current_url: orders_url %}"
+  to: "{% render 'customers-header' with current_url, current_url: orders_url %}"
+  position: 722..795
+- from: "                  render 'btn' with class: 'customers-orders__cta', label:
+    settings.customers_orders_cta_text, url: settings.customers_orders_cta_url"
+  to: "                  render 'btn' with class, class: 'customers-orders__cta',
+    label: settings.customers_orders_cta_text, url: settings.customers_orders_cta_url"
+  position: 2916..3072
+- from: "                    render 'order-card' with class: 'customers-orders__order-card',
+    order: order"
+  to: "                    render 'order-card' with class, class: 'customers-orders__order-card',
+    order: order"
+  position: 3325..3428
+- from: "                    render 'pagination' with paginate: paginate"
+  to: "                    render 'pagination' with paginate, paginate: paginate"
+  position: 3495..3568
+{% endcomment %}

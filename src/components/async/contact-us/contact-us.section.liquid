@@ -22,11 +22,7 @@
       <div class="contact-us__image-block col xs-span l3-8">
         {% if section.settings.image %}
           <div class="contact-us__image">
-            {% render 'art-direction' with
-              image: section.settings.image,
-              ratio: '3:2',
-              ratio_desktop: '3:3',
-            %}
+            {% render 'art-direction' with image, image: section.settings.image, ratio: '3:2', ratio_desktop: '3:3' %}
           </div>
         {% endif %}
       </div>
@@ -162,11 +158,7 @@
               </div>
 
               <div class="form-group__field">
-                {% render 'btn' with
-                  class: 'contact-us__btn',
-                  label: contact_us_submit_string,
-                  type: submit,
-                %}
+                {% render 'btn' with class, class: 'contact-us__btn', label: contact_us_submit_string, type: submit %}
               </div>
             {% endif %}
           </div>
@@ -177,3 +169,28 @@
 </section>
 
 {% schema 'contact-us' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'art-direction' with
+                  image: section.settings.image,
+                  ratio: '3:2',
+                  ratio_desktop: '3:3',
+                %}
+  to: "{% render 'art-direction' with image, image: section.settings.image, ratio:
+    '3:2', ratio_desktop: '3:3' %}"
+  position: 916..1022
+- from: |-
+    {% render 'btn' with
+                      class: 'contact-us__btn',
+                      label: contact_us_submit_string,
+                      type: submit,
+                    %}
+  to: "{% render 'btn' with class, class: 'contact-us__btn', label: contact_us_submit_string,
+    type: submit %}"
+  position: 5758..5860
+{% endcomment %}

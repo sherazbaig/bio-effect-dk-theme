@@ -26,7 +26,7 @@
     title="{{ 'general.social_sharing.facebook' | t }}"
   >
     <span class="visually-hidden">{{ 'general.social_sharing.facebook' | t }}</span>
-    {% render 'icon-social' with icon: 'facebook' %}
+    {% render 'icon-social' with icon, icon: 'facebook' %}
   </a>
 
   <a
@@ -36,7 +36,7 @@
     title="{{ 'general.social_sharing.pinterest' | t }}"
   >
     <span class="visually-hidden">{{ 'general.social_sharing.pinterest' | t }}</span>
-    {% render 'icon-social' with icon: 'pinterest' %}
+    {% render 'icon-social' with icon, icon: 'pinterest' %}
   </a>
 
   <a
@@ -46,7 +46,7 @@
     title="{{ 'general.social_sharing.twitter' | t }}"
   >
     <span class="visually-hidden">{{ 'general.social_sharing.twitter' | t }}</span>
-    {% render 'icon-social' with icon: 'twitter' %}
+    {% render 'icon-social' with icon, icon: 'twitter' %}
   </a>
 
   <a
@@ -57,6 +57,25 @@
     data-action="share/whatsapp/share"
   >
     <span class="visually-hidden">{{ 'general.social_sharing.whatsapp' | t }}</span>
-    {% render 'icon-social' with icon: 'whatsapp' %}
+    {% render 'icon-social' with icon, icon: 'whatsapp' %}
   </a>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'icon-social' with icon: 'facebook' %}"
+  to: "{% render 'icon-social' with icon, icon: 'facebook' %}"
+  position: 856..910
+- from: "{% render 'icon-social' with icon: 'pinterest' %}"
+  to: "{% render 'icon-social' with icon, icon: 'pinterest' %}"
+  position: 1231..1286
+- from: "{% render 'icon-social' with icon: 'twitter' %}"
+  to: "{% render 'icon-social' with icon, icon: 'twitter' %}"
+  position: 1551..1604
+- from: "{% render 'icon-social' with icon: 'whatsapp' %}"
+  to: "{% render 'icon-social' with icon, icon: 'whatsapp' %}"
+  position: 1907..1961
+{% endcomment %}

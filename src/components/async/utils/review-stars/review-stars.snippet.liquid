@@ -10,11 +10,24 @@
 <div class="review-stars liquid">
   {% for star in (1..total_rating) %}
     {% if forloop.index <= current_rating %}
-      {% render 'icon-general' with icon: 'star-filled' %}
+      {% render 'icon-general' with icon, icon: 'star-filled' %}
 
     {% else %}
 
-      {% render 'icon-general' with icon: 'star' %}
+      {% render 'icon-general' with icon, icon: 'star' %}
     {% endif %}
   {% endfor %}
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'icon-general' with icon: 'star-filled' %}"
+  to: "{% render 'icon-general' with icon, icon: 'star-filled' %}"
+  position: 451..509
+- from: "{% render 'icon-general' with icon: 'star' %}"
+  to: "{% render 'icon-general' with icon, icon: 'star' %}"
+  position: 533..584
+{% endcomment %}

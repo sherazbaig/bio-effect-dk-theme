@@ -31,7 +31,7 @@
 
             {% if block.settings.subtext != blank %}
               <div class="text-subtext__subtext rte">
-                {% render 'rte' with content: block.settings.subtext %}
+                {% render 'rte' with content, content: block.settings.subtext %}
               </div>
             {% endif %}
 
@@ -40,13 +40,7 @@
               block.settings.cta_url != blank
             %}
               <div class="mt-l">
-                {% render 'btn' with
-                  class: 'text-subtext__button',
-                  label: block.settings.cta_text,
-                  url: block.settings.cta_url,
-                  modifiers: 'primary',
-                  show_icon: false,
-                %}
+                {% render 'btn' with class, class: 'text-subtext__button', label: block.settings.cta_text, url: block.settings.cta_url, modifiers: 'primary', show_icon: false %}
               </div>
             {% endif %}
           </div>
@@ -57,3 +51,24 @@
 </section>
 
 {% schema 'text-subtext' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'rte' with content: block.settings.subtext %}"
+  to: "{% render 'rte' with content, content: block.settings.subtext %}"
+  position: 1224..1288
+- from: |-
+    {% render 'btn' with
+                      class: 'text-subtext__button',
+                      label: block.settings.cta_text,
+                      url: block.settings.cta_url,
+                      modifiers: 'primary',
+                      show_icon: false,
+                    %}
+  to: "{% render 'btn' with class, class: 'text-subtext__button', label: block.settings.cta_text,
+    url: block.settings.cta_url, modifiers: 'primary', show_icon: false %}"
+  position: 1514..1675
+{% endcomment %}

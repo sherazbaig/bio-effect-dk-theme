@@ -11,17 +11,30 @@
 >
   <div class="menu-drawer__header">
     <span class="menu-drawer__account">
-      {% render 'icon-general' with icon: 'account' %}
+      {% render 'icon-general' with icon, icon: 'account' %}
 
       <span class="text-button-nav menu-drawer__account-label">
         {{ 'general.site_header.account' | t }}
       </span>
     </span>
     <div class="menu-drawer__close" >
-      {% render 'icon-directional-navigation' with icon: 'close' %}
+      {% render 'icon-directional-navigation' with icon, icon: 'close' %}
     </div>
   </div>
   <div class="menu-drawer__navigation">
 
   </div>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'icon-general' with icon: 'account' %}"
+  to: "{% render 'icon-general' with icon, icon: 'account' %}"
+  position: 484..538
+- from: "{% render 'icon-directional-navigation' with icon: 'close' %}"
+  to: "{% render 'icon-directional-navigation' with icon, icon: 'close' %}"
+  position: 722..789
+{% endcomment %}

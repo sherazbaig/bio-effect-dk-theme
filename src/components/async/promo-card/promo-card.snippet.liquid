@@ -32,15 +32,27 @@
     href="{{ url }}"
   {% endif %}
 >
-  {% render 'responsive-image' with
-    class: 'promo-card__image',
-    image: image,
-    min_max: '200-500',
-    ratio: '1:1',
-  %}
+  {% render 'responsive-image' with class, class: 'promo-card__image', image: image, min_max: '200-500', ratio: '1:1' %}
 
   <p class="promo-card__title text-h5-desktop text-h6">{{ title }}</h5>
   <p class="promo-card__description  text-p-desktop text-mobile-p">
     {{ description }}
   </p>
 </{{ product_element }}>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+        class: 'promo-card__image',
+        image: image,
+        min_max: '200-500',
+        ratio: '1:1',
+      %}
+  to: "{% render 'responsive-image' with class, class: 'promo-card__image', image:
+    image, min_max: '200-500', ratio: '1:1' %}"
+  position: 947..1065
+{% endcomment %}

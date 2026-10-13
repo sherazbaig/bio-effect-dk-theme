@@ -17,7 +17,7 @@
   aria-labelledby="section-title-{{ section.id }}"
   data-sign-post-location="head"
   data-sign-post-priority="1"
-  {% render 'header-states' with section: section %}
+  {% render 'header-states' with section, section: section %}
 >
   <promo-banner
     v-show="getComponentActive('promo-banner')"
@@ -42,7 +42,7 @@
         up_sell_product != blank and
         up_sell_product.metafields.seo.hidden != 1
       %}
-        upSellProduct: {% render 'format-product' with product: up_sell_product %}
+        upSellProduct: {% render 'format-product' with product, product: up_sell_product %}
       {% endif %}
     }"
   ></promo-banner>
@@ -108,7 +108,7 @@
         <div class="promo-banner__desktop-icons">
           {% if section.settings.display_account %}
             <div class="promo-banner__account">
-              {% render 'icon-general' with icon: 'account' %}
+              {% render 'icon-general' with icon, icon: 'account' %}
 
               <span class="promo-banner__account-label text-p-xs-bold">
                 {{ 'general.site_header.account' | t }}
@@ -122,3 +122,19 @@
 </section>
 
 {% schema 'promo-banner' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'header-states' with section: section %}"
+  to: "{% render 'header-states' with section, section: section %}"
+  position: 588..647
+- from: "{% render 'format-product' with product: up_sell_product %}"
+  to: "{% render 'format-product' with product, product: up_sell_product %}"
+  position: 1552..1620
+- from: "{% render 'icon-general' with icon: 'account' %}"
+  to: "{% render 'icon-general' with icon, icon: 'account' %}"
+  position: 4268..4322
+{% endcomment %}

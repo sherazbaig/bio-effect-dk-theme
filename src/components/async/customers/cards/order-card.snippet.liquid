@@ -71,20 +71,12 @@
 
 <div class="order-card liquid {{ class }}">
   {% if display_status %}
-    {% render 'order-status' with
-      class: 'order-card__order-status',
-      order: order,
-    %}
+    {% render 'order-status' with class, class: 'order-card__order-status', order: order %}
   {% endif %}
 
   <div class="order-card__image-container">
     <div class="order-card__image">
-      {% render 'responsive-image' with
-        image: order_image,
-        min_max: '91-273',
-        ratio: '1:1',
-        sizes: '(min-width: 1024px) 151px, 91px'
-      %}
+      {% render 'responsive-image' with image, image: order_image, min_max: '91-273', ratio: '1:1', sizes: '(min-width: 1024px) 151px, 91px' %}
 
       {% if extra_products_count > 0 %}
         <div class="order-card__image-overlay">
@@ -128,19 +120,55 @@
 
   <div class="order-card__footer">
     {% if order.fulfillment_status != 'complete' and tracking_url != blank %}
-      {% render 'btn' with
-        attributes: 'target="_blank"',
-        class: 'order-card__track',
-        label: track_order_string,
-        modifiers: 'secondary block center',
-        url: tracking_url,
-      %}
+      {% render 'btn' with attributes, attributes: 'target="_blank"', class: 'order-card__track', label: track_order_string, modifiers: 'secondary block center', url: tracking_url %}
     {% endif %}
 
-    {% render 'btn' with
-      class: 'order-card__view',
-      label: view_details_string,
-      url: order.customer_url,
-    %}
+    {% render 'btn' with class, class: 'order-card__view', label: view_details_string, url: order.customer_url %}
   </div>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'order-status' with
+          class: 'order-card__order-status',
+          order: order,
+        %}
+  to: "{% render 'order-status' with class, class: 'order-card__order-status', order:
+    order %}"
+  position: 2625..2712
+- from: |-
+    {% render 'responsive-image' with
+            image: order_image,
+            min_max: '91-273',
+            ratio: '1:1',
+            sizes: '(min-width: 1024px) 151px, 91px'
+          %}
+  to: "{% render 'responsive-image' with image, image: order_image, min_max: '91-273',
+    ratio: '1:1', sizes: '(min-width: 1024px) 151px, 91px' %}"
+  position: 2814..2951
+- from: |-
+    {% render 'btn' with
+            attributes: 'target="_blank"',
+            class: 'order-card__track',
+            label: track_order_string,
+            modifiers: 'secondary block center',
+            url: tracking_url,
+          %}
+  to: '{% render ''btn'' with attributes, attributes: ''target="_blank"'', class:
+    ''order-card__track'', label: track_order_string, modifiers: ''secondary block
+    center'', url: tracking_url %}'
+  position: 4362..4538
+- from: |-
+    {% render 'btn' with
+          class: 'order-card__view',
+          label: view_details_string,
+          url: order.customer_url,
+        %}
+  to: "{% render 'btn' with class, class: 'order-card__view', label: view_details_string,
+    url: order.customer_url %}"
+  position: 4560..4669
+{% endcomment %}

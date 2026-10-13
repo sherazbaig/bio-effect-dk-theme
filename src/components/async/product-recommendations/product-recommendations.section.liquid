@@ -14,11 +14,11 @@
   assign previous_string = 'accessibility.carousel.previous' | t
 
   capture icon_arrow_left
-    render 'icon-directional-navigation' with icon: 'chevron', direction: 'left'
+    render 'icon-directional-navigation' with icon, icon: 'chevron', direction: 'left'
   endcapture
 
   capture icon_arrow_right
-    render 'icon-directional-navigation' with icon: 'chevron', direction: 'right'
+    render 'icon-directional-navigation' with icon, icon: 'chevron', direction: 'right'
   endcapture
 -%}
 
@@ -49,10 +49,7 @@
           <ul class="product-recommendations__carousel splide__list">
             {% for i in (1..loading_product_count) %}
               <li class="product-recommendations__slide splide__slide">
-                {% render 'product-card' with
-                  loading_animation: true,
-                  product: false,
-                %}
+                {% render 'product-card' with loading_animation, loading_animation: true, product: false %}
               </li>
             {% endfor %}
           </ul>
@@ -60,32 +57,14 @@
           <div class="product-recommendations__footer mt-l">
             <div class="product-recommendations__button-wrapper">
               {% if section.settings.button_text != blank %}
-                {% render 'btn' with
-                  class: 'articles-slider__button',
-                  label: section.settings.button_text,
-                  url: section.settings.button_url,
-                %}
+                {% render 'btn' with class, class: 'articles-slider__button', label: section.settings.button_text, url: section.settings.button_url %}
               {% endif %}
             </div>
 
             <div class="splide__arrows">
-              {% render 'btn' with
-                class: 'splide__arrow splide__arrow--prev',
-                icon: icon_arrow_left,
-                label: previous_string,
-                modifiers: 'light reversed',
-                show_icon: true,
-                type: 'button',
-              %}
+              {% render 'btn' with class, class: 'splide__arrow splide__arrow--prev', icon: icon_arrow_left, label: previous_string, modifiers: 'light reversed', show_icon: true, type: 'button' %}
 
-              {% render 'btn' with
-                class: 'splide__arrow splide__arrow--next',
-                icon: icon_arrow_right,
-                label: next_string,
-                modifiers: 'light',
-                show_icon: true,
-                type: 'button',
-              %}
+              {% render 'btn' with class, class: 'splide__arrow splide__arrow--next', icon: icon_arrow_right, label: next_string, modifiers: 'light', show_icon: true, type: 'button' %}
             </div>
           </div>
         </div>
@@ -95,3 +74,63 @@
     </div>
   </div>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "    render 'icon-directional-navigation' with icon: 'chevron', direction:
+    'left'"
+  to: "    render 'icon-directional-navigation' with icon, icon: 'chevron', direction:
+    'left'"
+  position: 669..755
+- from: "    render 'icon-directional-navigation' with icon: 'chevron', direction:
+    'right'"
+  to: "    render 'icon-directional-navigation' with icon, icon: 'chevron', direction:
+    'right'"
+  position: 797..884
+- from: |-
+    {% render 'product-card' with
+                      loading_animation: true,
+                      product: false,
+                    %}
+  to: "{% render 'product-card' with loading_animation, loading_animation: true, product:
+    false %}"
+  position: 1759..1850
+- from: |-
+    {% render 'btn' with
+                      class: 'articles-slider__button',
+                      label: section.settings.button_text,
+                      url: section.settings.button_url,
+                    %}
+  to: "{% render 'btn' with class, class: 'articles-slider__button', label: section.settings.button_text,
+    url: section.settings.button_url %}"
+  position: 2117..2251
+- from: |-
+    {% render 'btn' with
+                    class: 'splide__arrow splide__arrow--prev',
+                    icon: icon_arrow_left,
+                    label: previous_string,
+                    modifiers: 'light reversed',
+                    show_icon: true,
+                    type: 'button',
+                  %}
+  to: "{% render 'btn' with class, class: 'splide__arrow splide__arrow--prev', icon:
+    icon_arrow_left, label: previous_string, modifiers: 'light reversed', show_icon:
+    true, type: 'button' %}"
+  position: 2353..2535
+- from: |-
+    {% render 'btn' with
+                    class: 'splide__arrow splide__arrow--next',
+                    icon: icon_arrow_right,
+                    label: next_string,
+                    modifiers: 'light',
+                    show_icon: true,
+                    type: 'button',
+                  %}
+  to: "{% render 'btn' with class, class: 'splide__arrow splide__arrow--next', icon:
+    icon_arrow_right, label: next_string, modifiers: 'light', show_icon: true, type:
+    'button' %}"
+  position: 2551..2721
+{% endcomment %}

@@ -5,7 +5,7 @@
 {% endcomment %}
 <section
   aria-labelledby="navigation-title"
-  {% render 'header-states' with section: section %}
+  {% render 'header-states' with section, section: section %}
 >
   <navigation
     v-show="getComponentActive('navigation')"
@@ -57,3 +57,13 @@
 </section>
 
 {% schema 'navigation' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'header-states' with section: section %}"
+  to: "{% render 'header-states' with section, section: section %}"
+  position: 277..336
+{% endcomment %}

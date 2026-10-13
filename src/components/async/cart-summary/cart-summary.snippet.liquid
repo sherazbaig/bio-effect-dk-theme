@@ -30,7 +30,7 @@
           {{ 'cart.summary.discount_label' | t }}
         </span>
 
-        {% render 'icon-general' with icon: 'tag' %}
+        {% render 'icon-general' with icon, icon: 'tag' %}
       </p>
 
       <p class="{{ text_class }} cart-summary__discountPrice">
@@ -59,13 +59,7 @@
 
     <div class="cart-summary__terms-and-conditions">
       <div class="form-group__field">
-        {% render 'checkbox-input' with
-          id: 'accepts-terms-and-conditions-cart',
-          checked: false,
-          label: terms_label,
-          name: 'customer[accepts-terms-and-conditions-cart]',
-          type: 'checkbox'
-        %}
+        {% render 'checkbox-input' with id, id: 'accepts-terms-and-conditions-cart', checked: false, label: terms_label, name: 'customer[accepts-terms-and-conditions-cart]', type: 'checkbox' %}
       </div>
     </div>
   {% endif%}
@@ -74,10 +68,37 @@
     name="checkbox" {% if terms_enabled %} disabled {% endif %}
   {% endcapture %}
 
-  {% render 'btn' with
-    attributes: button_attributes,
-    class: 'cart-summary__submit text-button'
-    label: checkout_string,
-    type: 'submit',
-  %}
+  {% render 'btn' with attributes, attributes: button_attributes, class: 'cart-summary__submit text-button', label: checkout_string, type: 'submit' %}
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'icon-general' with icon: 'tag' %}"
+  to: "{% render 'icon-general' with icon, icon: 'tag' %}"
+  position: 998..1048
+- from: |-
+    {% render 'checkbox-input' with
+              id: 'accepts-terms-and-conditions-cart',
+              checked: false,
+              label: terms_label,
+              name: 'customer[accepts-terms-and-conditions-cart]',
+              type: 'checkbox'
+            %}
+  to: "{% render 'checkbox-input' with id, id: 'accepts-terms-and-conditions-cart',
+    checked: false, label: terms_label, name: 'customer[accepts-terms-and-conditions-cart]',
+    type: 'checkbox' %}"
+  position: 1799..1984
+- from: |-
+    {% render 'btn' with
+        attributes: button_attributes,
+        class: 'cart-summary__submit text-button'
+        label: checkout_string,
+        type: 'submit',
+      %}
+  to: "{% render 'btn' with attributes, attributes: button_attributes, class: 'cart-summary__submit
+    text-button', label: checkout_string, type: 'submit' %}"
+  position: 2143..2291
+{% endcomment %}

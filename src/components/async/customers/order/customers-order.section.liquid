@@ -41,20 +41,14 @@
 
     <div class="customers__pages-content container grid no-row-gap">
       <div class="col xs-span l2-5">
-        {% render 'customers-header' with current_url: orders_url %}
+        {% render 'customers-header' with current_url, current_url: orders_url %}
       </div>
 
       <div class="col xs-span l6-11">
         <div class="customers-order__content">
           <div class="customers-order__header">
             {% if order.cancelled %}
-              {% render 'notification-panel' with
-                class: 'customers-order__cancelled',
-                show_close: false,
-                text: cancelled_text_string
-                title: cancelled_title_string,
-                type: 'error',
-              %}
+              {% render 'notification-panel' with class, class: 'customers-order__cancelled', show_close: false, text: cancelled_text_string, title: cancelled_title_string, type: 'error' %}
             {% endif %}
 
             <h1
@@ -98,7 +92,7 @@
           {% endcomment %}
           {% if settings.customer_order_status and order.fulfillment_status != 'complete' %}
             <div class="customers-order__order-status">
-              {% render 'order-status' with order: order %}
+              {% render 'order-status' with order, order: order %}
             </div>
 
             {% render 'divider-line' %}
@@ -136,12 +130,12 @@
 
               {%- liquid
                 for fulfilled_line_item in line_item.fulfillment.fulfillment_line_items
-                  render 'item-card' with class: 'customers-order__item-card', line_item: fulfilled_line_item.line_item, line_quantity: fulfilled_line_item.quantity
+                  render 'item-card' with class, class: 'customers-order__item-card', line_item: fulfilled_line_item.line_item, line_quantity: fulfilled_line_item.quantity
                   assign fulfilled = fulfilled | plus: fulfilled_line_item.quantity
                 endfor
 
                 if order.fulfillment_status != 'complete' and  line_item.fulfillment.tracking_url != blank
-                  render 'btn' with attributes: 'target="_blank"', class: 'customers-order__track', label: track_your_order_string, modifiers: 'secondary block center', url: line_item.fulfillment.tracking_url
+                  render 'btn' with attributes, attributes: 'target="_blank"', class: 'customers-order__track', label: track_your_order_string, modifiers: 'secondary block center', url: line_item.fulfillment.tracking_url
                 endif
               -%}
             </div>
@@ -169,7 +163,7 @@
                   endif
 
                   assign remaining_quantity = line_item.quantity | minus: line_item.successfully_fulfilled_quantity
-                  render 'item-card' with class: 'customers-order__item-card', line_item: line_item, line_quantity: remaining_quantity
+                  render 'item-card' with class, class: 'customers-order__item-card', line_item: line_item, line_quantity: remaining_quantity
                 endfor
               -%}
             </div>
@@ -198,7 +192,7 @@
                 {{ 'customers.order.shipping.shipping_address' | t }}
               </p>
 
-              {% render 'address-block' with address: order.shipping_address %}
+              {% render 'address-block' with address, address: order.shipping_address %}
             </div>
 
             <div class="customers-order__address">
@@ -206,7 +200,7 @@
                 {{ 'customers.order.shipping.billing_address' | t }}
               </p>
 
-              {% render 'address-block' with address: order.billing_address %}
+              {% render 'address-block' with address, address: order.billing_address %}
             </div>
           </div>
 
@@ -355,3 +349,51 @@
 </section>
 
 {% schema 'customers-order' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'customers-header' with current_url: orders_url %}"
+  to: "{% render 'customers-header' with current_url, current_url: orders_url %}"
+  position: 1831..1904
+- from: |-
+    {% render 'notification-panel' with
+                    class: 'customers-order__cancelled',
+                    show_close: false,
+                    text: cancelled_text_string
+                    title: cancelled_title_string,
+                    type: 'error',
+                  %}
+  to: "{% render 'notification-panel' with class, class: 'customers-order__cancelled',
+    show_close: false, text: cancelled_text_string, title: cancelled_title_string,
+    type: 'error' %}"
+  position: 2103..2278
+- from: "{% render 'order-status' with order: order %}"
+  to: "{% render 'order-status' with order, order: order %}"
+  position: 3738..3790
+- from: "                  render 'item-card' with class: 'customers-order__item-card',
+    line_item: fulfilled_line_item.line_item, line_quantity: fulfilled_line_item.quantity"
+  to: "                  render 'item-card' with class, class: 'customers-order__item-card',
+    line_item: fulfilled_line_item.line_item, line_quantity: fulfilled_line_item.quantity"
+  position: 5386..5557
+- from: '                  render ''btn'' with attributes: ''target="_blank"'', class:
+    ''customers-order__track'', label: track_your_order_string, modifiers: ''secondary
+    block center'', url: line_item.fulfillment.tracking_url'
+  to: '                  render ''btn'' with attributes, attributes: ''target="_blank"'',
+    class: ''customers-order__track'', label: track_your_order_string, modifiers:
+    ''secondary block center'', url: line_item.fulfillment.tracking_url'
+  position: 5773..5993
+- from: "                  render 'item-card' with class: 'customers-order__item-card',
+    line_item: line_item, line_quantity: remaining_quantity"
+  to: "                  render 'item-card' with class, class: 'customers-order__item-card',
+    line_item: line_item, line_quantity: remaining_quantity"
+  position: 7118..7259
+- from: "{% render 'address-block' with address: order.shipping_address %}"
+  to: "{% render 'address-block' with address, address: order.shipping_address %}"
+  position: 8265..8339
+- from: "{% render 'address-block' with address: order.billing_address %}"
+  to: "{% render 'address-block' with address, address: order.billing_address %}"
+  position: 8582..8655
+{% endcomment %}

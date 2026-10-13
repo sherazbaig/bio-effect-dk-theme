@@ -14,10 +14,7 @@
   <ul class="site-footer__link-list-wrapper">
     {% unless section.blocks.size == 0 %}
       {% for block in section.blocks %}
-        {% render 'site-footer-links' with
-          links: block.settings.link_list
-          link_text_class: 'text-p'
-        %}
+        {% render 'site-footer-links' with links, links: block.settings.link_list, link_text_class: 'text-p' %}
       {% endfor %}
     {% endunless %}
   </ul>
@@ -29,9 +26,7 @@
 ----------------------------------------------------------------------------
 {% endcomment %}
 {% capture social_icons %}
-  {% render 'social' with
-    base_class: 'site-footer'
-  %}
+  {% render 'social' with base_class, base_class: 'site-footer' %}
 {% endcapture %}
 
 {% comment %}
@@ -99,10 +94,7 @@
 
             {% if section.settings.newsletter_form %}
               <div class="site-footer__newsletter">
-                {% render 'newsletter-form' with
-                  block_class: 'site-footer',
-                  list: section.settings.newsletter_list_id,
-                %}
+                {% render 'newsletter-form' with block_class, block_class: 'site-footer', list: section.settings.newsletter_list_id %}
               </div>
             {% endif %}
           </div>
@@ -132,11 +124,7 @@
                 class="site-footer__logo"
                 aria-label="{{ 'general.site_footer.return_home' | t }}"
               >
-                {% render 'responsive-image' with
-                  image: footer_logo,
-                  alt: footer_logo.alt,
-                  ratio: 1:1
-                %}
+                {% render 'responsive-image' with image, image: footer_logo, alt: footer_logo.alt, ratio: renamed_variable_1['1'] %}
               </a>
             {% endif %}
 
@@ -177,3 +165,41 @@
 </footer>
 
 {% schema 'site-footer' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'site-footer-links' with
+              links: block.settings.link_list
+              link_text_class: 'text-p'
+            %}
+  to: "{% render 'site-footer-links' with links, links: block.settings.link_list,
+    link_text_class: 'text-p' %}"
+  position: 680..783
+- from: |-
+    {% render 'social' with
+        base_class: 'site-footer'
+      %}
+  to: "{% render 'social' with base_class, base_class: 'site-footer' %}"
+  position: 1096..1160
+- from: |-
+    {% render 'newsletter-form' with
+                      block_class: 'site-footer',
+                      list: section.settings.newsletter_list_id,
+                    %}
+  to: "{% render 'newsletter-form' with block_class, block_class: 'site-footer', list:
+    section.settings.newsletter_list_id %}"
+  position: 3807..3925
+- from: |-
+    {% render 'responsive-image' with
+                      image: footer_logo,
+                      alt: footer_logo.alt,
+                      ratio: 1:1
+                    %}
+  to: "{% render 'responsive-image' with image, image: footer_logo, alt: footer_logo.alt,
+    ratio: renamed_variable_1['1'] %}"
+  position: 4924..5040
+{% endcomment %}

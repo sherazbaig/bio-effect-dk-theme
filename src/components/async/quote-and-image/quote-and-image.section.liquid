@@ -74,7 +74,7 @@
                 {% if quote != blank %}
                   <div class="quote-and-image__quote">
                     <div class="quote-and-image__icon">
-                      {% render 'icon-general' with icon: 'quote' %}
+                      {% render 'icon-general' with icon, icon: 'quote' %}
                     </div>
 
                     <div class="quote-and-image__quote-text text-quote">
@@ -134,22 +134,10 @@
                   "
                 >
                   {% if mobile_image or desktop_image %}
-                    {% render 'art-direction' with
-                      class: image_class,
-                      image: mobile_image,
-                      image_desktop: desktop_image,
-                      padding: padding,
-                      ratio: ratio,
-                      ratio_desktop: ratio,
-                    %}
+                    {% render 'art-direction' with class, class: image_class, image: mobile_image, image_desktop: desktop_image, padding: padding, ratio: ratio, ratio_desktop: ratio %}
 
                   {% elsif image %}
-                    {% render 'responsive-image' with
-                      class: image_class,
-                      image: image,
-                      padding: padding,
-                      ratio: ratio,
-                    %}
+                    {% render 'responsive-image' with class, class: image_class, image: image, padding: padding, ratio: ratio %}
                   {% endif %}
                 </li>
               {% endfor %}
@@ -173,3 +161,36 @@
 </section>
 
 {% schema 'quote-and-image' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'icon-general' with icon: 'quote' %}"
+  to: "{% render 'icon-general' with icon, icon: 'quote' %}"
+  position: 2093..2145
+- from: |-
+    {% render 'art-direction' with
+                          class: image_class,
+                          image: mobile_image,
+                          image_desktop: desktop_image,
+                          padding: padding,
+                          ratio: ratio,
+                          ratio_desktop: ratio,
+                        %}
+  to: "{% render 'art-direction' with class, class: image_class, image: mobile_image,
+    image_desktop: desktop_image, padding: padding, ratio: ratio, ratio_desktop: ratio
+    %}"
+  position: 4256..4420
+- from: |-
+    {% render 'responsive-image' with
+                          class: image_class,
+                          image: image,
+                          padding: padding,
+                          ratio: ratio,
+                        %}
+  to: "{% render 'responsive-image' with class, class: image_class, image: image,
+    padding: padding, ratio: ratio %}"
+  position: 4478..4586
+{% endcomment %}

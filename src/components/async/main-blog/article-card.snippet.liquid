@@ -40,12 +40,7 @@
     href="{{ article.url }}"
     tabindex="-1"
   >
-    {% render 'responsive-image' with
-      class: 'article-card__image-container',
-      image: article.image,
-      min_max: '300-800',
-      ratio: ratio,
-    %}
+    {% render 'responsive-image' with class, class: 'article-card__image-container', image: article.image, min_max: '300-800', ratio: ratio %}
   </a>
 
   <div class="article-card__footer">
@@ -86,3 +81,20 @@
     </p>
   </div>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+          class: 'article-card__image-container',
+          image: article.image,
+          min_max: '300-800',
+          ratio: ratio,
+        %}
+  to: "{% render 'responsive-image' with class, class: 'article-card__image-container',
+    image: article.image, min_max: '300-800', ratio: ratio %}"
+  position: 1282..1420
+{% endcomment %}

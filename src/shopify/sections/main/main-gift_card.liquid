@@ -139,21 +139,39 @@
           </div>
         {% endif %}
 
-        {% render 'btn' with
-          class: 'gift-card__start-shopping',
-          label: shop_link_string,
-          url: routes.root_url,
-        %}
+        {% render 'btn' with class, class: 'gift-card__start-shopping', label: shop_link_string, url: routes.root_url %}
 
-        {% render 'btn' with
-          attributes: 'js-gift-card="print"',
-          class: 'gift-card__print',
-          label: print_gift_card_string,
-          modifiers: 'secondary block center',
-        %}
+        {% render 'btn' with attributes, attributes: 'js-gift-card="print"', class: 'gift-card__print', label: print_gift_card_string, modifiers: 'secondary block center' %}
       </div>
     {% endunless %}
   </div>
 </section>
 
 {% schema 'main-gift_card' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'btn' with
+              class: 'gift-card__start-shopping',
+              label: shop_link_string,
+              url: routes.root_url,
+            %}
+  to: "{% render 'btn' with class, class: 'gift-card__start-shopping', label: shop_link_string,
+    url: routes.root_url %}"
+  position: 4212..4324
+- from: |-
+    {% render 'btn' with
+              attributes: 'js-gift-card="print"',
+              class: 'gift-card__print',
+              label: print_gift_card_string,
+              modifiers: 'secondary block center',
+            %}
+  to: '{% render ''btn'' with attributes, attributes: ''js-gift-card="print"'', class:
+    ''gift-card__print'', label: print_gift_card_string, modifiers: ''secondary block
+    center'' %}'
+  position: 4334..4499
+{% endcomment %}

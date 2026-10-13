@@ -157,6 +157,8 @@
   lang="{{ localization.language.iso_code }}"
 >
   <head>
+  {% comment %}Loads Shogun Analytics. Removing this will disrupt analytics data collection.{% endcomment %}
+  <script type="text/javascript" async src="https://na.shgcdn3.com/pixel-collector.js"></script>
     {% unless request.design_mode %}
       {% render 'site-cookie-hub' %}
     {% endunless %}
@@ -172,7 +174,7 @@
       render 'site-hreflang'
       render 'site-favicon'
       render 'site-social-tags'
-      render 'site-gtm' with head: true
+      render 'site-gtm' with head, head: true
     -%}
 
     {% comment %}
@@ -201,7 +203,7 @@
     ----------------------------------------------------------------------------
     {% endcomment %}
     {%- unless settings.disable_theme_styles and not_production -%}
-      {% render 'theme-styles' with layout: 'theme' %}
+      {% render 'theme-styles' with layout, layout: 'theme' %}
     {%- endunless -%}
 
     {% assign page_handle = page.handle | downcase %}
@@ -228,7 +230,7 @@
       {%- endif -%}
     "
   >
-    {% render 'site-gtm' with body: true %}
+    {% render 'site-gtm' with body, body: true %}
 
     {% comment %}
     -----------------------------------------------------------------------------
@@ -293,9 +295,28 @@
     Theme scripts.
   ----------------------------------------------------------------------------
   {% endcomment %}
-  {% render 'theme-scripts' with layout: 'theme' %}
+  {% render 'theme-scripts' with layout, layout: 'theme' %}
 
   {%- if template.directory == 'customers' -%}
     <script defer src="{{ 'shopify_common.js' | shopify_asset_url }}"></script>
   {%- endif -%}
 </html>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "      render 'site-gtm' with head: true"
+  to: "      render 'site-gtm' with head, head: true"
+  position: 5309..5354
+- from: "{% render 'theme-styles' with layout: 'theme' %}"
+  to: "{% render 'theme-styles' with layout, layout: 'theme' %}"
+  position: 6353..6409
+- from: "{% render 'site-gtm' with body: true %}"
+  to: "{% render 'site-gtm' with body, body: true %}"
+  position: 7027..7072
+- from: "{% render 'theme-scripts' with layout: 'theme' %}"
+  to: "{% render 'theme-scripts' with layout, layout: 'theme' %}"
+  position: 9151..9208
+{% endcomment %}

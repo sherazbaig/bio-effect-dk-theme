@@ -24,7 +24,7 @@
   aria-labelledby="site-header-title"
   data-sign-post-location="head"
   data-sign-post-priority="1"
-  {% render 'header-states' with section: section %}
+  {% render 'header-states' with section, section: section %}
   js-sign-post="{{ 'accessibility.sign_posts.site_header' | t }}"
 >
   <site-header
@@ -109,7 +109,7 @@
                 {{ shop.name }}
               </span>
 
-              {% render 'icon-general' with icon: 'brand-logo' %}
+              {% render 'icon-general' with icon, icon: 'brand-logo' %}
             </a>
           </div>
 
@@ -119,7 +119,7 @@
               class="site-header__search icon-button"
               aria-label="Søg"
             >
-              {% render 'icon-general' with icon: 'search-black' %}
+              {% render 'icon-general' with icon, icon: 'search-black' %}
             </button>
             <a
               class="site-header__cart icon-button"
@@ -127,7 +127,7 @@
             >
               <span class="visually-hidden"></span>
 
-              {% render 'icon-general' with icon: 'cart' %}
+              {% render 'icon-general' with icon, icon: 'cart' %}
 
               {% if cart.item_count > 0 %}
                 <span class="site-header__cart-badge critical-clear text-body-2xs-regular">
@@ -140,7 +140,7 @@
               class="site-header__menu icon-button"
               type="button"
             >
-              {% render 'icon-general' with icon: 'menu' %}
+              {% render 'icon-general' with icon, icon: 'menu' %}
             </button>
           </div>
 
@@ -163,7 +163,7 @@
                     type="button"
                     aria-label="{{ 'search.title' | t }}"
                   >
-                    {% render 'icon-general' with icon: 'search-black' %}
+                    {% render 'icon-general' with icon, icon: 'search-black' %}
                   </button>
                 </li>
                 <li class="site-header__navigation-item">
@@ -172,7 +172,7 @@
                     type="button"
                   >
                     <span class="site-header__desktop-cart">
-                      {% render 'icon-general' with icon: 'cart' %}
+                      {% render 'icon-general' with icon, icon: 'cart' %}
                     </span>
 
                     <span class="site-header__hover-text text-button-nav">
@@ -202,3 +202,31 @@
 </section>
 
 {% schema 'site-header' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'header-states' with section: section %}"
+  to: "{% render 'header-states' with section, section: section %}"
+  position: 650..709
+- from: "{% render 'icon-general' with icon: 'brand-logo' %}"
+  to: "{% render 'icon-general' with icon, icon: 'brand-logo' %}"
+  position: 3978..4035
+- from: "{% render 'icon-general' with icon: 'search-black' %}"
+  to: "{% render 'icon-general' with icon, icon: 'search-black' %}"
+  position: 4287..4346
+- from: "{% render 'icon-general' with icon: 'cart' %}"
+  to: "{% render 'icon-general' with icon, icon: 'cart' %}"
+  position: 4560..4611
+- from: "{% render 'icon-general' with icon: 'menu' %}"
+  to: "{% render 'icon-general' with icon, icon: 'menu' %}"
+  position: 4979..5030
+- from: "{% render 'icon-general' with icon: 'search-black' %}"
+  to: "{% render 'icon-general' with icon, icon: 'search-black' %}"
+  position: 5952..6011
+- from: "{% render 'icon-general' with icon: 'cart' %}"
+  to: "{% render 'icon-general' with icon, icon: 'cart' %}"
+  position: 6342..6393
+{% endcomment %}

@@ -68,14 +68,7 @@
 <div class="line-item liquid {{ class }} {{ line_item_class }}">
   <div class="line-item__grid">
     <div class="line-item__image-container">
-      {% render 'responsive-image' with
-        class: 'line-item__image',
-        image: line_item_image,
-        lazyload: false,
-        min_max: '95-285',
-        ratio: '1:1',
-        sizes: '(min-width: 1024px) 99px, 95px',
-      %}
+      {% render 'responsive-image' with class, class: 'line-item__image', image: line_item_image, lazyload: false, min_max: '95-285', ratio: '1:1', sizes: '(min-width: 1024px) 99px, 95px' %}
     </div>
 
     <div class="line-item__details">
@@ -94,23 +87,10 @@
         {% endif %}
       </div>
 
-      {% render 'quantity-selector' with
-        class: 'line-item__quantity-selector',
-        id: line_item.key,
-        name: 'updates[]',
-        quantity: line_item.quantity,
-      %}
+      {% render 'quantity-selector' with class, class: 'line-item__quantity-selector', id: line_item.key, name: 'updates[]', quantity: line_item.quantity %}
     </div>
 
-    {% render 'product-prices' with
-      attributes: 'aria-labelledby="total-title"',
-      class: 'line-item__total',
-      class_price: price_class,
-      class_compare_at_price: compare_at_price_class,
-      compare_at_price: compare_at_price,
-      original_line_price: original_line_price,
-      price: line_item.final_line_price,
-    %}
+    {% render 'product-prices' with attributes, attributes: 'aria-labelledby="total-title"', class: 'line-item__total', class_price: price_class, class_compare_at_price: compare_at_price_class, compare_at_price: compare_at_price, original_line_price: original_line_price, price: line_item.final_line_price %}
 
     <a
       class="line-item__remove text-p-small"
@@ -122,3 +102,48 @@
     </a>
   </div>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+            class: 'line-item__image',
+            image: line_item_image,
+            lazyload: false,
+            min_max: '95-285',
+            ratio: '1:1',
+            sizes: '(min-width: 1024px) 99px, 95px',
+          %}
+  to: "{% render 'responsive-image' with class, class: 'line-item__image', image:
+    line_item_image, lazyload: false, min_max: '95-285', ratio: '1:1', sizes: '(min-width:
+    1024px) 99px, 95px' %}"
+  position: 2660..2844
+- from: |-
+    {% render 'quantity-selector' with
+            class: 'line-item__quantity-selector',
+            id: line_item.key,
+            name: 'updates[]',
+            quantity: line_item.quantity,
+          %}
+  to: "{% render 'quantity-selector' with class, class: 'line-item__quantity-selector',
+    id: line_item.key, name: 'updates[]', quantity: line_item.quantity %}"
+  position: 3321..3471
+- from: |-
+    {% render 'product-prices' with
+          attributes: 'aria-labelledby="total-title"',
+          class: 'line-item__total',
+          class_price: price_class,
+          class_compare_at_price: compare_at_price_class,
+          compare_at_price: compare_at_price,
+          original_line_price: original_line_price,
+          price: line_item.final_line_price,
+        %}
+  to: '{% render ''product-prices'' with attributes, attributes: ''aria-labelledby="total-title"'',
+    class: ''line-item__total'', class_price: price_class, class_compare_at_price:
+    compare_at_price_class, compare_at_price: compare_at_price, original_line_price:
+    original_line_price, price: line_item.final_line_price %}'
+  position: 3488..3792
+{% endcomment %}

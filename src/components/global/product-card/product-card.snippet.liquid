@@ -48,7 +48,7 @@
 >
   <product-card
     v-cloak
-    :product="{% render 'format-product' with product: product %}"
+    :product="{% render 'format-product' with product, product: product %}"
   ></product-card>
 
   {% comment %}
@@ -69,12 +69,7 @@
       </p>
     </div>
     <div class="product-card__image-container">
-      {% render 'responsive-image' with
-        class: 'product-card__primary-image',
-        image: product_primary_image,
-        min_max: '100-600',
-        ratio: '100:85',
-      %}
+      {% render 'responsive-image' with class, class: 'product-card__primary-image', image: product_primary_image, min_max: '100-600', ratio: '100:85' %}
 
       <div class="product-card__awards">
         {%- for award in product.metafields.product.awards.value -%}
@@ -120,12 +115,7 @@
             <p class="text-button">{{ 'product.cta.add_to_cart' | t }}</p>
 
             <div class="product-card__price">
-              {% render 'product-prices' with
-                available: firstAvailableVariant.available
-                class: 'product-card__prices',
-                compare_at_price: firstAvailableVariant.compare_at_price,
-                price: firstAvailableVariant.price,
-              %}
+              {% render 'product-prices' with available, available: firstAvailableVariant.available, class: 'product-card__prices', compare_at_price: firstAvailableVariant.compare_at_price, price: firstAvailableVariant.price %}
             </div>
           </div>
         </button>
@@ -156,3 +146,34 @@
     </div>
   </{{ product_element }}>
 </section>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'format-product' with product: product %}"
+  to: "{% render 'format-product' with product, product: product %}"
+  position: 1688..1748
+- from: |-
+    {% render 'responsive-image' with
+            class: 'product-card__primary-image',
+            image: product_primary_image,
+            min_max: '100-600',
+            ratio: '100:85',
+          %}
+  to: "{% render 'responsive-image' with class, class: 'product-card__primary-image',
+    image: product_primary_image, min_max: '100-600', ratio: '100:85' %}"
+  position: 2483..2630
+- from: |-
+    {% render 'product-prices' with
+                    available: firstAvailableVariant.available
+                    class: 'product-card__prices',
+                    compare_at_price: firstAvailableVariant.compare_at_price,
+                    price: firstAvailableVariant.price,
+                  %}
+  to: "{% render 'product-prices' with available, available: firstAvailableVariant.available,
+    class: 'product-card__prices', compare_at_price: firstAvailableVariant.compare_at_price,
+    price: firstAvailableVariant.price %}"
+  position: 3929..4142
+{% endcomment %}

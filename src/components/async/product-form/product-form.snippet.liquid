@@ -13,11 +13,7 @@
 
 {% capture product_form %}
   {% if product.available %}
-    {% render 'btn' with
-      class: 'product-form__add-to-cart',
-      label: add_to_cart_string,
-      type: 'submit',
-    %}
+    {% render 'btn' with class, class: 'product-form__add-to-cart', label: add_to_cart_string, type: 'submit' %}
   {% endif %}
 {% endcapture %}
 
@@ -38,3 +34,19 @@
     </div>
   {% endif %}
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'btn' with
+          class: 'product-form__add-to-cart',
+          label: add_to_cart_string,
+          type: 'submit',
+        %}
+  to: "{% render 'btn' with class, class: 'product-form__add-to-cart', label: add_to_cart_string,
+    type: 'submit' %}"
+  position: 501..609
+{% endcomment %}

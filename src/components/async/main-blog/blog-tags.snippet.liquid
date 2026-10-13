@@ -31,12 +31,7 @@
     js-blog-tags="container"
   >
     <li class="blog-tags__item">
-      {% render 'selection-tab' with
-        attributes: all_category_attribute,
-        class: all_category_class,
-        label: all_category_string,
-        url: blog.url,
-      %}
+      {% render 'selection-tab' with attributes, attributes: all_category_attribute, class: all_category_class, label: all_category_string, url: blog.url %}
     </li>
 
     {% for tag in blog.all_tags %}
@@ -64,13 +59,35 @@
       -%}
 
       <li class="blog-tags__item">
-        {% render 'selection-tab' with
-          attributes: attributes,
-          class: active_class,
-          label: tag_label,
-          url: url,
-        %}
+        {% render 'selection-tab' with attributes, attributes: attributes, class: active_class, label: tag_label, url: url %}
       </li>
     {% endfor %}
   </ul>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'selection-tab' with
+            attributes: all_category_attribute,
+            class: all_category_class,
+            label: all_category_string,
+            url: blog.url,
+          %}
+  to: "{% render 'selection-tab' with attributes, attributes: all_category_attribute,
+    class: all_category_class, label: all_category_string, url: blog.url %}"
+  position: 823..973
+- from: |-
+    {% render 'selection-tab' with
+              attributes: attributes,
+              class: active_class,
+              label: tag_label,
+              url: url,
+            %}
+  to: "{% render 'selection-tab' with attributes, attributes: attributes, class: active_class,
+    label: tag_label, url: url %}"
+  position: 1786..1903
+{% endcomment %}

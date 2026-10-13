@@ -55,12 +55,7 @@
         {% endif %}
       >
 
-      {% render 'form-errors' with
-        class: 'form-group__note',
-        form: form,
-        namespace: 'activate-account-password',
-        type: 'password',
-      %}
+      {% render 'form-errors' with class, class: 'form-group__note', form: form, namespace: 'activate-account-password', type: 'password' %}
     </div>
 
     <div class="form-group__field">
@@ -87,12 +82,7 @@
         {% endif %}
       >
 
-      {% render 'form-errors' with
-        class: 'form-group__note',
-        form: form,
-        namespace: 'activate-account-confirm-password',
-        type: 'password_confirmation',
-      %}
+      {% render 'form-errors' with class, class: 'form-group__note', form: form, namespace: 'activate-account-confirm-password', type: 'password_confirmation' %}
     </div>
 
     <div
@@ -102,11 +92,7 @@
         form-group__footer
       "
     >
-      {% render 'btn' with
-        class: 'customers__activate',
-        label: activate_account_cta_string,
-        type: submit,
-      %}
+      {% render 'btn' with class, class: 'customers__activate', label: activate_account_cta_string, type: submit %}
 
       {% render 'btn'
         attributes: 'name="decline"'
@@ -118,3 +104,40 @@
     </div>
   </div>
 {% endform %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'form-errors' with
+            class: 'form-group__note',
+            form: form,
+            namespace: 'activate-account-password',
+            type: 'password',
+          %}
+  to: "{% render 'form-errors' with class, class: 'form-group__note', form: form,
+    namespace: 'activate-account-password', type: 'password' %}"
+  position: 1614..1748
+- from: |-
+    {% render 'form-errors' with
+            class: 'form-group__note',
+            form: form,
+            namespace: 'activate-account-confirm-password',
+            type: 'password_confirmation',
+          %}
+  to: "{% render 'form-errors' with class, class: 'form-group__note', form: form,
+    namespace: 'activate-account-confirm-password', type: 'password_confirmation'
+    %}"
+  position: 2553..2708
+- from: |-
+    {% render 'btn' with
+            class: 'customers__activate',
+            label: activate_account_cta_string,
+            type: submit,
+          %}
+  to: "{% render 'btn' with class, class: 'customers__activate', label: activate_account_cta_string,
+    type: submit %}"
+  position: 2886..2995
+{% endcomment %}

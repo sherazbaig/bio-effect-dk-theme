@@ -32,11 +32,7 @@
             {{ block.settings.title }}
           </h3>
 
-          {% render 'btn' with
-            class: 'special-stores__cta'
-            label: block.settings.cta_label,
-            url: block.settings.cta_url,
-          %}
+          {% render 'btn' with class, class: 'special-stores__cta', label: block.settings.cta_label, url: block.settings.cta_url %}
         </div>
       {% endfor %}
     </div>
@@ -44,3 +40,19 @@
 </section>
 
 {% schema 'special-stores' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'btn' with
+                class: 'special-stores__cta'
+                label: block.settings.cta_label,
+                url: block.settings.cta_url,
+              %}
+  to: "{% render 'btn' with class, class: 'special-stores__cta', label: block.settings.cta_label,
+    url: block.settings.cta_url %}"
+  position: 1206..1327
+{% endcomment %}

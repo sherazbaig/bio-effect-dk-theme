@@ -33,13 +33,7 @@
         class="customers__onboarding-forms col xs-span l4-9"
         js-login="container"
       >
-        {% render 'notification-panel' with
-          attributes: 'js-forgot-password="success"',
-          class: 'customers-login__reset-success is-hidden'
-          show_close: false,
-          text: reset_sucess_string,
-          type: 'success',
-        %}
+        {% render 'notification-panel' with attributes, attributes: 'js-forgot-password="success"', class: 'customers-login__reset-success is-hidden', show_close: false, text: reset_sucess_string, type: "success" %}
 
         <div
           class="customers-login__toggle-form"
@@ -70,3 +64,22 @@
 </section>
 
 {% schema 'customers-login' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'notification-panel' with
+              attributes: 'js-forgot-password="success"',
+              class: 'customers-login__reset-success is-hidden'
+              show_close: false,
+              text: reset_sucess_string,
+              type: 'success',
+            %}
+  to: '{% render ''notification-panel'' with attributes, attributes: ''js-forgot-password="success"'',
+    class: ''customers-login__reset-success is-hidden'', show_close: false, text:
+    reset_sucess_string, type: "success" %}'
+  position: 1025..1232
+{% endcomment %}

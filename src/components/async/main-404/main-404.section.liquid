@@ -43,11 +43,7 @@
         </p>
 
         {% if section.settings.cta_text != blank %}
-          {% render 'btn' with
-            class: 'main-404__cta',
-            label: section.settings.cta_text,
-            url: cta_url,
-          %}
+          {% render 'btn' with class, class: 'main-404__cta', label: section.settings.cta_text, url: cta_url %}
         {% endif %}
       </div>
     </div>
@@ -56,16 +52,37 @@
   {% if section.settings.image != blank %}
     <div class="main-404__image-column">
       <div class="main-404__image">
-        {% render 'art-direction' with
-          class: 'main-404__image-block',
-          image: section.settings.image,
-          lazyload: false,
-          ratio: '3:2',
-          ratio_desktop: '16:7',
-        %}
+        {% render 'art-direction' with class, class: 'main-404__image-block', image: section.settings.image, lazyload: false, ratio: '3:2', ratio_desktop: '16:7' %}
       </div>
     </div>
   {% endif %}
 </section>
 
 {% schema 'main-404' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'btn' with
+                class: 'main-404__cta',
+                label: section.settings.cta_text,
+                url: cta_url,
+              %}
+  to: "{% render 'btn' with class, class: 'main-404__cta', label: section.settings.cta_text,
+    url: cta_url %}"
+  position: 1245..1346
+- from: |-
+    {% render 'art-direction' with
+              class: 'main-404__image-block',
+              image: section.settings.image,
+              lazyload: false,
+              ratio: '3:2',
+              ratio_desktop: '16:7',
+            %}
+  to: "{% render 'art-direction' with class, class: 'main-404__image-block', image:
+    section.settings.image, lazyload: false, ratio: '3:2', ratio_desktop: '16:7' %}"
+  position: 1529..1685
+{% endcomment %}

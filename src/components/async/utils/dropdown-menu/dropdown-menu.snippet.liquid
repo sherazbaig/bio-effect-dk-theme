@@ -25,9 +25,21 @@
       {{ selected_value }}
     </div>
 
-    {% render 'icon-directional-navigation' with
-      icon: 'chevron',
-      direction: 'down'
-    %}
+    {% render 'icon-directional-navigation' with icon, icon: 'chevron', direction: 'down' %}
   </div>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'icon-directional-navigation' with
+          icon: 'chevron',
+          direction: 'down'
+        %}
+  to: "{% render 'icon-directional-navigation' with icon, icon: 'chevron', direction:
+    'down' %}"
+  position: 615..703
+{% endcomment %}

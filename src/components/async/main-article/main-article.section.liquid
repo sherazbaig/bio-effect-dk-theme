@@ -69,10 +69,7 @@
 
         <div class="main-article__header-bottom">
           {% if show_share_buttons %}
-            {% render 'share' with
-              base_class: 'main-article'
-              links_to_show: share_buttons
-            %}
+            {% render 'share' with base_class, base_class: 'main-article', links_to_show: share_buttons %}
           {% endif %}
 
           <p class="text-p text-h6-desktop">
@@ -84,12 +81,7 @@
 
     {% if full_width_image %}
       <div class="col xs-span">
-        {% render 'art-direction' with
-          class: 'main-article__image-container',
-          image: full_width_image,
-          ratio: '375:222',
-          ratio_desktop: '1440:587',
-        %}
+        {% render 'art-direction' with class, class: 'main-article__image-container', image: full_width_image, ratio: '375:222', ratio_desktop: '1440:587' %}
       </div>
     {% else %}
       <div class="col xs-span main-article__divider l2-13"></div>
@@ -113,10 +105,7 @@
             l3-12
           "
         >
-          {% render 'rte' with
-            content: article.content,
-            image_width: 1156,
-          %}
+          {% render 'rte' with content, content: article.content, image_width: 1156 %}
         </div>
       </div>
     {% endunless %}
@@ -124,3 +113,35 @@
 </article>
 
 {% schema 'main-article' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'share' with
+                  base_class: 'main-article'
+                  links_to_show: share_buttons
+                %}
+  to: "{% render 'share' with base_class, base_class: 'main-article', links_to_show:
+    share_buttons %}"
+  position: 2051..2145
+- from: |-
+    {% render 'art-direction' with
+              class: 'main-article__image-container',
+              image: full_width_image,
+              ratio: '375:222',
+              ratio_desktop: '1440:587',
+            %}
+  to: "{% render 'art-direction' with class, class: 'main-article__image-container',
+    image: full_width_image, ratio: '375:222', ratio_desktop: '1440:587' %}"
+  position: 2365..2514
+- from: |-
+    {% render 'rte' with
+                content: article.content,
+                image_width: 1156,
+              %}
+  to: "{% render 'rte' with content, content: article.content, image_width: 1156 %}"
+  position: 2965..3041
+{% endcomment %}

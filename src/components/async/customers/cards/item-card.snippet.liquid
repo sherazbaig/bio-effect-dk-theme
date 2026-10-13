@@ -42,12 +42,7 @@
 
 <div class="item-card liquid {{ class }}">
   <div class="item-card__image-container">
-    {% render 'responsive-image' with
-      image: line_item.image,
-      ratio: '1:1',
-      min_max: '93-279',
-      sizes: '(min-width: 1024px) 115px, 93px',
-    %}
+    {% render 'responsive-image' with image, image: line_item.image, ratio: '1:1', min_max: '93-279', sizes: '(min-width: 1024px) 115px, 93px' %}
   </div>
 
   <div class="item-card__details ml-xl-desktop ml-l">
@@ -73,3 +68,20 @@
     {% endif %}
   </div>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+          image: line_item.image,
+          ratio: '1:1',
+          min_max: '93-279',
+          sizes: '(min-width: 1024px) 115px, 93px',
+        %}
+  to: "{% render 'responsive-image' with image, image: line_item.image, ratio: '1:1',
+    min_max: '93-279', sizes: '(min-width: 1024px) 115px, 93px' %}"
+  position: 1562..1703
+{% endcomment %}

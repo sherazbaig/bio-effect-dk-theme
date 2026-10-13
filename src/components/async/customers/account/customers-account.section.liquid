@@ -14,11 +14,11 @@
   assign recent_orders_cta_string = 'customers.account.recent_orders.cta' | t
 
   capture icon_arrow_left
-    render 'icon-directional-navigation' with icon: 'arrow', direction: 'left'
+    render 'icon-directional-navigation' with icon, icon: 'arrow', direction: 'left'
   endcapture
 
   capture icon_arrow_right
-    render 'icon-directional-navigation' with icon: 'arrow', direction: 'right'
+    render 'icon-directional-navigation' with icon, icon: 'arrow', direction: 'right'
   endcapture
 -%}
 
@@ -32,7 +32,7 @@
 
     <div class="customers__pages-content container grid no-row-gap">
       <div class="col xs-span l2-13">
-        {% render 'customers-header' with current_url: routes.account_url %}
+        {% render 'customers-header' with current_url, current_url: routes.account_url %}
       </div>
 
       <div class="customers-account__grid col xs-span l2-13">
@@ -64,12 +64,7 @@
                     {{ 'customers.account.recent_orders.none' | t }}
                   </p>
 
-                  {% render 'btn' with
-                    class: 'customers-account__no-order-button',
-                    label: recent_orders_cta_string,
-                    modifiers: 'primary block center',
-                    url: routes.root_url,
-                  %}
+                  {% render 'btn' with class, class: 'customers-account__no-order-button', label: recent_orders_cta_string, modifiers: 'primary block center', url: routes.root_url %}
                 </div>
               {% endif %}
 
@@ -87,16 +82,12 @@
                 {% paginate customer.orders by 5 %}
                   {% for order in customer.orders %}
 
-                    {% render 'customer-orders' with order: order %}
+                    {% render 'customer-orders' with order, order: order %}
 
                   {% endfor %}
 
                   {% if paginate.pages > 1 %}
-                    {%
-                      render 'pagination' with
-                      paginate: paginate,
-                      class_name: 'col xs-span'
-                    %}
+                    {% render 'pagination' with paginate, paginate: paginate, class_name: 'col xs-span' %}
                   {% endif %}
                 {% endpaginate %}
               {% endunless %}
@@ -139,15 +130,12 @@
               %}
 
               <div js-addresses="formContainer" class="is-hidden mt-3xl">
-                {% render 'address-form' with
-                  address: customer.new_address,
-                  form_id: 'new',
-                %}
+                {% render 'address-form' with address, address: customer.new_address, form_id: 'new' %}
 
                   {%- liquid
                     if customer.addresses_count > 0
                       for address in customer.addresses
-                        render 'address-form' with address: address, default_address: false, form_id: address.id
+                        render 'address-form' with address, address: address, default_address: false, form_id: address.id
                       endfor
                     endif
                   -%}
@@ -165,11 +153,7 @@
                   {{ 'customers.account.addresses.default_address' | t }}
                 </p>
 
-                {% render 'address-block' with
-                  address: customer.default_address,
-                  form_id: customer.default_address.id,
-                  overview: true,
-                %}
+                {% render 'address-block' with address, address: customer.default_address, form_id: customer.default_address.id, overview: true %}
               </div>
 
               {% if customer.addresses_count > 1 %}
@@ -180,7 +164,7 @@
                         continue
                       endif
 
-                      render 'address-block' with address: address, form_id: address.id, set_default_address: true
+                      render 'address-block' with address, address: address, form_id: address.id, set_default_address: true
                     endfor
                   -%}
                 </div>
@@ -214,21 +198,9 @@
 
               <div class="customers-account__footer col xs6 m6 l2-13 mt-xl">
                 <div class="customers-account__slider-arrows splide__arrows">
-                  {% render 'btn' with
-                    class: 'splide__arrow splide__arrow--prev',
-                    icon: icon_arrow_left,
-                    modifiers: 'light reversed text',
-                    show_icon: true,
-                    type: 'button',
-                  %}
+                  {% render 'btn' with class, class: 'splide__arrow splide__arrow--prev', icon: icon_arrow_left, modifiers: 'light reversed text', show_icon: true, type: 'button' %}
 
-                  {% render 'btn' with
-                    class: 'splide__arrow splide__arrow--next',
-                    icon: icon_arrow_right,
-                    modifiers: 'light text',
-                    show_icon: true,
-                    type: 'button',
-                  %}
+                  {% render 'btn' with class, class: 'splide__arrow splide__arrow--next', icon: icon_arrow_right, modifiers: 'light text', show_icon: true, type: 'button' %}
                 </div>
               </div>
             </div>
@@ -249,3 +221,95 @@
 ></customers-account>
 
 {% schema 'customers-account' %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "    render 'icon-directional-navigation' with icon: 'arrow', direction: 'left'"
+  to: "    render 'icon-directional-navigation' with icon, icon: 'arrow', direction:
+    'left'"
+  position: 622..706
+- from: "    render 'icon-directional-navigation' with icon: 'arrow', direction: 'right'"
+  to: "    render 'icon-directional-navigation' with icon, icon: 'arrow', direction:
+    'right'"
+  position: 748..833
+- from: "{% render 'customers-header' with current_url: routes.account_url %}"
+  to: "{% render 'customers-header' with current_url, current_url: routes.account_url
+    %}"
+  position: 1198..1279
+- from: |-
+    {% render 'btn' with
+                        class: 'customers-account__no-order-button',
+                        label: recent_orders_cta_string,
+                        modifiers: 'primary block center',
+                        url: routes.root_url,
+                      %}
+  to: "{% render 'btn' with class, class: 'customers-account__no-order-button', label:
+    recent_orders_cta_string, modifiers: 'primary block center', url: routes.root_url
+    %}"
+  position: 2416..2580
+- from: "{% render 'customer-orders' with order: order %}"
+  to: "{% render 'customer-orders' with order, order: order %}"
+  position: 3226..3281
+- from: |-
+    {%
+                          render 'pagination' with
+                          paginate: paginate,
+                          class_name: 'col xs-span'
+                        %}
+  to: "{% render 'pagination' with paginate, paginate: paginate, class_name: 'col
+    xs-span' %}"
+  position: 3381..3467
+- from: |-
+    {% render 'address-form' with
+                      address: customer.new_address,
+                      form_id: 'new',
+                    %}
+  to: "{% render 'address-form' with address, address: customer.new_address, form_id:
+    'new' %}"
+  position: 4912..4999
+- from: "                        render 'address-form' with address: address, default_address:
+    false, form_id: address.id"
+  to: "                        render 'address-form' with address, address: address,
+    default_address: false, form_id: address.id"
+  position: 5138..5259
+- from: |-
+    {% render 'address-block' with
+                      address: customer.default_address,
+                      form_id: customer.default_address.id,
+                      overview: true,
+                    %}
+  to: "{% render 'address-block' with address, address: customer.default_address,
+    form_id: customer.default_address.id, overview: true %}"
+  position: 5845..5975
+- from: "                      render 'address-block' with address: address, form_id:
+    address.id, set_default_address: true"
+  to: "                      render 'address-block' with address, address: address,
+    form_id: address.id, set_default_address: true"
+  position: 6318..6441
+- from: |-
+    {% render 'btn' with
+                        class: 'splide__arrow splide__arrow--prev',
+                        icon: icon_arrow_left,
+                        modifiers: 'light reversed text',
+                        show_icon: true,
+                        type: 'button',
+                      %}
+  to: "{% render 'btn' with class, class: 'splide__arrow splide__arrow--prev', icon:
+    icon_arrow_left, modifiers: 'light reversed text', show_icon: true, type: 'button'
+    %}"
+  position: 7586..7749
+- from: |-
+    {% render 'btn' with
+                        class: 'splide__arrow splide__arrow--next',
+                        icon: icon_arrow_right,
+                        modifiers: 'light text',
+                        show_icon: true,
+                        type: 'button',
+                      %}
+  to: "{% render 'btn' with class, class: 'splide__arrow splide__arrow--next', icon:
+    icon_arrow_right, modifiers: 'light text', show_icon: true, type: 'button' %}"
+  position: 7769..7924
+{% endcomment %}

@@ -30,7 +30,7 @@
         {{ 'cart.line_item.decrease_quantity' | t }}
       </span>
 
-      {% render 'icon-directional-navigation' with icon: 'minus-round' %}
+      {% render 'icon-directional-navigation' with icon, icon: 'minus-round' %}
     </button>
   </div>
 
@@ -66,7 +66,20 @@
         {{ 'cart.line_item.increase_quantity' | t }}
       </span>
 
-      {% render 'icon-directional-navigation' with icon: 'plus-round' %}
+      {% render 'icon-directional-navigation' with icon, icon: 'plus-round' %}
     </button>
   </div>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'icon-directional-navigation' with icon: 'minus-round' %}"
+  to: "{% render 'icon-directional-navigation' with icon, icon: 'minus-round' %}"
+  position: 1079..1152
+- from: "{% render 'icon-directional-navigation' with icon: 'plus-round' %}"
+  to: "{% render 'icon-directional-navigation' with icon, icon: 'plus-round' %}"
+  position: 2046..2118
+{% endcomment %}
