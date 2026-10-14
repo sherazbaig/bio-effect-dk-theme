@@ -46,10 +46,15 @@
         </div>
       </div>
 
-      <div>
-        <div class="gift-wrap__selection-square" />
-        <icon-check class="gift-wrap__selection-check" />
-      </div>
+      <p
+        class="
+        gift-wrap__cta
+        line-item__title
+        text-p-bold-desktop
+        text-mobile-p-bold
+      "
+        v-text="$string('cart.gift_wrap.cta')"
+      />
     </button>
   </div>
 </template>
@@ -66,14 +71,8 @@
  */
 import { mapActions, mapState } from 'vuex'
 
-import IconCheck from '~icons/general/check.svg'
-
 export default {
   name: 'GiftWrap',
-
-  components: {
-    IconCheck,
-  },
 
   props: {
     giftWrap: {

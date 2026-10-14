@@ -5,7 +5,6 @@
  *
  */
 .gift-wrap {
-  $parent: &;
   margin-block-end: var(--spacing-xl);
 
   &__title {
@@ -29,14 +28,13 @@
     position: relative;
     text-align: start;
 
-    #{$parent}__selection-check,
-    #{$parent}__selection-square {
-      display: none;
-    }
-
     &.selected {
       border-color: var(--color-teal);
     }
+  }
+
+  &__cta {
+    text-align: center;
   }
 
   &__left-hand {
@@ -69,7 +67,8 @@
   }
 }
 
-.gift-wrap__item-titles .line-item__title {
+.gift-wrap__item-titles .line-item__title,
+.gift-wrap__cta.gift-wrap__cta {
   color: rgb(65, 65, 65);
   font-size: 15px;
   font-weight: 400;

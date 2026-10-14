@@ -112,7 +112,8 @@
     },
     "gift_wrap": {
       "label": "Tilføj gratis gaveindpakning",
-      "heading": "Skal vi pakke dine Bioeffect julegaver smukt ind?"
+      "heading": "Skal vi pakke dine Bioeffect julegaver smukt ind?",
+      "cta": "TRYK HER"
     }
   },
   "collection": {
