@@ -218,6 +218,11 @@
     {% if template == 'collection' %}
       {{ collection.metafields.custom.schema }}
     {% endif %}
+
+    {% unless request.design_mode %}
+      {% render 'cookie-information-consent' %}
+    {% endunless %}
+
   </head>
 
   <body
