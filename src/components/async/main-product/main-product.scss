@@ -283,3 +283,9 @@
   background-color: var(--color-stone);
   color: var(--color-clouds);
 }
+
+.jdgm-widget.jdgm-widget {
+  @include mq($until: m) {
+    margin: 0 20px !important;
+  }
+}

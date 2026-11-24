@@ -118,6 +118,12 @@
         />
 
         <div class="main-product__details">
+          <div
+            v-if="judgemeBadge"
+            class="main-product__judgeme-badge"
+            v-html="judgemeBadge"
+          />
+
           <h1
             id="template-title"
             class="
@@ -233,6 +239,10 @@ export default {
       default: false,
     },
     starRatingId: {
+      type: String,
+      default: '',
+    },
+    judgemeBadge: {
       type: String,
       default: '',
     },

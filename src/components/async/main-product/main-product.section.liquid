@@ -14,6 +14,14 @@
   endif
 %}
 
+{%- capture judgeme_badge -%}
+  <!-- Start of Judge.me code -->
+  <div style='{{ jm_style }}' class='jdgm-widget jdgm-preview-badge' data-id='{{ product.id }}' data-auto-install='false'>
+    {{ product.metafields.judgeme.badge }}
+  </div>
+  <!-- End of Judge.me code -->
+{%- endcapture -%}
+
 <section
   class="page-section container"
   aria-labelledby="template-title"
@@ -28,6 +36,7 @@
     :product="product"
     :variant="variant"
     :star-rating-id="{{ star_rating_id }}"
+    :judgeme-badge="{{ judgeme_badge | json | escape }}"
     @update-request-object="updateRequestObject"
   ></main-product>
 
@@ -107,6 +116,8 @@
           {% endif %}
 
           <div class="main-product__details">
+            {{ judgeme_badge }}
+
             <h1
               id="template-title"
               class="
