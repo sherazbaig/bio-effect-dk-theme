@@ -284,7 +284,7 @@
   color: var(--color-clouds);
 }
 
-.jdgm-widget.jdgm-widget {
+.jdgm-widget.jdgm-widget:not(.jdgm-preview-badge) {
   @include mq($until: m) {
     margin: 0 20px !important;
   }
